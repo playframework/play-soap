@@ -1,9 +1,19 @@
-name := "play-soap"
-version := "1.0.0-SNAPSHOT"
-organization := "com.typeasfe.play"
+lazy val root = (project in file("."))
+ .aggregate(client)
 
-libraryDependencies ++= Seq(
- "org.apache.cxf" % "cxf-rt-frontend-jaxws" % "3.0.3",
- "org.apache.cxf" % "cxf-rt-transports-http" % "3.0.3" % "test",
- "org.apache.cxf" % "cxf-rt-transports-http-jetty" % "3.0.3" % "test"
-)
+lazy val client = project in file("client")
+
+lazy val plugin = (project in file("sbt-plugin"))
+ .settings(
+    (resourceGenerators in Compile) <+= generateVersionFile
+ )
+
+def generateVersionFile = Def.task {
+ val version = (Keys.version in client).value
+ val file = (resourceManaged in Compile).value / "play-soap.version.properties"
+ val content = s"play-soap.version=$version"
+ if (!file.exists() || !(IO.read(file) == content)) {
+  IO.write(file, content)
+ }
+ Seq(file)
+}
