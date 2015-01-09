@@ -35,8 +35,20 @@ In future, we may decide to implement our own reflection code for generating bin
 * Improve API for creating the client proxy (make it simpler for the simple cases)
 * Document how to create and configure the client proxy
 * Tests, and general clean up of code.
+* Ensure asynchronous http backend is used (currently JDK URLConnection is used)
 
 ## wsdl2java
+
+This is implemented as an SBT plugin.  Apache CXF's wsdl2java support is in fact very pluggable, there is a `META-INF/tools-plugin.xml` descriptor that allows you to define custom generators ("frontend profiles").  So we've got a custom one of these, and it provides a custom Service Endpoint Interface (SEI) generator, which extends the default one, but provides a different velocity template.  This velocity template is essentially identical to the default one, except that it wraps the return type in a future/promise.
+
+For invoking wsdl2java, the interface provided by Apache CXF is one where arguments are passed as a sequence of Strings.  So the sbt plugin has to build up these arguments.
+
+### Next steps
+
+* Scripted tests
+* Support common arguments to wsdl2java as SBT settings/tasks
+* Incremental compilation support
+* Documentation
 
 ## WS backend
 
