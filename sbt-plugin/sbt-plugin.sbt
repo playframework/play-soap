@@ -10,3 +10,7 @@ libraryDependencies ++= Seq(
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % PlayVersion)
 
+scriptedLaunchOpts ++= Seq(
+  "-Dproject.version=" + version.value,
+  "-XX:MaxPermSize=256m"
+)

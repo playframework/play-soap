@@ -4,9 +4,14 @@ lazy val root = (project in file("."))
 lazy val client = project in file("client")
 
 lazy val plugin = (project in file("sbt-plugin"))
- .settings(
-    (resourceGenerators in Compile) <+= generateVersionFile
- )
+  .settings(scriptedSettings: _*)
+  .settings(
+    (resourceGenerators in Compile) <+= generateVersionFile,
+    scriptedDependencies := {
+      val () = publishLocal.value
+      val () = (publishLocal in client).value
+    }
+  )
 
 def generateVersionFile = Def.task {
  val version = (Keys.version in client).value
