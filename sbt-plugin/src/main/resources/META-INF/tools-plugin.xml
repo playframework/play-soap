@@ -24,6 +24,8 @@ under the License.
         <builder name="JAXWSDefinitionBuilder" package="org.apache.cxf.tools.wsdlto.frontend.jaxws.wsdl11"/>
         <generators package="play.soap.sbtplugin">
             <generator name="PlaySEIGenerator"/>
+            <generator name="PlayPluginGenerator"/>
+            <generator name="PlayPluginsGenerator"/>
         </generators>
     </frontend>
 </plugin>

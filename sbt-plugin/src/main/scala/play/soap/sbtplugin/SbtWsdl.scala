@@ -1,9 +1,10 @@
 package play.soap.sbtplugin
 
 import org.apache.cxf.tools.common.ToolContext
-import org.apache.cxf.tools.util.{OutputStreamCreator, ClassCollector}
+import org.apache.cxf.tools.util.OutputStreamCreator
 import org.apache.cxf.tools.wsdlto.WSDLToJava
-import play.PlayJava
+import play.PlayImport.PlayKeys
+import play.{Play, PlayJava}
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
@@ -13,11 +14,16 @@ object Imports {
 
     val wsdlUrls = SettingKey[Seq[URL]]("wsdlUrls", "A set of URLs to get the WSDL from.")
     val futureApi = SettingKey[FutureApi]("wsdlFutureApi", "Which Future API to use in generated interfaces.")
-    val packageName = SettingKey[Option[String]]("wsdlPackageName", "The package name to generate the WSDL interfaces into, uses the default namespace described in the WSDL if none set.")
+
+    val packageName = SettingKey[Option[String]]("wsdlPackageName", "The default package name to generate the WSDL interfaces into if no explicit namespace mapping is set. Uses the default namespace described in the WSDL if none set.")
+    val packageMappings = SettingKey[Map[String, String]]("wsdlPackageMappings", "Mappings of namespaces to package names to generate the interfaces into.")
+
+    val serviceName = SettingKey[Option[String]]("wsdlServiceName", "The service to generate.")
+
     val wsdlToCodeArgs = SettingKey[Seq[String]]("wsdlToCodeArgs", "Additional arguments that should be passed to wsdl2java")
     val wsdlToJavaHelp = TaskKey[Unit]("wsdlHelp", "Runs the wsdltocode help to get the list of available options")
     val wsdlTasks = TaskKey[Seq[WsdlTask]]("wsdlTasks", "The WSDL tasks. By default, this will include one task for each wsdl detected or configured. If multiple different configurations are needed for wsdltojava invocation, they can be added to this.")
-    val wsdlToCode = TaskKey[Seq[File]]("wsdlToCode", "Generate code from the WSDLs")
+    val wsdlToCode = TaskKey[WsdlTaskResult]("wsdlToCode", "Generate code from the WSDLs")
     val playSoapVersion = SettingKey[String]("wsdlPlaySoapVersion", "The version of Play soap to use")
 
     trait FutureApi {
@@ -30,7 +36,10 @@ object Imports {
       val fqn = "play.libs.F.Promise"
     }
 
-    case class WsdlTask(url: URL, futureApi: FutureApi, packageName: Option[String], args: Seq[String])
+    case class WsdlTask(url: URL, futureApi: FutureApi,
+                        packageName: Option[String], packageMappings: Map[String, String],
+                        serviceName: Option[String], args: Seq[String])
+    case class WsdlTaskResult(sources: Seq[File], resources: Seq[File])
   }
 
 }
@@ -44,10 +53,10 @@ object SbtWsdl extends AutoPlugin {
   val autoImport = Imports
 
   override def projectSettings: Seq[Setting[_]] =
+    dependencySettings ++
     inConfig(Compile)(wsdlSettings) ++
     inConfig(Test)(wsdlSettings) ++
-    defaultSettings ++
-    dependencySettings
+    defaultSettings
 
   def wsdlSettings: Seq[Setting[_]] = Seq(
     wsdlUrls := Nil,
@@ -71,13 +80,17 @@ object SbtWsdl extends AutoPlugin {
 
     wsdlToCode <<= wsdlToCodeTask,
 
-    sourceGenerators <+= wsdlToCode,
-    managedSourceDirectories <+= target in wsdlToCode
+    sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
+    managedSourceDirectories += (target in wsdlToCode).value / "sources",
+    resourceGenerators += Def.task(wsdlToCode.value.resources).taskValue,
+    managedResourceDirectories += (target in wsdlToCode).value / "resources"
   )
 
   def defaultSettings: Seq[Setting[_]] = Seq(
     futureApi := ScalaFutureApi,
     packageName := None,
+    packageMappings := Map.empty,
+    serviceName := None,
     wsdlToJavaHelp := {
       withContextClassLoader {
         new WSDLToJava(Array("-help")).run(new ToolContext())
@@ -86,32 +99,40 @@ object SbtWsdl extends AutoPlugin {
   )
 
   def dependencySettings: Seq[Setting[_]] = Seq(
-    playSoapVersion := readResourceProperty("play-soap.version.properties", "play-soap.version"),
+    playSoapVersion := Version.clientVersion,
     libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value
   )
 
   private def wsdlTasksTask = Def.task {
     val allUrls = (sources in wsdlToCode).value.map(_.toURI.toURL) ++ wsdlUrls.value
     allUrls.map { url =>
-      WsdlTask(url, futureApi.value, packageName.value, wsdlToCodeArgs.value)
+      WsdlTask(url, futureApi.value, packageName.value, packageMappings.value,
+        serviceName.value, wsdlToCodeArgs.value)
     }
   }
 
   private def wsdlToCodeTask = Def.task {
     val tasks = wsdlTasks.value
-    val outDir = (target in wsdlToCode).value
+    val outdir = (target in wsdlToCode).value
+    val sources = outdir / "sources"
+    val resources = outdir / "resources"
 
     withContextClassLoader {
 
       var createdFiles = Set.empty[File]
+      var plugins = Set.empty[String]
 
       tasks.foreach { task =>
-        val packageArgs = task.packageName.map(pkg => Seq("-p", pkg)).getOrElse(Nil)
+        val packageArg = task.packageName.map(pkg => Seq("-p", pkg)).getOrElse(Nil)
+        val packageArgs = task.packageMappings.flatMap {
+          case (namespace, pkg) => Seq("-p", s"$namespace=$pkg")
+        }
+        val serviceNameArg = task.serviceName.map(sn => Seq("-sn", sn)).getOrElse(Nil)
 
         val args = Array(
           "-frontend", "play",
-          "-d", outDir.getAbsolutePath
-        ) ++ packageArgs ++ task.args :+ task.url.toString
+          "-d", sources.getAbsolutePath
+        ) ++ packageArg ++ packageArgs ++ serviceNameArg ++ task.args :+ task.url.toString
 
         val toolContext = new ToolContext()
 
@@ -126,9 +147,14 @@ object SbtWsdl extends AutoPlugin {
         })
 
         new WSDLToJava(args).run(toolContext)
+
+        val ps = Option(toolContext.get("play.plugins").asInstanceOf[Seq[String]]).getOrElse(Nil)
+        plugins ++= ps
       }
 
-      createdFiles.toSeq
+      val playPlugins = resources / "play.plugins"
+      IO.write(playPlugins, plugins.map("900:" + _).mkString("\n"))
+      WsdlTaskResult(createdFiles.toSeq, Seq(playPlugins))
     }
   }
 
@@ -164,5 +190,14 @@ object SbtWsdlJava extends AutoPlugin {
 
   override def projectSettings = Seq(
     futureApi := PlayJavaFutureApi
+  )
+}
+
+object SbtWsdlPlay extends AutoPlugin {
+  override def trigger = allRequirements
+  override def requires = SbtWsdl && Play
+
+  override def projectSettings = Seq(
+    sourceDirectories in (Compile, wsdlToCode) := Seq(PlayKeys.confDirectory.value / "wsdls")
   )
 }

@@ -42,7 +42,7 @@ import ${import};
     $annotation
 #end
 #if ($mark-generated == "true")
-@Generated(value = "org.apache.cxf.tools.wsdlto.WSDLToJava", date = "$currentdate", comments = "$fullversion")
+@Generated(value = "$generatorclass", date = "$currentdate", comments = "$fullversion")
 #end
 public interface $intf.Name {
 #foreach ($method in $intf.Methods)
@@ -56,7 +56,7 @@ public interface $intf.Name {
         $annotation
     #end
     #if ($mark-generated == "true")
-    @Generated(value = "org.apache.cxf.tools.wsdlto.WSDLToJava", date = "$currentdate")
+    @Generated(value = "$generatorclass", date = "$currentdate")
     #end
 public $future<$method.returnValue> ${method.Name}(#if($method.ParameterList.size() == 0))#end
     #if($method.ParameterList.size() != 0)

@@ -14,11 +14,15 @@ lazy val plugin = (project in file("sbt-plugin"))
   )
 
 def generateVersionFile = Def.task {
- val version = (Keys.version in client).value
- val file = (resourceManaged in Compile).value / "play-soap.version.properties"
- val content = s"play-soap.version=$version"
- if (!file.exists() || !(IO.read(file) == content)) {
-  IO.write(file, content)
- }
- Seq(file)
+  val clientVersion = (version in client).value
+  val pluginVersion = version.value
+  val file = (resourceManaged in Compile).value / "play-soap.version.properties"
+  val content =
+    s"""play-soap-client.version=$clientVersion
+       |play-soap-sbt.version=$pluginVersion
+     """.stripMargin
+  if (!file.exists() || !(IO.read(file) == content)) {
+    IO.write(file, content)
+  }
+  Seq(file)
 }
