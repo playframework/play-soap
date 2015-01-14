@@ -7,7 +7,8 @@ object Common extends AutoPlugin {
   override def requires = JvmPlugin
 
   override def projectSettings = Seq(
-    organization := "com.typesafe.play"
+    organization := "com.typesafe.play",
+    resolvers += Resolver.typesafeRepo("releases")
   )
 
   object autoImport {
