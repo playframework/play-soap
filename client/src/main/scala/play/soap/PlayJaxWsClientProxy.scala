@@ -29,6 +29,8 @@ import java.util.{Map => JMap, Locale}
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
 
+import play.libs.F
+
 import scala.concurrent.{Promise, Future}
 import scala.util.Try
 
@@ -139,7 +141,14 @@ class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) w
 
     client.getRequestContext.put(classOf[Method].getName, method)
     val result = try {
-        invokeAsync(method, oi, params)
+      val returnType: Class[_] = method.getReturnType
+      if (returnType == classOf[Future[_]]) {
+        invokeScalaFuture(method, oi, params)
+      } else if (returnType == classOf[F.Promise[_]]) {
+        invokePlayJavaFuture(method, oi, params)
+      } else {
+        throw new WebServiceException(s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or play.libs.F.Promise")
+      }
     } catch {
       case wex: WebServiceException => throw wex
       case ex: Exception =>
@@ -191,7 +200,7 @@ class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) w
     adjustObject(result)
   }
 
-  private def invokeAsync(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): Future[AnyRef] = {
+  private def invokeScalaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): Future[AnyRef] = {
     client.setExecutor(getClient.getEndpoint.getExecutor)
 
     val promise = Promise[AnyRef]()
@@ -199,6 +208,13 @@ class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) w
     client.invoke(callback, oi, params: _*)
     promise.future
   }
+
+  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): F.Promise[AnyRef] = {
+    val future: Future[AnyRef] = invokeScalaFuture(method, oi, params)
+    val playJavaPromise: F.Promise[AnyRef] = F.Promise.wrap(future)
+    playJavaPromise
+  }
+
 
   def getBinding = binding
 
