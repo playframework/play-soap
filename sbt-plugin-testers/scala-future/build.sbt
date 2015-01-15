@@ -1,5 +1,7 @@
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
+javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+
 WsdlKeys.packageName := Some("play.soap.testservice.client")
 
 libraryDependencies ++= Seq(

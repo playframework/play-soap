@@ -1,5 +1,6 @@
 name := "play-soap-client"
 
+javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % PlayVersion % "provided",
