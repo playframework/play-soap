@@ -57,7 +57,7 @@ public class HelloWorldTest {
       return promise.get(10000); // 10 seconds
     }
 
-    private static void withClient(F.Callback<HelloWorld> block) throws Throwable {
+    private static void withClient(final F.Callback<HelloWorld> block) throws Throwable {
         withService(new F.Callback<Integer>() {
             @Override
             public void invoke(Integer port) throws Throwable {

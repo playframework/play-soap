@@ -1,5 +1,7 @@
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
+javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+
 WsdlKeys.futureApi := WsdlKeys.PlayJavaFutureApi
 
 WsdlKeys.packageName := Some("play.soap.testservice.client")
