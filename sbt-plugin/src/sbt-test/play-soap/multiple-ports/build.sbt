@@ -1,0 +1,1 @@
+libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current
