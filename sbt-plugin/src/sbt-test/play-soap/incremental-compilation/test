@@ -1,0 +1,46 @@
+# Run with one WSDL. We run products to ensure that the resources are generated
+
+> products
+$ exists target/wsdl/main/sources/play/soap/testservice/HelloWorldService.scala
+> contains target/wsdl/main/resources/play.plugins play.soap.testservice.HelloWorldService
+
+# Test that a recompile doesn't trigger the wsdl to be changed
+$ touch target/change1
+$ sleep 1100
+> products
+> newer target/change1 target/wsdl/main/sources/play/soap/testservice/HelloWorldService.scala
+# And make sure the plugins file still has the right content
+> contains target/wsdl/main/resources/play.plugins play.soap.testservice.HelloWorldService
+
+# Try changing the file, and make sure it's recompiled
+> replace src/main/wsdl/helloWorld.wsdl HelloWorldService MyHelloWorldService
+> products
+$ exists target/wsdl/main/sources/play/soap/testservice/MyHelloWorldService.scala
+-$ exists target/wsdl/main/sources/play/soap/testservice/HelloWorldService.scala
+> contains target/wsdl/main/resources/play.plugins play.soap.testservice.MyHelloWorldService
+-> contains target/wsdl/main/resources/play.plugins play.soap.testservice.HelloWorldService
+
+# Add a new file make sure it gets compiled, but that the old one doesn't get recompiled
+$ copy-file helloWorld2.wsdl src/main/wsdl/helloWorld2.wsdl
+$ touch target/change2
+$ sleep 1100
+> products
+$ exists target/wsdl/main/sources/play/soap/testservice2/HelloWorldService.scala
+> newer target/change2 target/wsdl/main/sources/play/soap/testservice/MyHelloWorldService.scala
+> contains target/wsdl/main/resources/play.plugins play.soap.testservice.MyHelloWorldService
+> contains target/wsdl/main/resources/play.plugins play.soap.testservice2.HelloWorldService
+
+# Remove it, make sure it gets removed
+$ delete src/main/wsdl/helloWorld2.wsdl
+> products
+-$ exists target/wsdl/main/sources/play/soap/testservice2/HelloWorldService.scala
+> contains target/wsdl/main/resources/play.plugins play.soap.testservice.MyHelloWorldService
+-> contains target/wsdl/main/resources/play.plugins play.soap.testservice2.HelloWorldService
+
+# Change some configuration, make sure it gets recompiled
+> set WsdlKeys.packageName := Some(Constants.comExample)
+> products
+$ exists target/wsdl/main/sources/com/example/MyHelloWorldService.scala
+-$ exists target/wsdl/main/sources/play/soap/testservice/MyHelloWorldService.scala
+> contains target/wsdl/main/resources/play.plugins com.example.MyHelloWorldService
+-> contains target/wsdl/main/resources/play.plugins play.soap.testservice.MyHelloWorldService
