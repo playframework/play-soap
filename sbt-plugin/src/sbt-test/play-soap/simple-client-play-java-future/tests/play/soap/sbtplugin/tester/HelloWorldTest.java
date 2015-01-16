@@ -62,8 +62,7 @@ public class HelloWorldTest {
             @Override
             public void invoke(Integer port) throws Throwable {
                 Map<String, Object> additionalConfig = new HashMap<String, Object>();
-                additionalConfig.put("play.soap.ports.helloWorld.namespace", "http://testservice.soap.play/");
-                additionalConfig.put("play.soap.ports.helloWorld.address", "http://localhost:"+port+"/helloWorld");
+                additionalConfig.put("play.soap.address", "http://localhost:"+port+"/helloWorld");
                 additionalConfig.put("play.soap.debugLog", true);
                 FakeApplication fakeApp = Helpers.fakeApplication(additionalConfig);
                 running(fakeApp, new Runnable() {
