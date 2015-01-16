@@ -16,7 +16,7 @@ object Imports {
     val futureApi = SettingKey[FutureApi]("wsdlFutureApi", "Which Future API to use in generated interfaces.")
 
     val packageName = SettingKey[Option[String]]("wsdlPackageName", "The default package name to generate the WSDL interfaces into if no explicit namespace mapping is set. Uses the default namespace described in the WSDL if none set.")
-    val packageMappings = SettingKey[Map[String, String]]("wsdlPackageMappings", "Mappings of namespaces to package names to generate the interfaces into.")
+    val packageMappings = SettingKey[Seq[(String, String)]]("wsdlPackageMappings", "Mappings of namespaces to package names to generate the interfaces into.")
 
     val serviceName = SettingKey[Option[String]]("wsdlServiceName", "The service to generate.")
 
@@ -25,6 +25,7 @@ object Imports {
     val wsdlTasks = TaskKey[Seq[WsdlTask]]("wsdlTasks", "The WSDL tasks. By default, this will include one task for each wsdl detected or configured. If multiple different configurations are needed for wsdltojava invocation, they can be added to this.")
     val wsdlToCode = TaskKey[WsdlTaskResult]("wsdlToCode", "Generate code from the WSDLs")
     val playSoapVersion = SettingKey[String]("wsdlPlaySoapVersion", "The version of Play soap to use")
+    val playPlugins = TaskKey[Seq[String]]("wsdlPlayPlugins", "The Play plugins")
 
     trait FutureApi {
       def fqn: String
@@ -36,10 +37,13 @@ object Imports {
       val fqn = "play.libs.F.Promise"
     }
 
-    case class WsdlTask(url: URL, futureApi: FutureApi,
-                        packageName: Option[String], packageMappings: Map[String, String],
-                        serviceName: Option[String], args: Seq[String])
-    case class WsdlTaskResult(sources: Seq[File], resources: Seq[File])
+    case class WsdlTask(url: URL,
+                        futureApi: FutureApi = ScalaFutureApi,
+                        packageName: Option[String] = None,
+                        packageMappings: Map[String, String] = Map.empty,
+                        serviceName: Option[String] = None,
+                        args: Seq[String] = Nil)
+    case class WsdlTaskResult(sources: Seq[File], plugins: Seq[String])
   }
 
 }
@@ -60,7 +64,6 @@ object SbtWsdl extends AutoPlugin {
 
   def wsdlSettings: Seq[Setting[_]] = Seq(
     wsdlUrls := Nil,
-    wsdlToCodeArgs := Nil,
 
     includeFilter in wsdlToCode := "*.wsdl",
     excludeFilter in wsdlToCode := HiddenFileFilter,
@@ -80,17 +83,30 @@ object SbtWsdl extends AutoPlugin {
 
     wsdlToCode <<= wsdlToCodeTask,
 
+    playPlugins := wsdlToCode.value.plugins,
+
     sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
     managedSourceDirectories += (target in wsdlToCode).value / "sources",
-    resourceGenerators += Def.task(wsdlToCode.value.resources).taskValue,
+    resourceGenerators += Def.task {
+      val plugins = playPlugins.value
+      if (plugins.nonEmpty) {
+        val contents = playPlugins.value.mkString("\n")
+        val pluginsFile = (target in wsdlToCode).value / "resources" / "play.plugins"
+        IO.write(pluginsFile, contents)
+        Seq(pluginsFile)
+      } else {
+        Nil
+      }
+    }.taskValue,
     managedResourceDirectories += (target in wsdlToCode).value / "resources"
   )
 
   def defaultSettings: Seq[Setting[_]] = Seq(
     futureApi := ScalaFutureApi,
     packageName := None,
-    packageMappings := Map.empty,
+    packageMappings := Nil,
     serviceName := None,
+    wsdlToCodeArgs := Nil,
     wsdlToJavaHelp := {
       withContextClassLoader {
         new WSDLToJava(Array("-help")).run(new ToolContext())
@@ -106,7 +122,7 @@ object SbtWsdl extends AutoPlugin {
   private def wsdlTasksTask = Def.task {
     val allUrls = (sources in wsdlToCode).value.map(_.toURI.toURL) ++ wsdlUrls.value
     allUrls.map { url =>
-      WsdlTask(url, futureApi.value, packageName.value, packageMappings.value,
+      WsdlTask(url, futureApi.value, packageName.value, packageMappings.value.toMap,
         serviceName.value, wsdlToCodeArgs.value)
     }
   }
@@ -115,7 +131,6 @@ object SbtWsdl extends AutoPlugin {
     val tasks = wsdlTasks.value
     val outdir = (target in wsdlToCode).value
     val sources = outdir / "sources"
-    val resources = outdir / "resources"
 
     withContextClassLoader {
 
@@ -152,9 +167,7 @@ object SbtWsdl extends AutoPlugin {
         plugins ++= ps
       }
 
-      val playPlugins = resources / "play.plugins"
-      IO.write(playPlugins, plugins.map("900:" + _).mkString("\n"))
-      WsdlTaskResult(createdFiles.toSeq, Seq(playPlugins))
+      WsdlTaskResult(createdFiles.toSeq, plugins.map("900:" + _).toSeq)
     }
   }
 
