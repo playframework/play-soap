@@ -123,7 +123,8 @@ class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) w
 
     val params = if (args == null) Array.empty[AnyRef] else args
 
-    // Not sure if we need to support this, but copied from JaxwsClientProxy
+    // The proxy returned by the factory bean implements a number of different interfaces, not just the service endpoint
+    // interface. If the method invoked was declared by one of those interfaces, then we handle it here.
     try {
       if ((method.getDeclaringClass == classOf[BindingProvider]) || (method.getDeclaringClass == classOf[AnyRef]) || (method.getDeclaringClass == classOf[Closeable])) {
         return method.invoke(this, params)
