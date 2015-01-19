@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ */
 libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current
 
 // turn off cross paths so that expressions don't need to include the scala version
