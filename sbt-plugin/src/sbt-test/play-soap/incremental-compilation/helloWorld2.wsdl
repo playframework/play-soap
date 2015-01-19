@@ -1,4 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice2.soap.play/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="HelloWorld" targetNamespace="http://testservice2.soap.play/">
+<!--
+ Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+-->
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://testservice2.soap.play/" elementFormDefault="unqualified" targetNamespace="http://testservice2.soap.play/" version="1.0">
 

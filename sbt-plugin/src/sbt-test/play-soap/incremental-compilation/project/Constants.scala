@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ */
 object Constants {
   // scripted swallows double quotes, so can't use them in a set command, so need to refer to a constant if you want
   // to set a string
