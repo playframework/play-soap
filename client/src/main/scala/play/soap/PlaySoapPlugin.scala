@@ -16,46 +16,31 @@ import scala.reflect.ClassTag
 abstract class PlaySoapPlugin(app: Application) extends Plugin {
 
   private lazy val config = Configuration(app.configuration.underlying.getConfig("play.soap"))
-  private lazy val debugLogDefault = {
-    config.underlying.getBoolean("debugLog")
-  }
-  private lazy val configuredPorts: Map[QName, PortConfig] = {
-    val configs = for {
-      ports <- config.getConfig("ports").toSeq
-      portKey <- ports.subKeys.toSeq
-      portConfig <- ports.getConfig(portKey).toSeq
-    } yield {
-      val namespace = portConfig.getString("namespace") match {
-        case Some(ns) => new QName(ns)
-        case None => throw new IllegalArgumentException(s"play.soap.ports.$portKey must have a namespace property")
-      }
-      val debugLog = portConfig.getBoolean("debugLog").getOrElse(debugLogDefault)
-      val address = portConfig.getString("address")
-      namespace -> PortConfig(namespace, address, debugLog)
-    }
-    configs.toMap
+  private lazy val serviceConfig = config.getConfig("services." + this.getClass.getName)
+  private def portConfig(portName: String) = serviceConfig.flatMap(_.getConfig("ports." + portName))
+  private def readConfig[T](portName: String, read: Configuration => Option[T], default: T): T = {
+    portConfig(portName).flatMap(read)
+      .orElse(serviceConfig.flatMap(read))
+      .orElse(read(config))
+      .getOrElse(default)
   }
 
   protected def createPort[T](qname: QName, portName: String, defaultAddress: String)(implicit ct: ClassTag[T]): T = {
 
     val factory = createFactory
 
-    if (shouldLog(qname)) {
+    if (readConfig(portName, _.getBoolean("debugLog"), false)) {
       factory.getInInterceptors.add(new LoggingInInterceptor)
       factory.getOutInterceptors.add(new LoggingOutInterceptor)
     }
     factory.setServiceClass(ct.runtimeClass)
-    val address = configuredPorts.get(qname)
-      .flatMap(_.address)
-      .getOrElse(defaultAddress)
+    val address = readConfig(portName, _.getString("address"), defaultAddress)
     factory.setAddress(address)
 
     val port = factory.create()
 
     port.asInstanceOf[T]
   }
-
-  private def shouldLog(qname: QName) = configuredPorts.get(qname).fold(debugLogDefault)(_.debugLog)
 
   private def createFactory = {
     app.plugin[ApacheCxfBusPlugin] match {

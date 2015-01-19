@@ -40,8 +40,7 @@ object HelloWorldSpec extends PlaySpecification {
   def withClient[T](block: HelloWorld => T): T = withService { port =>
     implicit val app = FakeApplication(additionalConfiguration =
       Map(
-        "play.soap.ports.helloWorld.namespace" -> "http://testservice.soap.play/",
-        "play.soap.ports.helloWorld.address" -> s"http://localhost:$port/helloWorld",
+        "play.soap.address" -> s"http://localhost:$port/helloWorld",
         "play.soap.debugLog" -> true
       ))
     Helpers.running(app) {

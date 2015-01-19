@@ -4,7 +4,7 @@ Play SOAP allows a Play application to make calls on a remote web service using 
 
 ## JAX WS support
 
-Play SOAP builds on the JAX WS spec, but doesn't implement it exactly.  JAX WS, while it does have support for making asynchronous calls, this support is somewhat clumsly, requiring all asynchronous methods to have an `Async` suffix, and requiring the passing of an `AsyncHandler` argument to handle the response, which makes it awkward to integrate into an asynchronous framework since `AsyncHandler`'s do not compose well with other asynchronous constructs.  This support could be described as a second class citizen, bolted on to the spec as an after thought.
+Play SOAP builds on the JAX WS spec, but doesn't implement it exactly.  JAX WS, while it does have support for making asynchronous calls, this support is somewhat clumsy, requiring all asynchronous methods to have an `Async` suffix, and requiring the passing of an `AsyncHandler` argument to handle the response, which makes it awkward to integrate into an asynchronous framework since `AsyncHandler`'s do not compose well with other asynchronous constructs.  This support could be described as a second class citizen, bolted on to the spec as an after thought.
 
 In contrast, Play SOAP provides asynchronous invocation of SOAP services as a first class citizen.  Play SOAP methods all return promises, making them easy to compose with promises from other libraries, and allowing application code to be focussed on business logic, not on wiring asynchronous callbacks together.
 
@@ -21,4 +21,3 @@ Play SOAP is divided into two main parts, an SBT plugin that transforms WSDLs in
 
 * [Using JAX WS Handlers](JaxWsHandlers)
 * [Security](Security)
-* [Debugging](Debugging)
