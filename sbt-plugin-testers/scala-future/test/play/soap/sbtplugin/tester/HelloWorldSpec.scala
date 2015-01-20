@@ -46,9 +46,7 @@ object HelloWorldSpec extends PlaySpecification {
         "play.soap.address" -> s"http://localhost:$port/helloWorld"
       ))
     Helpers.running(app) {
-      val helloWorld = HelloWorldService.helloWorld
-      val binding = helloWorld.asInstanceOf[BindingProvider].getBinding
-      binding.setHandlerChain(List(new LoggingHandler, new AuthenticationHandler))
+      val helloWorld = HelloWorldService.helloWorld(new LoggingHandler, new AuthenticationHandler)
       block(helloWorld)
     }
   }

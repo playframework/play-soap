@@ -74,9 +74,7 @@ public class HelloWorldTest {
                   @Override
                   public void run() {
                       try {
-                          HelloWorld client = HelloWorldService.getHelloWorld();
-                          ((BindingProvider) client).getBinding().setHandlerChain(
-                                  Arrays.<Handler>asList(new LoggingHandler(), new AuthenticationHandler()));
+                          HelloWorld client = HelloWorldService.getHelloWorld(new LoggingHandler(), new AuthenticationHandler());
                           block.invoke(client);
                       } catch (RuntimeException e) {
                           throw e;

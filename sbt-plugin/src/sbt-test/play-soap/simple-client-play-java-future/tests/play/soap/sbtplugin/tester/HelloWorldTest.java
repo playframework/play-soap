@@ -3,17 +3,17 @@
  */
 package play.soap.sbtplugin.tester;
 
+import java.lang.Override;
 import java.net.ServerSocket;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
+import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.soap.*;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.junit.*;
-import play.soap.testservice.client.HelloWorld;
-import play.soap.testservice.client.HelloWorldService;
-import play.soap.testservice.client.User;
+import play.soap.testservice.client.*;
 import play.test.*;
 import play.libs.F;
 
@@ -56,11 +56,55 @@ public class HelloWorldTest {
         });
     }
 
+    @Test
+    public void workWithCustomHandlers() throws Throwable {
+        withApp(new Runnable() {
+           public void run() {
+               final AtomicBoolean invoked = new AtomicBoolean();
+               HelloWorld client = HelloWorldService.getHelloWorld(new SOAPHandler<SOAPMessageContext>() {
+                   public Set<QName> getHeaders() {
+                       return null;
+                   }
+                   public boolean handleMessage(SOAPMessageContext context) {
+                       invoked.set(true);
+                       return true;
+                   }
+                   public boolean handleFault(SOAPMessageContext context) {
+                       return true;
+                   }
+                   public void close(MessageContext context) {
+                   }
+               });
+
+               assertThat(await(client.sayHello("world"))).isEqualTo("Hello world");
+               assertThat(invoked.get()).isTrue();
+           }
+        });
+    }
+
     private static <T> T await(F.Promise<T> promise) {
       return promise.get(10000); // 10 seconds
     }
 
     private static void withClient(final F.Callback<HelloWorld> block) throws Throwable {
+        withApp(new Runnable() {
+              @Override
+              public void run() {
+                  try {
+                      HelloWorld client = HelloWorldService.getHelloWorld();
+                      block.invoke(client);
+                  } catch (RuntimeException e) {
+                      throw e;
+                  } catch (Error e) {
+                      throw e;
+                  } catch (Throwable t) {
+                      throw new RuntimeException(t);
+                  }
+              }
+        });
+    }
+
+    private static void withApp(final Runnable block) throws Throwable {
         withService(new F.Callback<Integer>() {
             @Override
             public void invoke(Integer port) throws Throwable {
@@ -68,21 +112,7 @@ public class HelloWorldTest {
                 additionalConfig.put("play.soap.address", "http://localhost:"+port+"/helloWorld");
                 additionalConfig.put("play.soap.debugLog", true);
                 FakeApplication fakeApp = Helpers.fakeApplication(additionalConfig);
-                running(fakeApp, new Runnable() {
-                  @Override
-                  public void run() {
-                      try {
-                          HelloWorld client = HelloWorldService.getHelloWorld();
-                          block.invoke(client);
-                      } catch (RuntimeException e) {
-                          throw e;
-                      } catch (Error e) {
-                          throw e;
-                      } catch (Throwable t) {
-                          throw new RuntimeException(t);
-                      }
-                  }
-                });
+                running(fakeApp, block);
             }
         });
     }
