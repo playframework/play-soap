@@ -8,7 +8,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
+import javax.xml.ws.handler.Handler;
+
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.junit.*;
 import play.soap.testservice.client.HelloWorld;
@@ -66,13 +69,14 @@ public class HelloWorldTest {
             public void invoke(Integer port) throws Throwable {
                 Map<String, Object> additionalConfig = new HashMap<String, Object>();
                 additionalConfig.put("play.soap.address", "http://localhost:"+port+"/helloWorld");
-                additionalConfig.put("play.soap.debugLog", true);
                 FakeApplication fakeApp = Helpers.fakeApplication(additionalConfig);
                 running(fakeApp, new Runnable() {
                   @Override
                   public void run() {
                       try {
                           HelloWorld client = HelloWorldService.getHelloWorld();
+                          ((BindingProvider) client).getBinding().setHandlerChain(
+                                  Arrays.<Handler>asList(new LoggingHandler(), new AuthenticationHandler()));
                           block.invoke(client);
                       } catch (RuntimeException e) {
                           throw e;
@@ -92,6 +96,8 @@ public class HelloWorldTest {
         final Endpoint endpoint = Endpoint.publish(
             "http://localhost:"+port+"/helloWorld",
             new play.soap.testservice.HelloWorldImpl());
+
+        endpoint.getBinding().setHandlerChain(Arrays.<Handler>asList(new ServerAuthenticationHandler()));
         try {
             block.invoke(port);
         } finally {

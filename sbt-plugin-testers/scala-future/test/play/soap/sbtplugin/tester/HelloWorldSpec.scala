@@ -4,7 +4,7 @@
 package play.soap.sbtplugin.tester
 
 import java.net.ServerSocket
-import javax.xml.ws.Endpoint
+import javax.xml.ws.{BindingProvider, Endpoint}
 
 import org.apache.cxf.endpoint.Server
 import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
@@ -43,17 +43,20 @@ object HelloWorldSpec extends PlaySpecification {
   def withClient[T](block: HelloWorld => T): T = withService { port =>
     implicit val app = FakeApplication(additionalConfiguration =
       Map(
-        "play.soap.address" -> s"http://localhost:$port/helloWorld",
-        "play.soap.debugLog" -> true
+        "play.soap.address" -> s"http://localhost:$port/helloWorld"
       ))
     Helpers.running(app) {
-      block(HelloWorldService.helloWorld)
+      val helloWorld = HelloWorldService.helloWorld
+      val binding = helloWorld.asInstanceOf[BindingProvider].getBinding
+      binding.setHandlerChain(List(new LoggingHandler, new AuthenticationHandler))
+      block(helloWorld)
     }
   }
 
   def withService[T](block: Int => T): T = {
     val port = findAvailablePort()
     val endpoint = Endpoint.publish(s"http://localhost:$port/helloWorld", new play.soap.testservice.HelloWorldImpl)
+    endpoint.getBinding.setHandlerChain(List(new ServerAuthenticationHandler))
     try {
       block(port)
     } finally {
