@@ -14,10 +14,10 @@ Play SOAP is divided into two main parts, an SBT plugin that transforms WSDLs in
 
 ### Getting started
 
-* [Generating a Play SOAP client using SbtWsdl](SbtWsdl)
-* [Using a Play SOAP client](PlaySoapClient)
+* [Generating a Play SOAP client using SbtWsdl](SbtWsdl.md)
+* [Using a Play SOAP client](PlaySoapClient.md)
 
 ### Advanced
 
-* [Using JAX WS Handlers](JaxWsHandlers)
-* [Security](Security)
+* [Using JAX WS Handlers](Handlers.md)
+* [Security](Security.md)
