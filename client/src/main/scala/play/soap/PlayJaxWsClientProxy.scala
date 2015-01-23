@@ -155,9 +155,9 @@ class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) w
     // interface. If the method invoked was declared by one of those interfaces, then we handle it here.
     try {
       if ((method.getDeclaringClass == classOf[BindingProvider]) || (method.getDeclaringClass == classOf[AnyRef]) || (method.getDeclaringClass == classOf[Closeable])) {
-        return method.invoke(this, params)
+        return method.invoke(this, params: _*)
       } else if (method.getDeclaringClass.isInstance(client)) {
-        return method.invoke(client, params)
+        return method.invoke(client, params: _*)
       }
     } catch {
       case e: InvocationTargetException => throw e.getCause

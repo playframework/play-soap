@@ -4,6 +4,7 @@
 package play.soap
 
 import javax.xml.namespace.QName
+import javax.xml.ws.handler.{MessageContext, Handler}
 
 import org.apache.cxf.BusFactory
 import org.apache.cxf.interceptor.{LoggingOutInterceptor, LoggingInInterceptor}
@@ -11,6 +12,7 @@ import org.apache.cxf.transport.ConduitInitiatorManager
 import org.apache.cxf.transport.http.asyncclient.{AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory}
 import play.api._
 
+import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
 
 /**
@@ -28,7 +30,7 @@ abstract class PlaySoapPlugin(app: Application) extends Plugin {
       .getOrElse(default)
   }
 
-  protected def createPort[T](qname: QName, portName: String, defaultAddress: String)(implicit ct: ClassTag[T]): T = {
+  protected def createPort[T](qname: QName, portName: String, defaultAddress: String, handlers: Handler[_ <: MessageContext]*)(implicit ct: ClassTag[T]): T = {
 
     val factory = createFactory
 
@@ -39,6 +41,8 @@ abstract class PlaySoapPlugin(app: Application) extends Plugin {
     factory.setServiceClass(ct.runtimeClass)
     val address = readConfig(portName, _.getString("address"), defaultAddress)
     factory.setAddress(address)
+
+    factory.setHandlers(handlers.asJava)
 
     val port = factory.create()
 

@@ -4,6 +4,7 @@
 package $service.packageName
 
 import javax.xml.namespace.QName
+import javax.xml.ws.handler.{MessageContext, Handler}
 #if ($mark-generated == "true")
 import javax.annotation.Generated
 #end
@@ -34,9 +35,19 @@ class ${service.name}(app: play.api.Application) extends play.soap.PlaySoapPlugi
   lazy val $portMethod.transform($port): $portClassName = {
     createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.address")
   }
+
+  #if ($mark-generated == "true")
+  @Generated(value = "$generatorclass", date = "$currentdate")
+  #end
+  def $portMethod.transform($port)(handlers: Handler[_ <: MessageContext]*): $portClassName = {
+    createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.address", handlers: _*)
+  }
 #end
 }
 
+#if ($mark-generated == "true")
+@Generated(value = "$generatorclass", date = "$currentdate")
+#end
 object ${service.name} {
 #foreach ($port in $service.ports)
   #set($portMethodName = $portMethod.transform($port))
@@ -45,13 +56,25 @@ object ${service.name} {
     #set($portClassName = ${port.fullClassName})
   #end
 
-  def ${portMethodName}(implicit app: play.api.Application): $portClassName = {
+  #if ($mark-generated == "true")
+  @Generated(value = "$generatorclass", date = "$currentdate")
+  #end
+  def ${portMethodName}(handlers: Handler[_ <: MessageContext]*)(implicit app: play.api.Application): $portClassName = {
     app.plugin[$service.name] match {
-      case Some(plugin) => plugin.$portMethodName
+      case Some(plugin) => if (handlers.isEmpty) plugin.$portMethodName else plugin.${portMethodName}(handlers: _*)
       case None => throw new IllegalStateException("Plugin $service.name is not registered")
     }
   }
 
-  def ${port.methodName}(): $portClassName = ${portMethodName}(play.api.Play.current)
+  #if ($mark-generated == "true")
+  @Generated(value = "$generatorclass", date = "$currentdate")
+  #end
+  def ${portMethodName}(implicit app: play.api.Application): $portClassName = ${portMethodName}()
+
+  #if ($mark-generated == "true")
+  @Generated(value = "$generatorclass", date = "$currentdate")
+  #end
+  @annotation.varargs
+  def ${port.methodName}(handlers: Handler[_ <: MessageContext]*): $portClassName = ${portMethodName}(handlers: _*)(play.api.Play.current)
 #end
 }
