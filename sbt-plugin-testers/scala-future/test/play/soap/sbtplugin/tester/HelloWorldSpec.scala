@@ -36,6 +36,16 @@ object HelloWorldSpec extends PlaySpecification {
       user.setName("world")
       await(client.sayHelloToUser(user)).getUser.getName must_== "world"
     }
+
+    "say hello with an exception" in withClient { client =>
+      await(client.sayHelloException("world")) must throwA[HelloException_Exception].like {
+        case e => e.getMessage must_== "Hello world"
+      }
+    }
+
+    "dont say hello" in withClient { client =>
+      await(client.dontSayHello()) must_== ()
+    }
   }
 
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)

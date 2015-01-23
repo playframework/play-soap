@@ -37,6 +37,8 @@ import javax.annotation.Generated;
 #foreach ($import in $intf.Imports)
 import ${import};
 #end
+import javax.xml.ws.Action;
+import javax.xml.ws.FaultAction;
 
 /**
 #if ($intf.classJavaDoc != "")
@@ -65,15 +67,22 @@ public interface $intf.Name {
     #foreach ($annotation in $method.Annotations)
         $annotation
     #end
+    #if($method.Exceptions.size() > 0)
+        @Action(fault = {
+          #foreach($exception in $method.Exceptions)
+            @FaultAction(className = ${exception.ClassName}.class)#if($method.Exceptions.size() != $velocityCount),#end
+          #end
+        })
+    #end
     #if ($mark-generated == "true")
     @Generated(value = "$generatorclass", date = "$currentdate")
     #end
-public $future<$method.returnValue> ${method.Name}(#if($method.ParameterList.size() == 0))#end
+public $future.fqn()<#if ($method.returnValue == "void")$future.voidType()#else$method.returnValue#end> ${method.Name}(#if($method.ParameterList.size() == 0))#end
     #if($method.ParameterList.size() != 0)
 
         #foreach ($param in ${method.ParameterList})
             $param
         #end
-    )#end#if($method.Exceptions.size() > 0) throws#foreach($exception in $method.Exceptions) $exception.ClassName#if($method.Exceptions.size() != $velocityCount),#end#end#end;
+    )#end;
 #end
 }

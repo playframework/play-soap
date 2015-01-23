@@ -21,6 +21,7 @@ class PlaySEIGenerator extends SEIGenerator with PlayGenerator {
   def setAttribute(name: String, value: AnyRef) = setAttributes(name, value)
 
   override def doWrite(templateName: String, outputs: Writer) = {
+
     // Override the template... it should only ever be sei.vm, but in case it's not.
     val newTemplate = if (templateName.endsWith("/sei.vm")) {
       "play/soap/sbtplugin/sei.vm"
@@ -28,7 +29,9 @@ class PlaySEIGenerator extends SEIGenerator with PlayGenerator {
 
     // Add the future API to the velocity context.  The reason this must be done here is that the method that invokes
     // doWrite() first clears the context before invoking this.
-    setAttributes("future", env.get(classOf[Imports.WsdlKeys.FutureApi]).fqn)
+    setAttributes("future", env.get(classOf[Imports.WsdlKeys.FutureApi]))
+
+    val intf =
 
     super.doWrite(newTemplate, outputs)
   }

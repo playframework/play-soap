@@ -11,5 +11,8 @@ libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-rt-transports-http-hc" % CxfVersion,
 
   "org.apache.cxf" % "cxf-rt-transports-http" % CxfVersion % "test",
-  "org.apache.cxf" % "cxf-rt-transports-http-jetty" % CxfVersion % "test"
+  "org.apache.cxf" % "cxf-rt-transports-http-jetty" % CxfVersion % "test",
+  "com.typesafe.play" %% "play-test" % PlayVersion
 )
+
+fork in Test := true

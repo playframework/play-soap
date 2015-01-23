@@ -35,12 +35,15 @@ object Imports {
 
     trait FutureApi {
       def fqn: String
+      def voidType: String
     }
     case object ScalaFutureApi extends FutureApi {
       val fqn = "scala.concurrent.Future"
+      val voidType = "scala.Unit"
     }
     case object PlayJavaFutureApi extends FutureApi {
       val fqn = "play.libs.F.Promise"
+      val voidType = "Void"
     }
 
     case class WsdlTask(url: URL,

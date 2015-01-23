@@ -29,7 +29,7 @@
 package play.soap
 
 import java.io.{IOException, Closeable}
-import java.lang.reflect.{Method, InvocationTargetException}
+import java.lang.reflect.{ParameterizedType, Method, InvocationTargetException}
 import java.net.HttpURLConnection
 import javax.xml.soap.{SOAPConstants, SOAPException, SOAPFault}
 import javax.xml.ws.handler.MessageContext
@@ -229,21 +229,29 @@ class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) w
     adjustObject(result)
   }
 
-  private def invokeScalaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): Future[AnyRef] = {
+  private def invokeScalaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): Future[Any] = {
     client.setExecutor(getClient.getEndpoint.getExecutor)
 
-    val promise = Promise[AnyRef]()
-    val callback = new PlayJaxwsClientCallback(promise)
+    val noResponseValue: Any = method.getGenericReturnType match {
+      case parameterized: ParameterizedType =>
+        parameterized.getActualTypeArguments.headOption match {
+          case Some(clazz) if clazz == classOf[Unit] => ()
+          case _ => null
+        }
+      case _ => null
+    }
+
+    val promise = Promise[Any]()
+    val callback = new PlayJaxwsClientCallback(promise, noResponseValue)
     client.invoke(callback, oi, params: _*)
     promise.future
   }
 
-  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): F.Promise[AnyRef] = {
-    val future: Future[AnyRef] = invokeScalaFuture(method, oi, params)
-    val playJavaPromise: F.Promise[AnyRef] = F.Promise.wrap(future)
+  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): F.Promise[Any] = {
+    val future: Future[Any] = invokeScalaFuture(method, oi, params)
+    val playJavaPromise: F.Promise[Any] = F.Promise.wrap(future)
     playJavaPromise
   }
-
 
   def getBinding = binding
 
