@@ -4,24 +4,20 @@
 package play.soap.sbtplugin.tester;
 
 import java.net.ServerSocket;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.handler.Handler;
 
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.junit.*;
-import play.soap.testservice.client.HelloWorld;
-import play.soap.testservice.client.HelloWorldService;
-import play.soap.testservice.client.User;
+import play.soap.testservice.client.*;
 import play.test.*;
 import play.libs.F;
 
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.fail;
 
 public class HelloWorldTest {
 
@@ -59,7 +55,32 @@ public class HelloWorldTest {
         });
     }
 
-    private static <T> T await(F.Promise<T> promise) {
+    @Test
+    public void sayHelloException() throws Throwable {
+        withClient(new F.Callback<HelloWorld>() {
+            @Override
+            public void invoke(HelloWorld client) throws Throwable {
+                try {
+                    await(client.sayHelloException("world"));
+                    fail();
+                } catch (HelloException_Exception e) {
+                    assertThat(e.getMessage()).isEqualTo("Hello world");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void dontSayHello() throws Throwable {
+        withClient(new F.Callback<HelloWorld>() {
+            @Override
+            public void invoke(HelloWorld client) throws Throwable {
+                assertThat(await(client.dontSayHello())).isNull();
+            }
+        });
+    }
+
+    private static <T> T await(F.Promise<T> promise) throws Exception {
       return promise.get(10000); // 10 seconds
     }
 

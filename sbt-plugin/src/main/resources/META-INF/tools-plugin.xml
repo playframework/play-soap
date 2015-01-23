@@ -8,6 +8,7 @@
         <processor name="WSDLToJavaProcessor" package="org.apache.cxf.tools.wsdlto.frontend.jaxws.processor"/>
         <builder name="JAXWSDefinitionBuilder" package="org.apache.cxf.tools.wsdlto.frontend.jaxws.wsdl11"/>
         <generators package="play.soap.sbtplugin">
+            <generator package="org.apache.cxf.tools.wsdlto.frontend.jaxws.generators" name="FaultGenerator"/>
             <generator name="PlaySEIGenerator"/>
             <generator name="PlayPluginGenerator"/>
             <generator name="PlayPluginsGenerator"/>

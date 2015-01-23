@@ -1,0 +1,31 @@
+/*
+ * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ */
+package play.soap.mockservice;
+
+import javax.jws.WebService;
+import javax.xml.ws.Action;
+import javax.xml.ws.FaultAction;
+import javax.xml.ws.Holder;
+
+import scala.Unit;
+import scala.concurrent.Future;
+
+@WebService(name = "MockService")
+public interface MockServiceScala {
+
+    public Future<Bar> getBar(Foo foo);
+
+    public Future<Integer> add(int a, int b);
+
+    public Future<String> multiReturn(Holder<String> part, String toSplit, int index);
+
+    public Future<Unit> noReturn(String nothing);
+
+    @Action(fault = {
+            @FaultAction(className = SomeException.class)
+    })
+    public Future<String> declaredException();
+
+    public Future<String> runtimeException();
+}

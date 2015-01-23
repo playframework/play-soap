@@ -9,10 +9,21 @@ import org.apache.cxf.endpoint.ClientCallback
 
 import scala.concurrent.Promise
 
-class PlayJaxwsClientCallback(promise: Promise[AnyRef]) extends ClientCallback {
+/**
+ * A client callback based on a promise
+ * 
+ * @param promise The promise
+ * @param noResponseValue If no response comes back, redeem the future with this value
+ */
+class PlayJaxwsClientCallback(promise: Promise[Any], noResponseValue: Any = null) extends ClientCallback {
 
   override def handleResponse(ctx: util.Map[String, AnyRef], response: Array[AnyRef]) = {
-    promise.trySuccess(response(0))
+    // If there's no return value, the response will be null
+    if (response != null) {
+      promise.trySuccess(response(0))
+    } else {
+      promise.trySuccess(noResponseValue)
+    }
   }
 
   override def handleException(ctx: util.Map[String, AnyRef], ex: Throwable) = {

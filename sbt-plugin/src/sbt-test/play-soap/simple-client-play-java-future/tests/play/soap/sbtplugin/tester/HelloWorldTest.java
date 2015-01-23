@@ -3,7 +3,9 @@
  */
 package play.soap.sbtplugin.tester;
 
+import java.lang.Exception;
 import java.lang.Override;
+import java.lang.RuntimeException;
 import java.net.ServerSocket;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,6 +21,7 @@ import play.libs.F;
 
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.fail;
 
 public class HelloWorldTest {
 
@@ -57,6 +60,31 @@ public class HelloWorldTest {
     }
 
     @Test
+    public void sayHelloException() throws Throwable {
+        withClient(new F.Callback<HelloWorld>() {
+            @Override
+            public void invoke(HelloWorld client) throws Throwable {
+                try {
+                    await(client.sayHelloException("world"));
+                    fail();
+                } catch (HelloException_Exception e) {
+                    assertThat(e.getMessage()).isEqualTo("Hello world");
+                }
+            }
+        });
+    }
+
+    @Test
+    public void dontSayHello() throws Throwable {
+        withClient(new F.Callback<HelloWorld>() {
+            @Override
+            public void invoke(HelloWorld client) throws Throwable {
+                assertThat(await(client.dontSayHello())).isNull();
+            }
+        });
+    }
+
+    @Test
     public void workWithCustomHandlers() throws Throwable {
         withApp(new Runnable() {
            public void run() {
@@ -76,13 +104,17 @@ public class HelloWorldTest {
                    }
                });
 
-               assertThat(await(client.sayHello("world"))).isEqualTo("Hello world");
-               assertThat(invoked.get()).isTrue();
+               try {
+                   assertThat(await(client.sayHello("world"))).isEqualTo("Hello world");
+                   assertThat(invoked.get()).isTrue();
+               } catch (Exception e) {
+                   throw new RuntimeException(e);
+               }
            }
         });
     }
 
-    private static <T> T await(F.Promise<T> promise) {
+    private static <T> T await(F.Promise<T> promise) throws Exception {
       return promise.get(10000); // 10 seconds
     }
 

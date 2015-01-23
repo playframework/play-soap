@@ -34,4 +34,14 @@ public class HelloWorldImpl implements HelloWorld {
         hello.setUser(user);
         return hello;
     }
+
+    @Override
+    public String sayHelloException(@WebParam(name = "name") String name) throws HelloException {
+        throw new HelloException("Hello " + name);
+    }
+
+    @Override
+    public void dontSayHello() {
+    }
+
 }

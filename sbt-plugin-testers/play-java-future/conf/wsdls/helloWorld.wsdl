@@ -3,72 +3,91 @@
  Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
 -->
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://testservice.soap.play/" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/" version="1.0">
-
-  <xs:element name="sayHello" type="tns:sayHello"/>
-
-  <xs:element name="sayHelloResponse" type="tns:sayHelloResponse"/>
-
-  <xs:element name="sayHelloToMany" type="tns:sayHelloToMany"/>
-
-  <xs:element name="sayHelloToManyResponse" type="tns:sayHelloToManyResponse"/>
-
-  <xs:element name="sayHelloToUser" type="tns:sayHelloToUser"/>
-
-  <xs:element name="sayHelloToUserResponse" type="tns:sayHelloToUserResponse"/>
-
-  <xs:complexType name="sayHelloToMany">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="names" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="sayHelloToManyResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="sayHelloToUser">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="user" type="tns:user"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="user">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="name" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="sayHelloToUserResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="tns:hello"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="hello">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="user" type="tns:user"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="sayHello">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="name" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="sayHelloResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-</xs:schema>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://testservice.soap.play/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/">
+      <xs:element name="dontSayHello" type="tns:dontSayHello"/>
+      <xs:element name="dontSayHelloResponse" type="tns:dontSayHelloResponse"/>
+      <xs:element name="sayHello" type="tns:sayHello"/>
+      <xs:element name="sayHelloException" type="tns:sayHelloException"/>
+      <xs:element name="sayHelloExceptionResponse" type="tns:sayHelloExceptionResponse"/>
+      <xs:element name="sayHelloResponse" type="tns:sayHelloResponse"/>
+      <xs:element name="sayHelloToMany" type="tns:sayHelloToMany"/>
+      <xs:element name="sayHelloToManyResponse" type="tns:sayHelloToManyResponse"/>
+      <xs:element name="sayHelloToUser" type="tns:sayHelloToUser"/>
+      <xs:element name="sayHelloToUserResponse" type="tns:sayHelloToUserResponse"/>
+      <xs:complexType name="sayHelloException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHelloExceptionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dontSayHello">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="dontSayHelloResponse">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="sayHelloToMany">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="names" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHelloToManyResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHelloToUser">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="user">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHelloToUserResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:hello"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="hello">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHello">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHelloResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="HelloException" type="tns:HelloException"/>
+      <xs:complexType name="HelloException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
   </wsdl:types>
   <wsdl:message name="sayHelloToUserResponse">
     <wsdl:part element="tns:sayHelloToUserResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dontSayHelloResponse">
+    <wsdl:part element="tns:dontSayHelloResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayHelloExceptionResponse">
+    <wsdl:part element="tns:sayHelloExceptionResponse" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="sayHelloResponse">
@@ -77,6 +96,10 @@
   </wsdl:message>
   <wsdl:message name="sayHello">
     <wsdl:part element="tns:sayHello" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="dontSayHello">
+    <wsdl:part element="tns:dontSayHello" name="parameters">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="sayHelloToManyResponse">
@@ -91,28 +114,71 @@
     <wsdl:part element="tns:sayHelloToUser" name="parameters">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="HelloException">
+    <wsdl:part element="tns:HelloException" name="HelloException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayHelloException">
+    <wsdl:part element="tns:sayHelloException" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:portType name="HelloWorld">
+    <wsdl:operation name="sayHelloException">
+      <wsdl:input message="tns:sayHelloException" name="sayHelloException">
+      </wsdl:input>
+      <wsdl:output message="tns:sayHelloExceptionResponse" name="sayHelloExceptionResponse">
+      </wsdl:output>
+      <wsdl:fault message="tns:HelloException" name="HelloException">
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="dontSayHello">
+      <wsdl:input message="tns:dontSayHello" name="dontSayHello">
+      </wsdl:input>
+      <wsdl:output message="tns:dontSayHelloResponse" name="dontSayHelloResponse">
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="sayHelloToMany">
       <wsdl:input message="tns:sayHelloToMany" name="sayHelloToMany">
-    </wsdl:input>
+      </wsdl:input>
       <wsdl:output message="tns:sayHelloToManyResponse" name="sayHelloToManyResponse">
-    </wsdl:output>
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="sayHelloToUser">
       <wsdl:input message="tns:sayHelloToUser" name="sayHelloToUser">
-    </wsdl:input>
+      </wsdl:input>
       <wsdl:output message="tns:sayHelloToUserResponse" name="sayHelloToUserResponse">
-    </wsdl:output>
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="sayHello">
       <wsdl:input message="tns:sayHello" name="sayHello">
-    </wsdl:input>
+      </wsdl:input>
       <wsdl:output message="tns:sayHelloResponse" name="sayHelloResponse">
-    </wsdl:output>
+      </wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="HelloWorldSoapBinding" type="tns:HelloWorld">
+  <wsdl:binding name="HelloWorldServiceSoapBinding" type="tns:HelloWorld">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="sayHelloException">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sayHelloException">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sayHelloExceptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="HelloException">
+        <soap:fault name="HelloException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="dontSayHello">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="dontSayHello">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="dontSayHelloResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="sayHelloToMany">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input name="sayHelloToMany">
@@ -142,8 +208,8 @@
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="HelloWorldService">
-    <wsdl:port binding="tns:HelloWorldSoapBinding" name="HelloWorld">
-      <soap:address location="http://localhost:9001/helloWorld"/>
+    <wsdl:port binding="tns:HelloWorldServiceSoapBinding" name="HelloWorld">
+      <soap:address location="http://localhost:53915/helloWorld"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

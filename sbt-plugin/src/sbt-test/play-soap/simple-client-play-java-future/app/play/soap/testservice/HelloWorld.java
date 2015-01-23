@@ -14,4 +14,8 @@ public interface HelloWorld {
     public List<String> sayHelloToMany(@WebParam(name = "names") List<String> names);
 
     public Hello sayHelloToUser(@WebParam(name = "user") User user);
+
+    public String sayHelloException(@WebParam(name = "name") String name) throws HelloException;
+
+    public void dontSayHello();
 }
