@@ -59,3 +59,12 @@ For invoking wsdl2java, the interface provided by Apache CXF is one where argume
 ## Server
 
 Not likely to ever be implemented.
+
+# Docs
+
+Start sbt, and run:
+
+    project docs
+    ~webStage
+
+Now modify the docs (either markdown, or the template, or the stylesheets), and open `target/web/stage/Home.html` to view them.

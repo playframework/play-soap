@@ -16,6 +16,21 @@ lazy val plugin = (project in file("sbt-plugin"))
     }
   )
 
+lazy val docs = (project in file("docs"))
+  .enablePlugins(SbtTwirl)
+  .enablePlugins(SbtWeb)
+  .settings(
+    WebKeys.pipeline ++= {
+      val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
+        case (file, name) => file -> ("api/client/" + name)
+      }
+      val pluginDocs = (mappings in (Compile, packageDoc) in plugin).value.map {
+        case (file, name) => file -> ("api/sbtwsdl/" + name)
+      }
+      clientDocs ++ pluginDocs
+    }
+  )
+
 def generateVersionFile = Def.task {
   val clientVersion = (version in client).value
   val pluginVersion = version.value

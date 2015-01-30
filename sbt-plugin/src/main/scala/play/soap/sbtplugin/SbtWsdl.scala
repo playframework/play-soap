@@ -3,8 +3,6 @@
  */
 package play.soap.sbtplugin
 
-import java.security.MessageDigest
-
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.cxf.tools.common.ToolContext
 import org.apache.cxf.tools.util.OutputStreamCreator
@@ -15,7 +13,14 @@ import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
 
+/**
+ * The imports that the WSDL plugin brings in to all .sbt files
+ */
 object Imports {
+
+  /**
+   * The keys that the WSDL plugin uses
+   */
   object WsdlKeys {
 
     val wsdlUrls = SettingKey[Seq[URL]]("wsdlUrls", "A set of URLs to get the WSDL from.")
@@ -33,25 +38,59 @@ object Imports {
     val playSoapVersion = SettingKey[String]("wsdlPlaySoapVersion", "The version of Play soap to use")
     val playPlugins = TaskKey[Seq[String]]("wsdlPlayPlugins", "The Play plugins")
 
+    /**
+     * The future API
+     */
     trait FutureApi {
+      /**
+       * The fully qualify class name of the future API
+       */
       def fqn: String
+      /**
+       * The type that the future returns if the methed returns void
+       */
       def voidType: String
     }
+
+    /**
+     * The Scala Future API
+     */
     case object ScalaFutureApi extends FutureApi {
       val fqn = "scala.concurrent.Future"
       val voidType = "scala.Unit"
     }
+
+    /**
+     * The Play Java Promise API
+     */
     case object PlayJavaFutureApi extends FutureApi {
       val fqn = "play.libs.F.Promise"
       val voidType = "Void"
     }
 
+    /**
+     * A task for wsdltocode to run
+     *
+     * @param url The url of the WSDL
+     * @param futureApi The future API to use
+     * @param packageName The name of the package to generate into, if overriding is desired
+     * @param packageMappings Mappings of namespaces to package names to se
+     * @param serviceName The name of the service to generate
+     * @param args Any additional args for wsdltocode
+     */
     case class WsdlTask(url: URL,
                         futureApi: FutureApi = ScalaFutureApi,
                         packageName: Option[String] = None,
                         packageMappings: Map[String, String] = Map.empty,
                         serviceName: Option[String] = None,
                         args: Seq[String] = Nil)
+
+    /**
+     * The result of running the wsdltocode task
+     *
+     * @param sources The sources generated
+     * @param plugins The plugins generated
+     */
     case class WsdlTaskResult(sources: Seq[File], plugins: Seq[String])
   }
 
@@ -59,6 +98,9 @@ object Imports {
 
 import Imports.WsdlKeys._
 
+/**
+ * The sbt WSDL plugin.
+ */
 object SbtWsdl extends AutoPlugin {
   override def trigger = allRequirements
   override def requires = JvmPlugin
@@ -71,6 +113,9 @@ object SbtWsdl extends AutoPlugin {
     inConfig(Test)(wsdlSettings) ++
     defaultSettings
 
+  /**
+   * The WSDL settings to be scoped to a particular config
+   */
   def wsdlSettings: Seq[Setting[_]] = Seq(
     wsdlUrls := Nil,
 
@@ -110,6 +155,9 @@ object SbtWsdl extends AutoPlugin {
     managedResourceDirectories += (target in wsdlToCode).value / "resources"
   )
 
+  /**
+   * The default settings that don't apply to a particular scope
+   */
   def defaultSettings: Seq[Setting[_]] = Seq(
     futureApi := ScalaFutureApi,
     packageName := None,
@@ -123,6 +171,9 @@ object SbtWsdl extends AutoPlugin {
     }
   )
 
+  /**
+   * The settings that add the play-soap-client to a projects dependencies
+   */
   def dependencySettings: Seq[Setting[_]] = Seq(
     playSoapVersion := Version.clientVersion,
     libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value
@@ -266,6 +317,9 @@ object SbtWsdlJava extends AutoPlugin {
   )
 }
 
+/**
+ * Auto plugin that activates when the Play plugin is use to switch the wsdl directory to conf/wsdls.
+ */
 object SbtWsdlPlay extends AutoPlugin {
   override def trigger = allRequirements
   override def requires = SbtWsdl && Play

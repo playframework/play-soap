@@ -16,7 +16,7 @@ import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
 
 /**
- * Abstract plugin extended by all generated SOAP clients
+ * Abstract plugin extended by all generated SOAP clients.
  */
 abstract class PlaySoapPlugin(app: Application) extends Plugin {
 
@@ -30,6 +30,15 @@ abstract class PlaySoapPlugin(app: Application) extends Plugin {
       .getOrElse(default)
   }
 
+  /**
+   * Create a port for the given class
+   *
+   * @param qname The qname of the class
+   * @param portName The name of the port
+   * @param defaultAddress The default address to use if none configured
+   * @param handlers The handlers to use
+   * @return The port
+   */
   protected def createPort[T](qname: QName, portName: String, defaultAddress: String, handlers: Handler[_ <: MessageContext]*)(implicit ct: ClassTag[T]): T = {
 
     val factory = createFactory
