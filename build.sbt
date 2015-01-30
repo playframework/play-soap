@@ -2,11 +2,9 @@
  * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
  */
 lazy val root = (project in file("."))
-  .enablePlugins(CrossCompile)
   .aggregate(client)
 
 lazy val client = (project in file("client"))
-  .enablePlugins(CrossCompile)
 
 lazy val plugin = (project in file("sbt-plugin"))
   .settings(scriptedSettings: _*)

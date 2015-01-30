@@ -17,15 +17,5 @@ object Common extends AutoPlugin {
 
   object autoImport {
     val CxfVersion = "3.0.3"
-    val PlayVersion = "2.3.7"
   }
-}
-
-object CrossCompile extends AutoPlugin {
-  override def trigger = noTrigger
-
-  override def projectSettings = Seq(
-    crossScalaVersions := Seq("2.10.4", "2.11.1"),
-    scalaVersion := "2.10.4"
-  )
 }
