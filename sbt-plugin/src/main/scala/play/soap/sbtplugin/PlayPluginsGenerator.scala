@@ -11,6 +11,9 @@ import org.apache.cxf.tools.wsdlto.frontend.jaxws.processor.WSDLToJavaProcessor
 import java.util.{Map => JMap}
 import scala.collection.JavaConversions._
 
+/**
+ * Generator for play.plugins entries
+ */
 class PlayPluginsGenerator extends AbstractJAXWSGenerator with PlayGenerator {
   override def setCommonAttributes() = {
     super.setCommonAttributes()

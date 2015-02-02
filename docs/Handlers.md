@@ -2,7 +2,7 @@
 
 JAX WS provides an abstraction called handlers to allow cross cutting concerns to be implemented across all calls.  Handlers are able to inspect and modify the incoming and outgoing messages, including SOAP data objects and request/response headers.  They're also able to block requests from being made entirely.
 
-Use cases for handlers include logging, security, monitoring, and many other application specific concerns.  For examples of how to implement security using handlers, see [Security](Security.md).
+Use cases for handlers include logging, security, monitoring, and many other application specific concerns.  For examples of how to implement security using handlers, see [[Security]].
 
 ## Handlers in Java
 

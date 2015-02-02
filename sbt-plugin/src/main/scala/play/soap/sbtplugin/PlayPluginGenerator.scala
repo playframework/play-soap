@@ -9,6 +9,9 @@ import org.apache.cxf.tools.common.model.JavaPort
 import org.apache.cxf.tools.util.ClassCollector
 import org.apache.cxf.tools.wsdlto.frontend.jaxws.generators.ServiceGenerator
 
+/**
+ * Generator for the Play plugin
+ */
 class PlayPluginGenerator extends ServiceGenerator with PlayGenerator {
   
   override def setCommonAttributes() = {
@@ -37,7 +40,7 @@ class PlayPluginGenerator extends ServiceGenerator with PlayGenerator {
     parseOutputName(packageName, filename, ".scala")
   }
 
-  object PortMethodNameGenerator {
+  private object PortMethodNameGenerator {
     def transform(port: JavaPort): String = {
       port.getName.head.toLower + port.getName.tail
     }

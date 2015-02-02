@@ -1,6 +1,6 @@
 # Security
 
-Most security protocols can be implemented in Play SOAP using handlers.  For general documentation on handlers, see [here](Handlers.md).
+Most security protocols can be implemented in Play SOAP using handlers.  For general documentation on handlers, see [[here|Handlers]].
 
 ## Adding an authentication token to requests
 

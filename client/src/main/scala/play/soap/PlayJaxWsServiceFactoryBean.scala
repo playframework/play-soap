@@ -12,7 +12,7 @@ import org.apache.cxf.wsdl.service.factory.AbstractServiceConfiguration
 
 import scala.concurrent.Future
 
-class PlayJaxWsServiceFactoryBean extends JaxWsServiceFactoryBean {
+private[soap] class PlayJaxWsServiceFactoryBean extends JaxWsServiceFactoryBean {
 
   /**
    * Since we're returning futures, we don't set a throws clause, because the method doesn't throw anything,
