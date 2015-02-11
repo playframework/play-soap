@@ -1,16 +1,15 @@
 /*
- * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ * Copyright © 2015 Typesafe, Inc. All rights reserved.
+ * No information contained herein may be reproduced or transmitted in any form or
+ * by any means without the express written permission of Typesafe, Inc.
  */
 package play.soap
 
-import java.lang.reflect.{ParameterizedType, Type, Method}
+import java.lang.reflect.Method
 import javax.xml.ws.{FaultAction, Action}
 
 import org.apache.cxf.jaxws.support.{JaxWsImplementorInfo, JaxWsServiceFactoryBean}
 import org.apache.cxf.service.model.{OperationInfo, InterfaceInfo}
-import org.apache.cxf.wsdl.service.factory.AbstractServiceConfiguration
-
-import scala.concurrent.Future
 
 private[soap] class PlayJaxWsServiceFactoryBean extends JaxWsServiceFactoryBean {
 
