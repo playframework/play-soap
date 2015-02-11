@@ -4,20 +4,43 @@
  * by any means without the express written permission of Typesafe, Inc.
  */
 
+import com.typesafe.sbt.pgp.PgpKeys._
 import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
+import sbtrelease.ReleasePlugin._
+import sbtrelease.ReleasePlugin.ReleaseKeys._
 
 object Common extends AutoPlugin {
   override def trigger = allRequirements
   override def requires = JvmPlugin
 
-  override def projectSettings = Seq(
+  override def projectSettings = releaseSettings ++ Seq(
     organization := "com.typesafe.play",
-    resolvers += Resolver.typesafeRepo("releases")
+    resolvers += Resolver.typesafeRepo("releases"),
+    javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
+    publishArtifactsAction := publishSigned.value,
+    tagName := (version in ThisBuild).value
   )
 
   object autoImport {
     val CxfVersion = "3.0.3"
   }
+}
+
+object Publish extends AutoPlugin {
+  override def projectSettings = Seq(
+    publishTo := Some(Resolver.url("typesafe-rp",
+      url("https://private-repo.typesafe.com/typesafe/for-subscribers-only/DFDB5DD187A28462DDAF7AB39A95A6AE65983B23")
+    )(Resolver.ivyStylePatterns))
+  )
+}
+
+object NoPublish extends AutoPlugin {
+  override def projectSettings = Seq(
+    publishTo := None,
+    publish := {},
+    publishLocal := {},
+    publishSigned := {}
+  )
 }
