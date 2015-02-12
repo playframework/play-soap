@@ -3,7 +3,6 @@
  * No information contained herein may be reproduced or transmitted in any form or
  * by any means without the express written permission of Typesafe, Inc.
  */
-import sbt.Attributed._
 
 libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-io" % "1.3.2",
@@ -15,11 +14,12 @@ libraryDependencies ++= Seq(
 resolvers += Resolver.typesafeRepo("releases")
 
 sources in generateDocs := (baseDirectory.value * "*.md").get
+target in generateDocs := WebKeys.webTarget.value / "docs"
 
 lazy val generateDocs = TaskKey[Seq[File]]("generateDocs")
 
 generateDocs := {
-  val outdir = target.value / "web" / "docs"
+  val outdir = (target in generateDocs).value
   val classpath = (fullClasspath in Compile).value
   val scalaRun = (runner in run).value
   val log = streams.value.log
@@ -27,15 +27,18 @@ generateDocs := {
 
   val markdownFiles = (sources in generateDocs).value
 
+  // Clear the output directory first
+  IO.delete(outdir)
+
   toError(scalaRun.run("play.soap.docs.Generator",
-    data(classpath), Seq(outdir.getAbsolutePath, baseDir.getAbsolutePath) ++ markdownFiles.map(_.getName.dropRight(3)),
+    Attributed.data(classpath), Seq(outdir.getAbsolutePath, baseDir.getAbsolutePath) ++ markdownFiles.map(_.getName.dropRight(3)),
     log))
 
   (outdir * "*.html").get
 }
 
 resourceGenerators in Assets += generateDocs.taskValue
-managedResourceDirectories in Assets += target.value / "web" / "docs"
+managedResourceDirectories in Assets += (target in generateDocs).value
 
 // This removes a circular dependency
 WebKeys.exportedMappings in Assets := Nil
@@ -45,3 +48,12 @@ LessKeys.compress := true
 pipelineStages := Seq(uglify)
 
 watchSources ++= (sources in generateDocs).value
+
+publish := {
+  val stageDir = WebKeys.stage.value.getAbsolutePath
+  println("Syncing files with S3")
+  val rc = s"s3cmd sync --delete-removed $stageDir/ s3://downloads.typesafe.com/rp/play-soap/".!
+  if (rc != 0) {
+    throw new FeedbackProvidedException {}
+  }
+}

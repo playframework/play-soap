@@ -43,6 +43,9 @@ object Generator extends App {
   )
   val titleMap = nav.map(t => t._2 -> t._1).toMap
 
+  // Ensure target directory exists
+  outDir.mkdirs()
+
   inPages.foreach { name =>
 
     val inFile = new File(inDir, name + ".md")

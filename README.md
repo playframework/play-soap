@@ -68,3 +68,7 @@ Start sbt, and run:
     ~webStage
 
 Now modify the docs (either markdown, or the template, or the stylesheets), and open `target/web/stage/Home.html` to view them.
+
+To deploy the docs, simply run:
+
+    sbt docs/publish
