@@ -38,7 +38,7 @@ object Publish extends AutoPlugin {
 
 object NoPublish extends AutoPlugin {
   override def projectSettings = Seq(
-    publishTo := None,
+    publishTo := Some(Resolver.file("no-publish", crossTarget.value / "no-publish")),
     publish := {},
     publishLocal := {},
     publishSigned := {}
