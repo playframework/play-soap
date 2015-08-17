@@ -14,7 +14,7 @@ object Common extends AutoPlugin {
 
   override def projectSettings = Seq(
     organization := "com.typesafe.play",
-    version := "1.0.0-SNAPSHOT",
+    version := "1.0",
     resolvers += Resolver.typesafeRepo("releases"),
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
   )
