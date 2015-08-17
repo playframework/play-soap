@@ -5,6 +5,7 @@
  */
 package play.soap
 
+import javax.inject.{Inject, Singleton}
 import javax.xml.namespace.QName
 import javax.xml.ws.handler.{MessageContext, Handler}
 
@@ -13,16 +14,18 @@ import org.apache.cxf.interceptor.{LoggingOutInterceptor, LoggingInInterceptor}
 import org.apache.cxf.transport.ConduitInitiatorManager
 import org.apache.cxf.transport.http.asyncclient.{AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory}
 import play.api._
+import play.api.inject.ApplicationLifecycle
 
 import scala.collection.JavaConverters._
+import scala.concurrent.Future
 import scala.reflect.ClassTag
 
 /**
  * Abstract plugin extended by all generated SOAP clients.
  */
-abstract class PlaySoapPlugin(app: Application) extends Plugin {
+abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
 
-  private lazy val config = Configuration(app.configuration.underlying.getConfig("play.soap"))
+  private lazy val config = Configuration(configuration.underlying.getConfig("play.soap"))
   private lazy val serviceConfig = config.getConfig("services." + this.getClass.getName)
   private def portConfig(portName: String) = serviceConfig.flatMap(_.getConfig("ports." + portName))
   private def readConfig[T](portName: String, read: Configuration => Option[T], default: T): T = {
@@ -61,21 +64,17 @@ abstract class PlaySoapPlugin(app: Application) extends Plugin {
   }
 
   private def createFactory = {
-    app.plugin[ApacheCxfBusPlugin] match {
-      case Some(plugin) =>
-        val factory = new PlayJaxWsProxyFactoryBean
-        factory.setBus(plugin.bus)
-        factory
-      case None =>
-        throw new IllegalStateException("play.soap.ApacheCxfBusPlugin is not enabled!")
-    }
+    val factory = new PlayJaxWsProxyFactoryBean
+    factory.setBus(apacheCxfBus.bus)
+    factory
   }
 }
 
 /**
  * Configures and manages the lifecycle of an Apache CXF bus
  */
-class ApacheCxfBusPlugin(app: Application) extends Plugin {
+@Singleton
+class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) {
 
   private lazy val asyncTransport = new AsyncHttpTransportFactory
   private[soap] lazy val bus = {
@@ -95,7 +94,7 @@ class ApacheCxfBusPlugin(app: Application) extends Plugin {
     bus
   }
 
-  override def onStop() = {
+  lifecycle.addStopHook { () =>
     bus.shutdown(true)
 
     // The AsyncHttpTransportFactory holds an AsyncHTTPConduitFactory, which holds a client which holds threads. There
@@ -107,8 +106,11 @@ class ApacheCxfBusPlugin(app: Application) extends Plugin {
       factory.shutdown()
     } catch {
       // Ignore, just print the stack trace so we know something has gone wrong
-      case e: Exception => e.printStackTrace()
+      case e: Exception =>
+        Logger.warn("Error shutting down CXF bus", e)
     }
+
+    Future.successful(())
   }
 
 }

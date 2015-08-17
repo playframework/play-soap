@@ -60,30 +60,6 @@ The service name from the WSDL can be overridden if desired, using the `serviceN
 WsdlKeys.serviceName := Some("MyService")
 ```
 
-## The `play.plugins` file
-
-sbt WSDL generates a number of Play plugins.  To register these with Play, it writes them out to a `play.plugins` file.  If your project defines its own `play.plugins` file, this will conflict.  There are two ways to solve this.
-
-### Disabling the generation of `play.plugins`
-
-Disabling the generation of `play.plugins` means you will have to add entries for your SOAP clients to your `play.plugins` file manually.  The disabling can be done using the `playPlugins` setting:
-
-```scala
-WsdlKeys.playPlugins in Compile := Nil
-```
-
-Then, for each service, you'll need to add an entry to your own plugins file.  For example, if you have a service called `MyService` in the namespace `http://example.com/`, you will need to add the following to your plugins file:
-
-    900:com.example.MyService
-
-### Adding plugins to the `play.plugins` file
-
-You can also instruct sbt WSDL to add plugins to the `play.plugins` file that it generates.  This can be done using the `playPlugins` setting:
-
-```scala
-WsdlKeys.playPlugins in Compile += "800:com.example.MyPlugin"
-```
-
 ## Advanced configuration
 
 ### Supplying additional arguments to wsdl2java

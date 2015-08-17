@@ -11,11 +11,7 @@ import javax.xml.ws.Endpoint
 import javax.xml.ws.handler.soap._
 import javax.xml.ws.handler.MessageContext
 
-import org.apache.cxf.endpoint.Server
-import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
 import org.apache.cxf.jaxws.EndpointImpl
-import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine
-import play.soap.PlayJaxWsProxyFactoryBean
 import play.soap.testservice.client._
 import scala.collection.JavaConversions._
 import scala.concurrent.{Await, Future}
@@ -23,6 +19,7 @@ import scala.concurrent.duration._
 
 import play.api.test._
 import play.api.Application
+import play.api.inject.guice.GuiceApplicationBuilder
 
 object HelloWorldSpec extends PlaySpecification {
 
@@ -55,8 +52,8 @@ object HelloWorldSpec extends PlaySpecification {
 
     "allow adding custom handlers" in {
       val invoked = new AtomicBoolean()
-      withApp { implicit app =>
-        val client = HelloWorldService.helloWorld(new SOAPHandler[SOAPMessageContext] {
+      withApp { app =>
+        val client = app.injector.instanceOf[HelloWorldService].helloWorld(new SOAPHandler[SOAPMessageContext] {
           def getHeaders = null
           def handleMessage(context: SOAPMessageContext) = {
             invoked.set(true)
@@ -74,15 +71,14 @@ object HelloWorldSpec extends PlaySpecification {
 
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
 
-  def withClient[T](block: HelloWorld => T): T = withApp { implicit app =>
-    block(HelloWorldService.helloWorld)
+  def withClient[T](block: HelloWorld => T): T = withApp { app =>
+    block(app.injector.instanceOf[HelloWorldService].helloWorld)
   }
 
   def withApp[T](block: Application => T): T = withService { port =>
-    implicit val app = FakeApplication(additionalConfiguration =
-      Map(
-        "play.soap.address" -> s"http://localhost:$port/helloWorld"
-      ))
+    implicit val app = new GuiceApplicationBuilder()
+      .configure("play.soap.address" -> s"http://localhost:$port/helloWorld")
+      .build
     Helpers.running(app) {
       block(app)
     }

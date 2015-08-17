@@ -12,8 +12,7 @@
         <generators package="play.soap.sbtplugin">
             <generator package="org.apache.cxf.tools.wsdlto.frontend.jaxws.generators" name="FaultGenerator"/>
             <generator name="PlaySEIGenerator"/>
-            <generator name="PlayPluginGenerator"/>
-            <generator name="PlayPluginsGenerator"/>
+            <generator name="PlayClientGenerator"/>
         </generators>
     </frontend>
 </plugin>

@@ -3,9 +3,13 @@
  * No information contained herein may be reproduced or transmitted in any form or
  * by any means without the express written permission of Typesafe, Inc.
  */
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file("."))
+  .enablePlugins(PlayJava)
+  .dependsOn(client)
 
-javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+lazy val client = ProjectRef(file("../../").getCanonicalFile.toURI, "client")
+
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 WsdlKeys.futureApi := WsdlKeys.PlayJavaFutureApi
 

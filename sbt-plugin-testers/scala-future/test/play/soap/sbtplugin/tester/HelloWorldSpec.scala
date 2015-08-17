@@ -11,7 +11,6 @@ import javax.xml.ws.{BindingProvider, Endpoint}
 import org.apache.cxf.endpoint.Server
 import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
 import org.apache.cxf.jaxws.EndpointImpl
-import org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine
 import play.soap.PlayJaxWsProxyFactoryBean
 import play.soap.testservice.client._
 import scala.collection.JavaConversions._
@@ -19,6 +18,7 @@ import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 
 import play.api.test._
+import play.api.inject.guice.GuiceApplicationBuilder
 
 object HelloWorldSpec extends PlaySpecification {
 
@@ -53,12 +53,11 @@ object HelloWorldSpec extends PlaySpecification {
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
 
   def withClient[T](block: HelloWorld => T): T = withService { port =>
-    implicit val app = FakeApplication(additionalConfiguration =
-      Map(
-        "play.soap.address" -> s"http://localhost:$port/helloWorld"
-      ))
+    val app = new GuiceApplicationBuilder()
+      .configure("play.soap.address" -> s"http://localhost:$port/helloWorld")
+      .build
     Helpers.running(app) {
-      val helloWorld = HelloWorldService.helloWorld(new LoggingHandler, new AuthenticationHandler)
+      val helloWorld = app.injector.instanceOf[HelloWorldService].helloWorld(new LoggingHandler, new AuthenticationHandler)
       block(helloWorld)
     }
   }

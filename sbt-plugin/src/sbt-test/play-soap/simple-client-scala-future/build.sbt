@@ -5,11 +5,12 @@
  */
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 WsdlKeys.packageName := Some("play.soap.testservice.client")
 
 libraryDependencies ++= Seq(
+  specs2,
   "org.apache.cxf" % "cxf-rt-transports-http" % "3.0.3" % "test",
   "org.apache.cxf" % "cxf-rt-transports-http-jetty" % "3.0.3" % "test"
 )

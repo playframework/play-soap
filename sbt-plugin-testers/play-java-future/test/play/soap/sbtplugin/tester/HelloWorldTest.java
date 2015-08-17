@@ -5,122 +5,127 @@
  */
 package play.soap.sbtplugin.tester;
 
+import java.lang.RuntimeException;
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.function.*;
 import java.util.*;
-import javax.xml.ws.BindingProvider;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
-import javax.xml.ws.handler.Handler;
-
+import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.soap.*;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.junit.*;
 import play.soap.testservice.client.*;
-import play.test.*;
+import play.Application;
+import play.inject.guice.GuiceApplicationBuilder;
 import play.libs.F;
 
+import static org.junit.Assert.*;
 import static play.test.Helpers.*;
-import static org.fest.assertions.Assertions.*;
-import static org.junit.Assert.fail;
 
 public class HelloWorldTest {
 
     @Test
-    public void sayHello() throws Throwable {
-        withClient(new F.Callback<HelloWorld>() {
-            @Override
-            public void invoke(HelloWorld client) throws Throwable {
-                assertThat(await(client.sayHello("world"))).isEqualTo("Hello world");
+    public void sayHello() {
+        withClient(client ->
+            assertEquals("Hello world", await(client.sayHello("world")))
+        );
+    }
+
+    @Test
+    public void sayHelloToManyPeople() {
+        withClient(client -> {
+            List<String> names = Arrays.asList("foo", "bar");
+            List<String> hellos = Arrays.asList("Hello foo", "Hello bar");
+            assertEquals(hellos, await(client.sayHelloToMany(names)));
+        });
+    }
+
+    @Test
+    public void sayHelloToOneUser() {
+        withClient(client -> {
+            User user = new User();
+            user.setName("world");
+            assertEquals("world", await(client.sayHelloToUser(user)).getUser().getName());
+        });
+    }
+
+    @Test
+    public void sayHelloException() {
+        withClient(client -> {
+            try {
+                await(client.sayHelloException("world"));
+                fail();
+            } catch (HelloException_Exception e) {
+                assertEquals("Hello world", e.getMessage());
             }
         });
     }
 
     @Test
-    public void sayHelloToManyPeople() throws Throwable {
-        withClient(new F.Callback<HelloWorld>() {
-            @Override
-            public void invoke(HelloWorld client) throws Throwable {
-                List<String> names = Arrays.asList(new String[] {"foo", "bar"});
-                List<String> hellos = Arrays.asList(new String[] {"Hello foo", "Hello bar"});
-                assertThat(await(client.sayHelloToMany(names))).isEqualTo(hellos);
-            }
+    public void dontSayHello() {
+        withClient(client -> {
+            assertNull(await(client.dontSayHello()));
         });
     }
 
     @Test
-    public void sayHelloToOneUser() throws Throwable {
-        withClient(new F.Callback<HelloWorld>() {
-            @Override
-            public void invoke(HelloWorld client) throws Throwable {
-                User user = new User();
-                user.setName("world");
-                assertThat(await(client.sayHelloToUser(user)).getUser().getName()).isEqualTo("world");
-            }
-        });
-    }
-
-    @Test
-    public void sayHelloException() throws Throwable {
-        withClient(new F.Callback<HelloWorld>() {
-            @Override
-            public void invoke(HelloWorld client) throws Throwable {
-                try {
-                    await(client.sayHelloException("world"));
-                    fail();
-                } catch (HelloException_Exception e) {
-                    assertThat(e.getMessage()).isEqualTo("Hello world");
+    public void workWithCustomHandlers() {
+        withApp(app -> {
+            final AtomicBoolean invoked = new AtomicBoolean();
+            HelloWorld client = app.injector().instanceOf(HelloWorldService.class).getHelloWorld(new SOAPHandler<SOAPMessageContext>() {
+                public Set<QName> getHeaders() {
+                    return null;
                 }
-            }
+
+                public boolean handleMessage(SOAPMessageContext context) {
+                    invoked.set(true);
+                    return true;
+                }
+
+                public boolean handleFault(SOAPMessageContext context) {
+                    return true;
+                }
+
+                public void close(MessageContext context) {
+                }
+            });
+
+            assertEquals("Hello world", await(client.sayHello("world")));
+            assertTrue(invoked.get());
         });
     }
 
-    @Test
-    public void dontSayHello() throws Throwable {
-        withClient(new F.Callback<HelloWorld>() {
-            @Override
-            public void invoke(HelloWorld client) throws Throwable {
-                assertThat(await(client.dontSayHello())).isNull();
-            }
+    private static <T> T await(F.Promise<T> promise) {
+        return promise.get(10000); // 10 seconds
+    }
+
+    private static void withClient(Consumer<HelloWorld> block) {
+        withApp(app -> {
+            HelloWorld client = app.injector().instanceOf(HelloWorldService.class).getHelloWorld();
+            block.accept(client);
         });
     }
 
-    private static <T> T await(F.Promise<T> promise) throws Exception {
-      return promise.get(10000); // 10 seconds
-    }
-
-    private static void withClient(final F.Callback<HelloWorld> block) throws Throwable {
-        withService(new F.Callback<Integer>() {
-            @Override
-            public void invoke(Integer port) throws Throwable {
-                Map<String, Object> additionalConfig = new HashMap<String, Object>();
-                additionalConfig.put("play.soap.address", "http://localhost:"+port+"/helloWorld");
-                FakeApplication fakeApp = Helpers.fakeApplication(additionalConfig);
-                running(fakeApp, new Runnable() {
-                  @Override
-                  public void run() {
-                      try {
-                          HelloWorld client = HelloWorldService.getHelloWorld(new LoggingHandler(), new AuthenticationHandler());
-                          block.invoke(client);
-                      } catch (RuntimeException e) {
-                          throw e;
-                      } catch (Error e) {
-                          throw e;
-                      } catch (Throwable t) {
-                          throw new RuntimeException(t);
-                      }
-                  }
-                });
-            }
+    private static void withApp(Consumer<Application> block) {
+        withService(port -> {
+            GuiceApplicationBuilder builder = new GuiceApplicationBuilder()
+                .configure("play.soap.address", "http://localhost:"+port+"/helloWorld")
+                    .configure("play.soap.debugLog", true);
+            Application app = builder.build();
+            running(app, () -> block.accept(app));
         });
     }
 
-    private static void withService(F.Callback<Integer> block) throws Throwable {
+    private static void withService(Consumer<Integer> block) {
         final int port = findAvailablePort();
         final Endpoint endpoint = Endpoint.publish(
-            "http://localhost:"+port+"/helloWorld",
-            new play.soap.testservice.HelloWorldImpl());
-
-        endpoint.getBinding().setHandlerChain(Arrays.<Handler>asList(new ServerAuthenticationHandler()));
+                "http://localhost:"+port+"/helloWorld",
+                new play.soap.testservice.HelloWorldImpl());
         try {
-            block.invoke(port);
+            block.accept(port);
         } finally {
             endpoint.stop();
             // Need to shutdown whole engine.  Note, Jetty's shutdown doesn't seem to happen synchronously, have to wait
@@ -129,13 +134,16 @@ public class HelloWorldTest {
         }
     }
 
-    private static int findAvailablePort() throws Exception {
-        final ServerSocket socket = new ServerSocket(0);
+    private static int findAvailablePort() {
         try {
-            return socket.getLocalPort();
-        } finally {
-            socket.close();
+            final ServerSocket socket = new ServerSocket(0);
+            try {
+                return socket.getLocalPort();
+            } finally {
+                socket.close();
+            }
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
         }
     }
-
 }
