@@ -9,8 +9,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.cxf.tools.common.ToolContext
 import org.apache.cxf.tools.util.OutputStreamCreator
 import org.apache.cxf.tools.wsdlto.WSDLToJava
-import play.PlayImport.PlayKeys
-import play.{Play, PlayJava}
+import play.sbt.{Play, PlayJava}
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
@@ -38,7 +37,6 @@ object Imports {
     val wsdlTasks = TaskKey[Seq[WsdlTask]]("wsdlTasks", "The WSDL tasks. By default, this will include one task for each wsdl detected or configured. If multiple different configurations are needed for wsdltojava invocation, they can be added to this.")
     val wsdlToCode = TaskKey[WsdlTaskResult]("wsdlToCode", "Generate code from the WSDLs")
     val playSoapVersion = SettingKey[String]("wsdlPlaySoapVersion", "The version of Play soap to use")
-    val playPlugins = TaskKey[Seq[String]]("wsdlPlayPlugins", "The Play plugins")
 
     /**
      * The future API
@@ -139,21 +137,8 @@ object SbtWsdl extends AutoPlugin {
 
     wsdlToCode <<= wsdlToCodeTask,
 
-    playPlugins := wsdlToCode.value.plugins,
-
     sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
     managedSourceDirectories += (target in wsdlToCode).value / "sources",
-    resourceGenerators += Def.task {
-      val plugins = playPlugins.value
-      if (plugins.nonEmpty) {
-        val contents = playPlugins.value.mkString("\n")
-        val pluginsFile = (target in wsdlToCode).value / "resources" / "play.plugins"
-        IO.write(pluginsFile, contents)
-        Seq(pluginsFile)
-      } else {
-        Nil
-      }
-    }.taskValue,
     managedResourceDirectories += (target in wsdlToCode).value / "resources"
   )
 
@@ -327,6 +312,6 @@ object SbtWsdlPlay extends AutoPlugin {
   override def requires = SbtWsdl && Play
 
   override def projectSettings = Seq(
-    sourceDirectories in (Compile, wsdlToCode) := Seq(PlayKeys.confDirectory.value / "wsdls")
+    sourceDirectories in (Compile, wsdlToCode) := Seq((resourceDirectory in Compile).value / "wsdls")
   )
 }

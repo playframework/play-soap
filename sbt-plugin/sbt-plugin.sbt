@@ -12,14 +12,11 @@ javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws" % CxfVersion,
   "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % CxfVersion,
-  "org.specs2" %% "specs2-core" % "2.4.15" % "test"
+  "org.specs2" %% "specs2-core" % "2.4.15" % "test",
+  "commons-codec" % "commons-codec" % "1.10"
 )
 
-libraryDependencies += Defaults.sbtPluginExtra(
-  TypesafeLibrary.playSbtPlugin.value,
-  (sbtBinaryVersion in update).value, 
-  (scalaBinaryVersion in update).value
-)
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % PlayVersion)
 
 scriptedLaunchOpts ++= Seq(
   "-Dproject.version=" + version.value,
@@ -38,9 +35,7 @@ scriptedRun := {
 
   // Shared mappings between all tests
   val shared = Seq(
-    projectDir / "build.properties",
-    projectDir / "typesafe.properties",
-    projectDir / "project" / "typesafe.sbt"
+    projectDir / "build.properties"
   ) pair relativeTo(buildDir)
 
   // All the test directories

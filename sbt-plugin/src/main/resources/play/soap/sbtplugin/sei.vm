@@ -83,6 +83,6 @@ public $future.fqn()<#if ($method.returnValue == "void")$future.voidType()#else$
         #foreach ($param in ${method.ParameterList})
             $param
         #end
-    )#end;
+    )#end#if($method.Exceptions.size() > 0) throws#foreach($exception in $method.Exceptions) $exception.ClassName#if($method.Exceptions.size() != $velocityCount),#end#end#end;
 #end
 }

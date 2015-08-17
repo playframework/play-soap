@@ -16,18 +16,23 @@ Assuming that the package name that the client was generated into is `com.exampl
 
 Note that there are some situations where sbt WSDL won't use the service name from the WSDL, these are when the name of the service conflicts with another class that it generated, such as the name of the service endpoint interface.  In that case, sbt WSDL will append `_Service` to the end of the service name, for example `com.example.HelloWorldService_Service`.
 
-Having located the service class, you can now get a port.  In the above WSDL there is one port named `HelloWorld`, and, according to the `HelloWorldSoapBinding` (not shown above), this returns a service endpoint interface called `HelloWorld`.  To access the point in Scala, you need to ensure that you have an implicit Play application in scope, and then use the `helloWorld` method on the service, like so:
+Having located the service class, you can now get a port.  In the above WSDL there is one port named `HelloWorld`, and, according to the `HelloWorldSoapBinding` (not shown above), this returns a service endpoint interface called `HelloWorld`.  To access the endpoint, simply have it injected into your components or controllers, like so in Scala:
 
 ```scala
-import play.api.Play.current
-
-val client: HelloWorld = HelloWorldService.helloWorld
+class MyComponent @Inject() (helloWorldService: HelloWorldService) {
+  val client: HelloWorld = helloWorldService.helloWorld
+}
 ```
 
-To access it in Java, you can use a method called `getHelloWorld`:
+Or in Java:
 
 ```java
-HelloWorld client = HelloWorldService.getHelloWorld();
+public class MyComponent {
+  @Inject HelloWorldService helloWorldService;
+  
+  ...
+
+  HelloWorld client = helloWorldService.getHelloWorld();
 ```
 
 ## Using the client
@@ -35,40 +40,25 @@ HelloWorld client = HelloWorldService.getHelloWorld();
 Once you've got a reference to the client, you can invoke methods on it.  For example, let's assume our client has operation called `sayHello` that takes a String parameter and returns a String parameter.  To invoke this from a Play Scala action, you would do this:
 
 ```scala
-import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
 
 def hello(name: String) = Action.async {
-  val client: HelloWorld = HelloWorldService.helloWorld
+  val client: HelloWorld = helloWorldService.helloWorld
   client.sayHello(name).map { answer =>
     Ok(answer)
   }
 }
 ```
 
-To invoke it from a Play Java action using Java 8, you would do this:
+To invoke it from a Play Java action you would do this:
 
 ```java
 import play.api.libs.F.*;
 
-public static Promise<Result> hello(String name) {
-    HelloWorld client = HelloWorldService.getHelloWorld();
+public Promise<Result> hello(String name) {
+    HelloWorld client = helloWorldService.getHelloWorld();
     return client.sayHello(name).map(answer -> {
         return ok(answer);
-    });
-}
-```
-
-Or using Java 6/7:
-
-
-```java
-public static Promise<Result> hello(String name) {
-    HelloWorld client = HelloWorldService.getHelloWorld();
-    return client.sayHello(name).map(new Function<String, Result>() {
-        public Result apply(String answer) {
-            return ok(answer);
-        }
     });
 }
 ```
