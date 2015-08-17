@@ -2,7 +2,7 @@
 
 ## Installation
 
-Before installing sbt WSDL, you must be using the Typesafe Reactive Platform 15v01.  For information on how to install and set this up for your project, see [here](http://typesafe.com/account/id).
+Before installing sbt WSDL, you must be using the Typesafe Reactive Platform 15v01.  For information on how to install and set this up for your project, see [here](https://together.typesafe.com/products/reactivePlatform).
 
 To install sbt WSDL into your Play project, add the following dependency to your `project/plugins.sbt`:
 
@@ -10,7 +10,7 @@ To install sbt WSDL into your Play project, add the following dependency to your
 addSbtPlugin("com.typesafe.play" % "play-soap-sbt" % "1.0.0-M1")
 ```
 
-The plugin is automatically activated on install, nothing further needs to be done.
+The plugin is automatically activated on install, and this will also cause the necessary Play SOAP client libraries to be added to your project.
 
 ## Supplying WSDLs
 

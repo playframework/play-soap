@@ -10,11 +10,11 @@ In contrast, Play SOAP provides asynchronous invocation of SOAP services as a fi
 
 ## Using Play SOAP
 
-Play SOAP is divided into two main parts, an SBT plugin that transforms WSDLs into SOAP client interfaces, and a client library that takes Play SOAP generated interfaces and dynamically implements them to make calls on remote libraries.
+Play SOAP is an sbt plugin that transforms WSDLs into SOAP client interfaces, and provides a client library that takes Play SOAP generated interfaces and dynamically implements them to make calls on remote services.  The sbt plugin is called `SbtWsdl`, and this is the starting point to installing and using Play SOAP.
 
 ### Getting started
 
-* [[Generating a Play SOAP client using SbtWsdl|SbtWsdl]]
+* [[Installation and using SbtWsdl|SbtWsdl]]
 * [[Using a Play SOAP client|PlaySoapClient]]
 
 ### Advanced
