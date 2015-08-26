@@ -7,6 +7,8 @@ name := "play-soap-sbt"
 
 sbtPlugin := true
 
+publishMavenStyle := false
+
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
 libraryDependencies ++= Seq(
