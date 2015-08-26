@@ -58,7 +58,9 @@ public class HelloWorldTest {
             try {
                 await(client.sayHelloException("world"));
                 fail();
-            } catch (HelloException_Exception e) {
+            } catch (Exception e) {
+                // We can't catch HelloException_Exception since promise.get doesn't declare that it throws it
+                assertTrue(e instanceof HelloException_Exception);
                 assertEquals("Hello world", e.getMessage());
             }
         });
