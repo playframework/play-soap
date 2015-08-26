@@ -29,7 +29,9 @@ object Common extends AutoPlugin {
 }
 
 object Publish extends AutoPlugin {
+  override def requires = JvmPlugin
   override def projectSettings = Seq(
+    publishMavenStyle := false,
     publishTo := Some(Resolver.url("typesafe-rp",
       url(s"https://api.bintray.com/content/typesafe/for-subscribers-only/play-soap/${version.value}/DFDB5DD187A28462DDAF7AB39A95A6AE65983B23/")
     )(Resolver.ivyStylePatterns))
