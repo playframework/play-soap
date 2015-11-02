@@ -77,7 +77,7 @@ public interface $intf.Name {
     #if ($mark-generated == "true")
     @Generated(value = "$generatorclass", date = "$currentdate")
     #end
-public $future.fqn()<#if ($method.returnValue == "void")$future.voidType()#else$method.returnValue#end> ${method.Name}(#if($method.ParameterList.size() == 0))#end
+public $future.futureType($method.returnValue) ${method.Name}(#if($method.ParameterList.size() == 0))#end
     #if($method.ParameterList.size() != 0)
 
         #foreach ($param in ${method.ParameterList})

@@ -16,12 +16,14 @@ import play.soap.testservice.client._
 import scala.collection.JavaConversions._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
+import scala.reflect.ClassTag
 
 import play.api.test._
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.soap.testservice.HelloWorldImpl
 
-object HelloWorldSpec extends PlaySpecification {
+object HelloWorldSpec extends ServiceSpec {
 
   sequential
 
@@ -69,42 +71,16 @@ object HelloWorldSpec extends PlaySpecification {
     }
   }
 
-  def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
+  override type ServiceClient = HelloWorldService
 
-  def withClient[T](block: HelloWorld => T): T = withApp { app =>
-    block(app.injector.instanceOf[HelloWorldService].helloWorld)
-  }
+  override type Service = HelloWorld
 
-  def withApp[T](block: Application => T): T = withService { port =>
-    implicit val app = new GuiceApplicationBuilder()
-      .configure("play.soap.address" -> s"http://localhost:$port/helloWorld")
-      .build
-    Helpers.running(app) {
-      block(app)
-    }
-  }
+  override implicit val serviceClientClass: ClassTag[HelloWorldService] = ClassTag(classOf[HelloWorldService])
 
+  override def getServiceFromClient(c: ServiceClient): Service = c.helloWorld
 
-  def withService[T](block: Int => T): T = {
-    val port = findAvailablePort()
-    val endpoint = Endpoint.publish(s"http://localhost:$port/helloWorld", new play.soap.testservice.HelloWorldImpl)
-    try {
-      block(port)
-    } finally {
-      endpoint.stop()
-      // Need to shutdown whole engine.  Note, Jetty's shutdown doesn't seem to happen synchronously, have to wait
-      // a few seconds for the port to be released. This is why we use a different port each time.
-      endpoint.asInstanceOf[EndpointImpl].getBus.shutdown(true)
-    }
-  }
+  override def createServiceImpl(): Any = new HelloWorldImpl
 
-  def findAvailablePort() = {
-    val socket = new ServerSocket(0)
-    try {
-      socket.getLocalPort
-    } finally {
-      socket.close()
-    }
-  }
+  val servicePath: String = "helloWorld"
 
 }

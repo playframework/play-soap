@@ -31,9 +31,7 @@ class PlaySEIGenerator extends SEIGenerator with PlayGenerator {
 
     // Add the future API to the velocity context.  The reason this must be done here is that the method that invokes
     // doWrite() first clears the context before invoking this.
-    setAttributes("future", env.get(classOf[Imports.WsdlKeys.FutureApi]))
-
-    val intf =
+    setAttributes("future", new FutureGenerator(env.get(classOf[Imports.WsdlKeys.FutureApi])))
 
     super.doWrite(newTemplate, outputs)
   }
