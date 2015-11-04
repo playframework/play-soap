@@ -37,7 +37,8 @@ for project in ['simple-client-scala-future', 'simple-client-play-java-future']:
 
   with open(os.path.join(pluginTestDir, project, 'conf', 'wsdls', 'primitives.wsdl'), 'w') as f:
     gen(f,
-"""<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice.soap.play/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Primitives" targetNamespace="http://testservice.soap.play/">
+"""<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice.soap.play/primitives" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Primitives" targetNamespace="http://testservice.soap.play/primitives">
   <!--
    ~ Copyright (c) 2015 Typesafe, Inc. All rights reserved.
    ~ No information contained herein may be reproduced or transmitted in any form or
@@ -51,8 +52,8 @@ for project in ['simple-client-scala-future', 'simple-client-play-java-future']:
   -->
 
   <wsdl:types>
-    <xs:schema xmlns:tns="http://testservice.soap.play/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/">
-""")
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/primitives">
+    """)
 
     genForPrimitives(f, """
       <xs:element name="{p}Op">
@@ -148,7 +149,7 @@ for project in ['simple-client-scala-future', 'simple-client-play-java-future']:
   </wsdl:binding>
   <wsdl:service name="PrimitivesService">
     <wsdl:port binding="tns:PrimitivesServiceSoapBinding" name="Primitives">
-      <soap:address location="http://localhost:53915/primitives"/>
+      <soap:address location="http://localhost:53916/primitives"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>""")
@@ -173,7 +174,7 @@ import java.util.List;
  * Run 'generate-primitives.py' to regenerate it.
  */
 
-@WebService
+@WebService(targetNamespace = "http://testservice.soap.play/primitives")
 public interface Primitives {""")
     genForPrimitives(f, """
     public {p} {p}Op(@WebParam(name = "x") {p} x);
@@ -204,7 +205,9 @@ import java.util.List;
  * Run 'generate-primitives.py' to regenerate it.
  */
 
-@WebService(endpointInterface = "play.soap.testservice.Primitives",
+@WebService(
+        targetNamespace = "http://testservice.soap.play/primitives",
+        endpointInterface = "play.soap.testservice.Primitives",
         serviceName = "PrimitivesService", portName = "Primitives")
 public class PrimitivesImpl implements Primitives {""")
 

@@ -16,7 +16,9 @@ import java.util.List;
  * Run 'generate-primitives.py' to regenerate it.
  */
 
-@WebService(endpointInterface = "play.soap.testservice.Primitives",
+@WebService(
+        targetNamespace = "http://testservice.soap.play/primitives",
+        endpointInterface = "play.soap.testservice.Primitives",
         serviceName = "PrimitivesService", portName = "Primitives")
 public class PrimitivesImpl implements Primitives {
     @Override

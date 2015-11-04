@@ -15,7 +15,7 @@ import java.util.List;
  * Run 'generate-primitives.py' to regenerate it.
  */
 
-@WebService
+@WebService(targetNamespace = "http://testservice.soap.play/primitives")
 public interface Primitives {
     public boolean booleanOp(@WebParam(name = "x") boolean x);
     public java.util.List<java.lang.Boolean> booleanSequence(@WebParam(name = "xs") boolean xs);
