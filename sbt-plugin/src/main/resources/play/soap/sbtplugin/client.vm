@@ -37,14 +37,14 @@ class ${service.name} @javax.inject.Inject() (apacheCxfBus: play.soap.ApacheCxfB
   @Generated(value = "$generatorclass", date = "$currentdate")
   #end
   lazy val $portMethod.transform($port): $portClassName = {
-    createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.address")
+    createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.bindingAdress")
   }
 
   #if ($mark-generated == "true")
   @Generated(value = "$generatorclass", date = "$currentdate")
   #end
   def $portMethod.transform($port)(handlers: Handler[_ <: MessageContext]*): $portClassName = {
-    createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.address", handlers: _*)
+    createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.bindingAdress", handlers: _*)
   }
 
   #if ($mark-generated == "true")
