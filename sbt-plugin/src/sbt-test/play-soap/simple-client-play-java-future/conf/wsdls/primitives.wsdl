@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice.soap.play/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Primitives" targetNamespace="http://testservice.soap.play/">
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice.soap.play/primitives" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Primitives" targetNamespace="http://testservice.soap.play/primitives">
   <!--
    ~ Copyright (c) 2015 Typesafe, Inc. All rights reserved.
    ~ No information contained herein may be reproduced or transmitted in any form or
@@ -12,8 +13,8 @@
   -->
 
   <wsdl:types>
-    <xs:schema xmlns:tns="http://testservice.soap.play/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/">
-
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/primitives">
+    
       <xs:element name="booleanOp">
         <xs:complexType name="booleanOp">
           <xs:sequence>
@@ -487,7 +488,7 @@
   </wsdl:binding>
   <wsdl:service name="PrimitivesService">
     <wsdl:port binding="tns:PrimitivesServiceSoapBinding" name="Primitives">
-      <soap:address location="http://localhost:53915/primitives"/>
+      <soap:address location="http://localhost:53916/primitives"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
