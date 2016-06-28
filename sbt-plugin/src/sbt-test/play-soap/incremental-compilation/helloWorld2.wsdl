@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice2.soap.play/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="HelloWorld" targetNamespace="http://testservice2.soap.play/">
   <!--
-   ~ Copyright © 2015 Typesafe, Inc. All rights reserved.
-   ~ No information contained herein may be reproduced or transmitted in any form or
-   ~ by any means without the express written permission of Typesafe, Inc.
+   ~ Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
    -->
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://testservice2.soap.play/" elementFormDefault="unqualified" targetNamespace="http://testservice2.soap.play/" version="1.0">

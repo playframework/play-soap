@@ -1,8 +1,7 @@
 /*
- * Copyright © 2015 Typesafe, Inc. All rights reserved.
- * No information contained herein may be reproduced or transmitted in any form or
- * by any means without the express written permission of Typesafe, Inc.
+ * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
+
 name := "play-soap-client"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")

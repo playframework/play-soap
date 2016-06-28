@@ -1,7 +1,5 @@
 /*
- * Copyright © 2015 Typesafe, Inc. All rights reserved.
- * No information contained herein may be reproduced or transmitted in any form or
- * by any means without the express written permission of Typesafe, Inc.
+ * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
 
 import sbt.Keys._
@@ -13,6 +11,7 @@ object Common extends AutoPlugin {
   override def requires = JvmPlugin
 
   override def projectSettings = Seq(
+    scalaVersion := "2.11.8",
     organization := "com.typesafe.play",
     version := "1.0.0-SNAPSHOT",
     resolvers += Resolver.typesafeRepo("releases"),
@@ -20,8 +19,8 @@ object Common extends AutoPlugin {
   )
 
   object autoImport {
-    val CxfVersion = "3.0.3"
-    val PlayVersion = "2.4.2"
+    val CxfVersion = "3.1.6"
+    val PlayVersion = "2.5.4"
   }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015 Typesafe, Inc. All rights reserved.
+ * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
 
 /*

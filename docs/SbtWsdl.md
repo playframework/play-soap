@@ -2,8 +2,6 @@
 
 ## Installation
 
-Before installing sbt WSDL, you must be using the Typesafe Reactive Platform 15v01.  For information on how to install and set this up for your project, see [here](https://together.typesafe.com/products/reactivePlatform).
-
 To install sbt WSDL into your Play project, add the following dependency to your `project/plugins.sbt`:
 
 ```scala
@@ -80,9 +78,9 @@ Each wsdl generation task that is executed is defined by the following case clas
 
 ```scala
 case class WsdlTask(
-  url: URL, 
+  url: URL,
   futureApi: FutureApi = ScalaFutureApi,
-  packageName: Option[String] = None, 
+  packageName: Option[String] = None,
   packageMappings: Map[String, String] = Map.empty,
   serviceName: Option[String] = None,
   args: Seq[String] = Nil
