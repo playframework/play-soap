@@ -2,6 +2,8 @@
  * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
 
+import Common._
+
 name := "play-soap-client"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")

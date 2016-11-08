@@ -1,11 +1,13 @@
 /*
  * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
+
+import Common._
+
 name := "play-soap-sbt"
 
 sbtPlugin := true
-
-javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+scalaVersion := "2.10.6"
 
 libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws" % CxfVersion,
