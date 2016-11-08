@@ -5,8 +5,6 @@ name := "play-soap-sbt"
 
 sbtPlugin := true
 
-javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
-
 libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws" % CxfVersion,
   "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % CxfVersion,

@@ -2,15 +2,30 @@
  * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
 
+val scala210 = "2.10.6"
+val scala211 = "2.11.8"
+
 lazy val root = (project in file("."))
-  .enablePlugins(NoPublish)
+  .enablePlugins(PlayNoPublish)
   .aggregate(client)
+  .settings(
+    scalaVersion := scala211,
+    crossScalaVersions := Seq(scala211)
+  )
 
 lazy val client = (project in file("client"))
+  .enablePlugins(PlayLibrary)
+  .settings(
+    scalaVersion := scala211,
+    crossScalaVersions := Seq(scala211)
+  )
 
 lazy val plugin = (project in file("sbt-plugin"))
+  .enablePlugins(PlaySbtPlugin)
   .settings(scriptedSettings: _*)
   .settings(
+    scalaVersion := scala210,
+    crossScalaVersions := Seq(scala210),
     (resourceGenerators in Compile) <+= generateVersionFile,
     scriptedDependencies := {
       val () = publishLocal.value
@@ -22,8 +37,10 @@ lazy val plugin = (project in file("sbt-plugin"))
 lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
   .enablePlugins(SbtWeb)
-  .enablePlugins(NoPublish)
+  .enablePlugins(PlayNoPublish)
   .settings(
+    scalaVersion := scala211,
+    crossScalaVersions := Seq(scala211),
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, name) => file -> ("api/client/" + name)
@@ -50,3 +67,13 @@ def generateVersionFile = Def.task {
 }
 
 lazy val scriptedTask = TaskKey[Unit]("scripted-task")
+
+playBuildRepoName in ThisBuild := "play-soap"
+
+playBuildExtraTests := {
+  (scripted in plugin).toTask("").value
+}
+
+playBuildExtraPublish := {
+  (publish in plugin).value
+}
