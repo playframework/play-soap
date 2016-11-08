@@ -2,6 +2,8 @@
  * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
  */
 
+playBuildRepoName in ThisBuild := "play-soap"
+
 lazy val root = (project in file("."))
   .enablePlugins(NoPublish)
   .aggregate(client)
