@@ -7,6 +7,10 @@ import Common._
 lazy val root = (project in file("."))
   .enablePlugins(PlayRootProject)
   .aggregate(client)
+  .settings(
+    scalaVersion := scala211,
+    crossScalaVersions := Seq(scala211)
+  )
 
 lazy val client = (project in file("client"))
   .enablePlugins(PlayLibrary)

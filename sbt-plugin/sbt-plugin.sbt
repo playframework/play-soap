@@ -7,7 +7,8 @@ import Common._
 name := "play-soap-sbt"
 
 sbtPlugin := true
-scalaVersion := "2.10.6"
+scalaVersion := scala210
+crossScalaVersions := Seq(scala210)
 
 libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws" % CxfVersion,
