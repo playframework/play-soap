@@ -3,7 +3,9 @@
  */
 libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
 
-addSbtPlugin("com.typesafe.play" % "interplay" % "1.1.2")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.4")
+addSbtPlugin("com.eed3si9n" % "sbt-doge" % "0.1.5")
+addSbtPlugin("com.typesafe.play" % "interplay" % "1.3.0")
 
 // Used for generating docs
 addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
