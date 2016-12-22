@@ -3,6 +3,7 @@
  */
 
 import Common._
+import sbtrelease.ReleaseStateTransformations._
 
 lazy val root = (project in file("."))
   .enablePlugins(CrossPerProjectPlugin)
@@ -77,3 +78,18 @@ playBuildExtraTests := {
 playBuildExtraPublish := {
   (publish in plugin).value
 }
+
+releaseCrossBuild := false
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  releaseStepCommandAndRemaining("+test"),
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommandAndRemaining("+publish"),
+  setNextVersion,
+  commitNextVersion,
+  pushChanges
+)
