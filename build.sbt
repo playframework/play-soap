@@ -5,8 +5,9 @@
 import Common._
 
 lazy val root = (project in file("."))
+  .enablePlugins(CrossPerProjectPlugin)
   .enablePlugins(PlayRootProject)
-  .aggregate(client)
+  .aggregate(client, plugin)
   .settings(
     scalaVersion := scala211,
     crossScalaVersions := Seq(scala211)
@@ -25,7 +26,7 @@ lazy val plugin = (project in file("sbt-plugin"))
   .settings(
     scalaVersion := scala210,
     crossScalaVersions := Seq(scala210),
-    (resourceGenerators in Compile) <+= generateVersionFile,
+    (resourceGenerators in Compile) += generateVersionFile.taskValue,
     scriptedDependencies := {
       val () = publishLocal.value
       val () = (publishLocal in client).value
