@@ -121,19 +121,19 @@ object SbtWsdl extends AutoPlugin {
     excludeFilter in wsdlToCode := HiddenFileFilter,
     sourceDirectories in wsdlToCode := Seq(sourceDirectory.value / "wsdl"),
 
-    sources in wsdlToCode <<= Defaults.collectFiles(
+    sources in wsdlToCode := Defaults.collectFiles(
       sourceDirectories in wsdlToCode,
       includeFilter in wsdlToCode,
       excludeFilter in wsdlToCode
-    ),
+    ).value,
 
-    watchSources in Defaults.ConfigGlobal <++= sources in wsdlToCode,
+    watchSources in Defaults.ConfigGlobal ++= (sources in wsdlToCode).value,
 
     target in wsdlToCode := crossTarget.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
 
-    wsdlTasks <<= wsdlTasksTask,
+    wsdlTasks := wsdlTasksTask.value,
 
-    wsdlToCode <<= wsdlToCodeTask,
+    wsdlToCode := wsdlToCodeTask.value,
 
     sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
     managedSourceDirectories += (target in wsdlToCode).value / "sources",
@@ -252,7 +252,7 @@ object SbtWsdl extends AutoPlugin {
       // Add new/overwrite updated ones
       val allPlugins = existing ++ plugins.map {
         case (task, value) => hashTask(task) -> value
-      }.toMap
+      }
 
       // Write out cached plugins
       IO.write(pluginsCacheFile, allPlugins.map {
