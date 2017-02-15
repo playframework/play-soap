@@ -3,14 +3,14 @@
  */
 package play.soap
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import javax.xml.namespace.QName
-import javax.xml.ws.handler.{MessageContext, Handler}
+import javax.xml.ws.handler.{ MessageContext, Handler }
 
 import org.apache.cxf.BusFactory
-import org.apache.cxf.interceptor.{LoggingOutInterceptor, LoggingInInterceptor}
+import org.apache.cxf.interceptor.{ LoggingOutInterceptor, LoggingInInterceptor }
 import org.apache.cxf.transport.ConduitInitiatorManager
-import org.apache.cxf.transport.http.asyncclient.{AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory}
+import org.apache.cxf.transport.http.asyncclient.{ AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory }
 import play.api._
 import play.api.inject.ApplicationLifecycle
 

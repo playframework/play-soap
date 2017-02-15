@@ -28,22 +28,22 @@
  */
 package play.soap
 
-import java.io.{IOException, Closeable}
-import java.lang.reflect.{ParameterizedType, Method, InvocationTargetException}
+import java.io.{ Closeable, IOException }
+import java.lang.reflect.{ InvocationTargetException, Method, ParameterizedType }
 import java.net.HttpURLConnection
-import javax.xml.soap.{SOAPConstants, SOAPException, SOAPFault}
+import javax.xml.soap.{ SOAPConstants, SOAPException, SOAPFault }
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.MessageContext.Scope
-import javax.xml.ws.http.{HTTPException, HTTPBinding}
-import javax.xml.ws.soap.{SOAPFaultException, SOAPBinding}
+import javax.xml.ws.http.{ HTTPBinding, HTTPException }
+import javax.xml.ws.soap.{ SOAPBinding, SOAPFaultException }
 import javax.xml.ws._
 
 import org.apache.cxf.binding.soap.SoapFault
-import org.apache.cxf.binding.soap.saaj.{SAAJUtils, SAAJFactoryResolver}
+import org.apache.cxf.binding.soap.saaj.{ SAAJFactoryResolver, SAAJUtils }
 import org.apache.cxf.common.i18n.Message
 import org.apache.cxf.common.logging.LogUtils
 import org.apache.cxf.common.util.StringUtils
-import org.apache.cxf.endpoint.{ClientCallback, Endpoint, Client}
+import org.apache.cxf.endpoint.{ Client, Endpoint }
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.helpers.CastUtils
 import org.apache.cxf.interceptor.Fault
@@ -51,8 +51,7 @@ import org.apache.cxf.jaxws.EndpointReferenceBuilder
 import org.apache.cxf.jaxws.context.WrappedMessageContext
 import org.apache.cxf.jaxws.support.JaxWsEndpointImpl
 import org.apache.cxf.service.invoker.MethodDispatcher
-
-import java.util.{Map => JMap, Locale}
+import java.util.{ Locale, Map => JMap }
 
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
@@ -120,8 +119,8 @@ private[soap] object PlayJaxWsClientProxy {
             }
 
             soapFault1
-      }
-    }.orNull
+        }
+      }.orNull
   }
 
   def stringToLocale(locale: String): Locale = {
@@ -204,8 +203,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
             val exception = new SOAPFaultException(soapFault)
             if (ex.isInstanceOf[Fault] && ex.getCause != null) {
               exception.initCause(ex.getCause)
-            }
-            else {
+            } else {
               exception.initCause(ex)
             }
             throw exception

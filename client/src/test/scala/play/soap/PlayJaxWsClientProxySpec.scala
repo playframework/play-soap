@@ -4,7 +4,7 @@
 package play.soap
 
 import java.net.ServerSocket
-import javax.xml.ws.{Holder, Endpoint}
+import javax.xml.ws.{ Holder, Endpoint }
 
 import org.apache.cxf.jaxws.EndpointImpl
 import org.specs2.mutable.Specification
@@ -113,7 +113,7 @@ class PlayJaxWsClientProxySpec extends Specification {
 
   def withJavaClient[T](block: MockServiceJava => T): T = withClient(block)
 
-  def withClient[T, S](block: S => T)(implicit serviceClass: ClassTag[S]): T =  withService { port =>
+  def withClient[T, S](block: S => T)(implicit serviceClass: ClassTag[S]): T = withService { port =>
     val factory = new PlayJaxWsProxyFactoryBean
     factory.setServiceClass(serviceClass.runtimeClass)
     factory.setAddress(s"http://localhost:$port/mockService")

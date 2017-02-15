@@ -29,25 +29,25 @@
 package play.soap
 
 import java.io.Closeable
-import java.lang.reflect.{ParameterizedType, Type, Proxy}
+import java.lang.reflect.{ ParameterizedType, Type, Proxy }
 import java.util
 import javax.xml.namespace.QName
 import javax.xml.ws.BindingProvider
-import javax.xml.ws.handler.{MessageContext, Handler}
+import javax.xml.ws.handler.{ MessageContext, Handler }
 
 import org.apache.cxf.common.classloader.ClassLoaderUtils
 import org.apache.cxf.common.injection.ResourceInjector
 import org.apache.cxf.endpoint.Client
-import org.apache.cxf.frontend.{ClientProxy, ClientProxyFactoryBean}
+import org.apache.cxf.frontend.{ ClientProxy, ClientProxyFactoryBean }
 import org.apache.cxf.jaxws.context.WebServiceContextResourceResolver
 import org.apache.cxf.jaxws.handler.AnnotationHandlerChainBuilder
-import org.apache.cxf.jaxws.interceptors.{HolderOutInterceptor, WrapperClassOutInterceptor, HolderInInterceptor, WrapperClassInInterceptor}
-import org.apache.cxf.jaxws.{JaxWsClientFactoryBean}
-import org.apache.cxf.jaxws.support.{JaxWsImplementorInfo, JaxWsEndpointImpl, JaxWsServiceFactoryBean}
-import org.apache.cxf.resource.{ResourceResolver, DefaultResourceManager, ResourceManager}
+import org.apache.cxf.jaxws.interceptors.{ HolderOutInterceptor, WrapperClassOutInterceptor, HolderInInterceptor, WrapperClassInInterceptor }
+import org.apache.cxf.jaxws.{ JaxWsClientFactoryBean }
+import org.apache.cxf.jaxws.support.{ JaxWsImplementorInfo, JaxWsEndpointImpl, JaxWsServiceFactoryBean }
+import org.apache.cxf.resource.{ ResourceResolver, DefaultResourceManager, ResourceManager }
 import org.apache.cxf.service.Service
-import org.apache.cxf.service.model.{MessagePartInfo, ServiceInfo}
-import org.apache.cxf.wsdl.service.factory.{AbstractServiceConfiguration, ReflectionServiceFactoryBean}
+import org.apache.cxf.service.model.{ MessagePartInfo, ServiceInfo }
+import org.apache.cxf.wsdl.service.factory.{ AbstractServiceConfiguration, ReflectionServiceFactoryBean }
 
 import java.util.{ List => JList }
 
@@ -178,8 +178,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
         if (Proxy.isProxyClass(h.getClass) && getServiceClass != null) {
           injector.inject(h, getServiceClass)
           injector.construct(h, getServiceClass)
-        }
-        else {
+        } else {
           injector.inject(h)
           injector.construct(h)
         }

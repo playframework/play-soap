@@ -3,7 +3,7 @@
  */
 package play.soap
 
-import java.lang.reflect.{Method, ParameterizedType, Type}
+import java.lang.reflect.{ Method, ParameterizedType, Type }
 
 import org.apache.cxf.wsdl.service.factory.AbstractServiceConfiguration
 import java.util.concurrent.CompletionStage
