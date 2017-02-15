@@ -9,16 +9,19 @@ import javax.xml.ws.{Holder, Endpoint}
 import org.apache.cxf.jaxws.EndpointImpl
 import org.specs2.mutable.Specification
 import org.specs2.time.NoTimeConversions
-import play.libs.F.Promise
 import play.soap.mockservice._
 
-import scala.concurrent.{Await, Future}
+import java.util.concurrent.CompletionStage
+
+import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 
 import org.apache.cxf.binding.soap.SoapFault
 
-class PlayJaxWsClientProxySpec extends Specification with NoTimeConversions {
+import scala.compat.java8.FutureConverters
+
+class PlayJaxWsClientProxySpec extends Specification {
 
   sequential
 
@@ -44,7 +47,7 @@ class PlayJaxWsClientProxySpec extends Specification with NoTimeConversions {
       }
 
       "allow calling a method with no return value" in withScalaClient { client =>
-        await(client.noReturn("nothing")) must_== ()
+        await(client.noReturn("nothing")) must_== ((): Unit)
       }
 
       "allow calling a method that throws a declared exception" in withScalaClient { client =>
@@ -104,7 +107,7 @@ class PlayJaxWsClientProxySpec extends Specification with NoTimeConversions {
 
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
 
-  def await[T](promise: Promise[T]): T = await(promise.wrapped())
+  def await[T](completionStage: CompletionStage[T]): T = await(FutureConverters.toScala(completionStage))
 
   def withScalaClient[T](block: MockServiceScala => T): T = withClient(block)
 

@@ -56,14 +56,16 @@ import java.util.{Map => JMap, Locale}
 
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
+import java.util.concurrent.CompletionStage
+import java.util.logging.Logger
 
-import play.libs.F
-
-import scala.concurrent.{Promise, Future}
+import scala.compat.java8.FutureConverters
+import scala.concurrent.{ Future, Promise }
 import scala.util.Try
 
 private[soap] object PlayJaxWsClientProxy {
-  val log = LogUtils.getL7dLogger(classOf[PlayJaxWsClientProxy])
+
+  val log: Logger = LogUtils.getL7dLogger(classOf[PlayJaxWsClientProxy])
 
   @throws(classOf[SOAPException])
   def createSoapFault(binding: SOAPBinding, ex: Exception): SOAPFault = {
@@ -93,8 +95,8 @@ private[soap] object PlayJaxWsClientProxy {
             }
 
             if (sf.getSubCodes != null && !isSoap11) {
-              import scala.collection.JavaConversions._
-              for (fsc <- sf.getSubCodes) {
+              import scala.collection.JavaConverters._
+              for (fsc <- sf.getSubCodes.asScala) {
                 soapFault.appendFaultSubcode(fsc)
               }
             }
@@ -173,7 +175,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
       val returnType: Class[_] = method.getReturnType
       if (returnType == classOf[Future[_]]) {
         invokeScalaFuture(method, oi, params)
-      } else if (returnType == classOf[F.Promise[_]]) {
+      } else if (returnType == classOf[CompletionStage[_]]) {
         invokePlayJavaFuture(method, oi, params)
       } else {
         throw new WebServiceException(s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or play.libs.F.Promise")
@@ -219,8 +221,8 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     val respContext = client.getResponseContext
     val scopes = CastUtils.cast(respContext.get(WrappedMessageContext.SCOPES).asInstanceOf[JMap[_, _]])
     if (scopes != null) {
-      import scala.collection.JavaConversions._
-      for (scope <- scopes.entrySet) {
+      import scala.collection.JavaConverters._
+      for (scope <- scopes.entrySet.asScala) {
         if (scope.getValue == Scope.HANDLER) {
           respContext.remove(scope.getKey)
         }
@@ -247,10 +249,9 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     promise.future
   }
 
-  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): F.Promise[Any] = {
+  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): CompletionStage[Any] = {
     val future: Future[Any] = invokeScalaFuture(method, oi, params)
-    val playJavaPromise: F.Promise[Any] = F.Promise.wrap(future)
-    playJavaPromise
+    FutureConverters.toJava(future)
   }
 
   def getBinding = binding

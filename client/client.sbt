@@ -12,6 +12,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % PlayVersion % "provided",
   "org.apache.cxf" % "cxf-rt-frontend-jaxws" % CxfVersion,
   "org.apache.cxf" % "cxf-rt-transports-http-hc" % CxfVersion,
+  "org.scala-lang.modules" %% "scala-java8-compat" % "0.8.0",
+
 
   "org.apache.cxf" % "cxf-rt-transports-http" % CxfVersion % "test",
   "org.apache.cxf" % "cxf-rt-transports-http-jetty" % CxfVersion % "test",

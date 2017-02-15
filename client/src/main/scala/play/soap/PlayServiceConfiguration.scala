@@ -6,7 +6,7 @@ package play.soap
 import java.lang.reflect.{Method, ParameterizedType, Type}
 
 import org.apache.cxf.wsdl.service.factory.AbstractServiceConfiguration
-import play.libs.F.Promise
+import java.util.concurrent.CompletionStage
 
 import scala.concurrent.Future
 
@@ -18,10 +18,10 @@ private[soap] class PlayServiceConfiguration extends AbstractServiceConfiguratio
    * We say future/promise is a holder type so that JAXB will create bindings for the inner type, not the outer.
    */
   override def isHolder(cls: Class[_], `type`: Type) =
-    if (classOf[Future[_]] == cls || classOf[Promise[_]] == cls) java.lang.Boolean.TRUE else null
+    if (classOf[Future[_]] == cls || classOf[CompletionStage[_]] == cls) java.lang.Boolean.TRUE else null
 
   override def getHolderType(cls: Class[_], `type`: Type) = {
-    if (classOf[Future[_]] == cls || classOf[Promise[_]] == cls) {
+    if (classOf[Future[_]] == cls || classOf[CompletionStage[_]] == cls) {
       `type` match {
         case p: ParameterizedType => p.getActualTypeArguments()(0)
       }
@@ -33,9 +33,8 @@ private[soap] class PlayServiceConfiguration extends AbstractServiceConfiguratio
    */
   override def hasOutMessage(m: Method) = {
     m.getGenericReturnType match {
-      case future: ParameterizedType
-        if future.getRawType == classOf[Future[_]] ||
-          future.getRawType == classOf[Promise[_]] =>
+      case future: ParameterizedType if future.getRawType == classOf[Future[_]] ||
+        future.getRawType == classOf[CompletionStage[_]] =>
         future.getActualTypeArguments.headOption match {
           case Some(unit) if unit == classOf[Unit] || unit == classOf[Void] => FALSE
           case _ => null
