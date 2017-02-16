@@ -7,7 +7,7 @@ import interplay.ScalaVersions._
 
 lazy val commonSettings = Seq(
   scalaVersion := scala212,
-  crossScalaVersions := Seq(scala211)
+  crossScalaVersions := Seq(scala211, scala212)
 )
 
 lazy val root = (project in file("."))
