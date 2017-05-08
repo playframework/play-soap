@@ -18,7 +18,9 @@ import org.junit.*;
 import play.soap.testservice.client.*;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
-import play.libs.F;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletionStage;
 
 import static org.junit.Assert.*;
 import static play.test.Helpers.*;
@@ -96,8 +98,12 @@ public class HelloWorldTest {
         });
     }
 
-    private static <T> T await(F.Promise<T> promise) {
-        return promise.get(10000); // 10 seconds
+    private static <T> T await(CompletionStage<T> promise) {
+        try {
+            return promise.toCompletableFuture().get(10, TimeUnit.SECONDS);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private static void withClient(Consumer<HelloWorld> block) {

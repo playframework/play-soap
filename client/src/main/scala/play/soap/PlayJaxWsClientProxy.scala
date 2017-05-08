@@ -28,22 +28,23 @@
  */
 package play.soap
 
-import java.io.{IOException, Closeable}
-import java.lang.reflect.{ParameterizedType, Method, InvocationTargetException}
+import java.io.{Closeable, IOException}
+import java.lang.reflect.{InvocationTargetException, Method, ParameterizedType}
 import java.net.HttpURLConnection
+import java.util.concurrent.CompletionStage
 import javax.xml.soap.{SOAPConstants, SOAPException, SOAPFault}
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.MessageContext.Scope
-import javax.xml.ws.http.{HTTPException, HTTPBinding}
-import javax.xml.ws.soap.{SOAPFaultException, SOAPBinding}
+import javax.xml.ws.http.{HTTPBinding, HTTPException}
+import javax.xml.ws.soap.{SOAPBinding, SOAPFaultException}
 import javax.xml.ws._
 
 import org.apache.cxf.binding.soap.SoapFault
-import org.apache.cxf.binding.soap.saaj.{SAAJUtils, SAAJFactoryResolver}
+import org.apache.cxf.binding.soap.saaj.{SAAJFactoryResolver, SAAJUtils}
 import org.apache.cxf.common.i18n.Message
 import org.apache.cxf.common.logging.LogUtils
 import org.apache.cxf.common.util.StringUtils
-import org.apache.cxf.endpoint.{ClientCallback, Endpoint, Client}
+import org.apache.cxf.endpoint.{Client, ClientCallback, Endpoint}
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.helpers.CastUtils
 import org.apache.cxf.interceptor.Fault
@@ -51,15 +52,14 @@ import org.apache.cxf.jaxws.EndpointReferenceBuilder
 import org.apache.cxf.jaxws.context.WrappedMessageContext
 import org.apache.cxf.jaxws.support.JaxWsEndpointImpl
 import org.apache.cxf.service.invoker.MethodDispatcher
-
-import java.util.{Map => JMap, Locale}
+import java.util.{Locale, Map => JMap}
 
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
-
 import play.libs.F
 
-import scala.concurrent.{Promise, Future}
+import scala.compat.java8.FutureConverters
+import scala.concurrent.{Future, Promise}
 import scala.util.Try
 
 private[soap] object PlayJaxWsClientProxy {
@@ -173,10 +173,10 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
       val returnType: Class[_] = method.getReturnType
       if (returnType == classOf[Future[_]]) {
         invokeScalaFuture(method, oi, params)
-      } else if (returnType == classOf[F.Promise[_]]) {
+      } else if (returnType == classOf[CompletionStage[_]]) {
         invokePlayJavaFuture(method, oi, params)
       } else {
-        throw new WebServiceException(s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or play.libs.F.Promise")
+        throw new WebServiceException(s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or java.util.concurrent.CompletionStage")
       }
     } catch {
       case wex: WebServiceException => throw wex
@@ -247,9 +247,9 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     promise.future
   }
 
-  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): F.Promise[Any] = {
+  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): CompletionStage[Any] = {
     val future: Future[Any] = invokeScalaFuture(method, oi, params)
-    val playJavaPromise: F.Promise[Any] = F.Promise.wrap(future)
+    val playJavaPromise: CompletionStage[Any] = FutureConverters.toJava(future)
     playJavaPromise
   }
 

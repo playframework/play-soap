@@ -4,7 +4,7 @@ There are a number of distinct parts to this, not all of them need to be impleme
 
 Feature           | Importance | Status      | Description
 ------------------|------------|-------------|------------
-**Client proxy**  | Required   | PoC         | Given an interface that returns responses as `scala.concurrent.Future` or `play.libs.F.Promise`, generate an asynchronous web services client that implements it.
+**Client proxy**  | Required   | PoC         | Given an interface that returns responses as `scala.concurrent.Future` or `java.util.concurrent.CompletionStage`, generate an asynchronous web services client that implements it.
 **wsdl2java**     | Required   | Not started | sbt plugin that, given a wsdl, generates the above interface
 **WS backend**    | Low        | Not started | Implement the cxf http backend using Play's WS API
 **Scala binding** | Medium     | Not started | Allow the use of Scala case classes, collections, option etc, rather than using Java beans. May use JAXB or completely different xml binding library.
@@ -31,7 +31,6 @@ In future, we may decide to implement our own reflection code for generating bin
 
 ### Next steps
 
-* Implement support for `play.libs.F.Promise`
 * Improve API for creating the client proxy (make it simpler for the simple cases)
 * Document how to create and configure the client proxy
 * Tests, and general clean up of code.

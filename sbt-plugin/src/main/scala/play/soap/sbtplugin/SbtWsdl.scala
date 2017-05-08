@@ -62,7 +62,7 @@ object Imports {
      * The Play Java Promise API
      */
     case object PlayJavaFutureApi extends FutureApi {
-      val fqn = "play.libs.F.Promise"
+      val fqn = "java.util.concurrent.CompletionStage"
       val voidType = "Void"
     }
 
