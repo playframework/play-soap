@@ -25,7 +25,7 @@ object Version {
   /**
    * The version of the sbt plugin
    */
-  lazy val pluginVersion = versionProps.getProperty("play-soap-sbt.version")
+  lazy val pluginVersion = versionProps.getProperty("sbt-play-soap.version")
 
   /**
    * The name of the plugin

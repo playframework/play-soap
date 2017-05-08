@@ -19,7 +19,7 @@ Play SOAP is an sbt plugin that transforms WSDLs into SOAP client interfaces, an
 To install sbt WSDL into your Play project, add the following dependency to your `project/plugins.sbt`:
 
 ```scala
-addSbtPlugin("com.typesafe.play" % "play-soap-sbt" % "1.1.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.0")
 ```
 
 For more information about how to use Play SOAP, see the [documentation](#docs).
