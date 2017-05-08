@@ -1,14 +1,11 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
-import interplay.ScalaVersions._
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayRootProject)
   .aggregate(client)
   .settings(
-    scalaVersion := scala211,
-    crossScalaVersions := Seq(scala211),
     releaseCrossBuild := true
   )
 
@@ -16,8 +13,6 @@ lazy val client = (project in file("client"))
   .enablePlugins(PlayLibrary)
   .settings(
     name := "play-soap-client",
-    scalaVersion := scala211,
-    crossScalaVersions := Seq(scala211),
     libraryDependencies ++= Common.clientDeps,
     resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases",
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
@@ -29,13 +24,11 @@ lazy val plugin = (project in file("sbt-plugin"))
   .settings(
     name := "play-soap-sbt",
     organization := "com.typesafe.play",
-    scalaVersion := scala210,
-    crossScalaVersions := Seq(scala210),
     libraryDependencies ++= Common.pluginDeps,
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
     (resourceGenerators in Compile) += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
-      s"-Dscala.version=${scala211}",
+      s"-Dscala.version=2.11.11",
       s"-Dproject.version=${version.value}",
       s"-Dcxf.version=${Common.CxfVersion}",
       s"-Dplay.version=${Common.PlayVersion}"
@@ -88,8 +81,8 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(SbtWeb)
   .enablePlugins(PlayNoPublish)
   .settings(
-    scalaVersion := scala211,
-    crossScalaVersions := Seq(scala211),
+    scalaVersion := "2.11.11",
+    crossScalaVersions := Seq("2.11.11"),
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, _name) => file -> ("api/client/" + _name)

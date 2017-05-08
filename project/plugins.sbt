@@ -3,7 +3,7 @@
  */
 libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
 
-addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("1.3.5"))
+addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("1.1.2"))
 
 // Used for generating docs
 addSbtPlugin("com.typesafe.sbt" % "sbt-twirl" % "1.3.0")
