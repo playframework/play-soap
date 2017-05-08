@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
