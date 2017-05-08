@@ -4,10 +4,10 @@
 package play.soap
 
 import java.lang.reflect.Method
-import javax.xml.ws.{FaultAction, Action}
+import javax.xml.ws.{ FaultAction, Action }
 
-import org.apache.cxf.jaxws.support.{JaxWsImplementorInfo, JaxWsServiceFactoryBean}
-import org.apache.cxf.service.model.{OperationInfo, InterfaceInfo}
+import org.apache.cxf.jaxws.support.{ JaxWsImplementorInfo, JaxWsServiceFactoryBean }
+import org.apache.cxf.service.model.{ OperationInfo, InterfaceInfo }
 
 private[soap] class PlayJaxWsServiceFactoryBean extends JaxWsServiceFactoryBean {
 

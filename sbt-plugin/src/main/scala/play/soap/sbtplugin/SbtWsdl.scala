@@ -7,7 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.cxf.tools.common.ToolContext
 import org.apache.cxf.tools.util.OutputStreamCreator
 import org.apache.cxf.tools.wsdlto.WSDLToJava
-import play.sbt.{Play, PlayJava}
+import play.sbt.{ Play, PlayJava }
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
@@ -76,12 +76,14 @@ object Imports {
      * @param serviceName The name of the service to generate
      * @param args Any additional args for wsdltocode
      */
-    case class WsdlTask(url: URL,
-                        futureApi: FutureApi = ScalaFutureApi,
-                        packageName: Option[String] = None,
-                        packageMappings: Map[String, String] = Map.empty,
-                        serviceName: Option[String] = None,
-                        args: Seq[String] = Nil)
+    case class WsdlTask(
+      url: URL,
+      futureApi: FutureApi = ScalaFutureApi,
+      packageName: Option[String] = None,
+      packageMappings: Map[String, String] = Map.empty,
+      serviceName: Option[String] = None,
+      args: Seq[String] = Nil
+    )
 
     /**
      * The result of running the wsdltocode task
@@ -107,9 +109,9 @@ object SbtWsdl extends AutoPlugin {
 
   override def projectSettings: Seq[Setting[_]] =
     dependencySettings ++
-    inConfig(Compile)(wsdlSettings) ++
-    inConfig(Test)(wsdlSettings) ++
-    defaultSettings
+      inConfig(Compile)(wsdlSettings) ++
+      inConfig(Test)(wsdlSettings) ++
+      defaultSettings
 
   /**
    * The WSDL settings to be scoped to a particular config

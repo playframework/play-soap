@@ -1,32 +1,30 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
-
 import Common._
 import sbtrelease.ReleaseStateTransformations._
+import interplay.ScalaVersions._
+
+lazy val commonSettings = Seq(
+  scalaVersion := scala212,
+  crossScalaVersions := Seq(scala211, scala212)
+)
 
 lazy val root = (project in file("."))
   .enablePlugins(CrossPerProjectPlugin)
   .enablePlugins(PlayRootProject)
   .aggregate(client, plugin)
-  .settings(
-    scalaVersion := scala211,
-    crossScalaVersions := Seq(scala211)
-  )
+  .settings(commonSettings: _*)
 
 lazy val client = (project in file("client"))
   .enablePlugins(PlayLibrary)
-  .settings(
-    scalaVersion := scala211,
-    crossScalaVersions := Seq(scala211)
-  )
+  .settings(commonSettings: _*)
 
 lazy val plugin = (project in file("sbt-plugin"))
   .enablePlugins(PlaySbtPlugin)
   .settings(scriptedSettings: _*)
+  .settings(commonSettings: _*)
   .settings(
-    scalaVersion := scala210,
-    crossScalaVersions := Seq(scala210),
     (resourceGenerators in Compile) += generateVersionFile.taskValue,
     scriptedDependencies := {
       val () = publishLocal.value
@@ -39,9 +37,8 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
   .enablePlugins(SbtWeb)
   .enablePlugins(PlayNoPublish)
+  .settings(commonSettings: _*)
   .settings(
-    scalaVersion := scala211,
-    crossScalaVersions := Seq(scala211),
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, name) => file -> ("api/client/" + name)

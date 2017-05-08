@@ -17,7 +17,6 @@ class PlaySEIGenerator extends SEIGenerator with PlayGenerator {
     setPlayAttributes()
   }
 
-
   def setAttribute(name: String, value: AnyRef) = setAttributes(name, value)
 
   override def doWrite(templateName: String, outputs: Writer) = {

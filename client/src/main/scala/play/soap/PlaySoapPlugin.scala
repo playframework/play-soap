@@ -3,14 +3,14 @@
  */
 package play.soap
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import javax.xml.namespace.QName
-import javax.xml.ws.handler.{MessageContext, Handler}
+import javax.xml.ws.handler.{ MessageContext, Handler }
 
 import org.apache.cxf.BusFactory
-import org.apache.cxf.interceptor.{LoggingOutInterceptor, LoggingInInterceptor}
+import org.apache.cxf.interceptor.{ LoggingOutInterceptor, LoggingInInterceptor }
 import org.apache.cxf.transport.ConduitInitiatorManager
-import org.apache.cxf.transport.http.asyncclient.{AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory}
+import org.apache.cxf.transport.http.asyncclient.{ AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory }
 import play.api._
 import play.api.inject.ApplicationLifecycle
 
@@ -24,8 +24,8 @@ import scala.reflect.ClassTag
 abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
 
   private lazy val config = Configuration(configuration.underlying.getConfig("play.soap"))
-  private lazy val serviceConfig = config.getConfig("services." + this.getClass.getName)
-  private def portConfig(portName: String) = serviceConfig.flatMap(_.getConfig("ports." + portName))
+  private lazy val serviceConfig = config.getOptional[Configuration]("services." + this.getClass.getName)
+  private def portConfig(portName: String) = serviceConfig.map(_.get[Configuration]("ports." + portName))
   private def readConfig[T](portName: String, read: Configuration => Option[T], default: T): T = {
     portConfig(portName).flatMap(read)
       .orElse(serviceConfig.flatMap(read))
@@ -46,12 +46,12 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
 
     val factory = createFactory
 
-    if (readConfig(portName, _.getBoolean("debugLog"), false)) {
+    if (readConfig(portName, _.getOptional[Boolean]("debugLog"), false)) {
       factory.getInInterceptors.add(new LoggingInInterceptor)
       factory.getOutInterceptors.add(new LoggingOutInterceptor)
     }
     factory.setServiceClass(ct.runtimeClass)
-    val address = readConfig(portName, _.getString("address"), defaultAddress)
+    val address = readConfig(portName, _.getOptional[String]("address"), defaultAddress)
     factory.setAddress(address)
 
     factory.setHandlers(handlers.asJava)
