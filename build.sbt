@@ -79,17 +79,24 @@ playBuildExtraPublish := {
   (publish in plugin).value
 }
 
+//---------------------------------------------------------------
+// Release
+//---------------------------------------------------------------
+// import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+
 releaseCrossBuild := false
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
-  releaseStepCommandAndRemaining("+test"),
+  runTest,
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommandAndRemaining("+publish"),
+  ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
   setNextVersion,
   commitNextVersion,
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
   pushChanges
 )
