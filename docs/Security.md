@@ -28,7 +28,7 @@ public class AuthenticationHandler implements SOAPHandler<SOAPMessageContext> {
             // Get headers, create if null
             Map<String, List<String>> headers = (Map) context.get(MessageContext.HTTP_REQUEST_HEADERS);
             if (headers == null) {
-                headers = new HashMap<String, List<String>>();
+                headers = new HashMap<>();
             }
 
             // Add authentication header

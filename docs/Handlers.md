@@ -126,6 +126,6 @@ You can see that the SOAP message is also being loaded so that it can be logged,
 
 To use the logging handler that we implemented, we can supply it to get method for our port from the service.  For example, to use it with the `HelloWorldService` that we saw earlier in the documentation, simply pass the list of handlers to the `helloWorld` method, like so:
 
-```java
+```scala
 val client: HelloWorld = helloWorldService.helloWorld(new LoggingHandler)
 ```

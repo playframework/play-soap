@@ -1,10 +1,36 @@
 # Reactive SOAP for Play
 
+Play SOAP allows a Play application to make calls on a remote web service using SOAP. It provides a reactive interface to doing so, making HTTP requests asynchronously and returning promises/futures of the result.
+
+## JAX WS support
+
+Play SOAP builds on the JAX WS spec, but doesn’t implement it exactly. JAX WS, while it does have support for making asynchronous calls, this support is somewhat clumsy, requiring all asynchronous methods to have an Async suffix, and requiring the passing of an AsyncHandler argument to handle the response, which makes it awkward to integrate into an asynchronous framework since AsyncHandler’s do not compose well with other asynchronous constructs. This support could be described as a second class citizen, bolted on to the spec as an after thought.
+
+In contrast, Play SOAP provides asynchronous invocation of SOAP services as a first class citizen. Play SOAP methods all return promises, making them easy to compose with promises from other libraries, and allowing application code to be focused on business logic, not on wiring asynchronous callbacks together.
+
+## Using Play SOAP
+
+Play SOAP is an sbt plugin that transforms WSDLs into SOAP client interfaces, and provides a client library that takes Play SOAP generated interfaces and dynamically implements them to make calls on remote services. The sbt plugin is called `SbtWsdl`, and this is the starting point to installing and using Play SOAP.
+
+### Using sbt WSDL
+
+#### Installation
+
+To install sbt WSDL into your Play project, add the following dependency to your `project/plugins.sbt`:
+
+```scala
+addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.0")
+```
+
+For more information about how to use Play SOAP, see the [documentation](#docs).
+
+-------------------
+
 There are a number of distinct parts to this, not all of them need to be implemented to have a viable product:
 
 Feature           | Importance | Status      | Description
 ------------------|------------|-------------|------------
-**Client proxy**  | Required   | PoC         | Given an interface that returns responses as `scala.concurrent.Future` or `play.libs.F.Promise`, generate an asynchronous web services client that implements it.
+**Client proxy**  | Required   | PoC         | Given an interface that returns responses as `scala.concurrent.Future` or `java.util.concurrent.CompletionStage`, generate an asynchronous web services client that implements it.
 **wsdl2java**     | Required   | Not started | sbt plugin that, given a wsdl, generates the above interface
 **WS backend**    | Low        | Not started | Implement the cxf http backend using Play's WS API
 **Scala binding** | Medium     | Not started | Allow the use of Scala case classes, collections, option etc, rather than using Java beans. May use JAXB or completely different xml binding library.
@@ -31,7 +57,6 @@ In future, we may decide to implement our own reflection code for generating bin
 
 ### Next steps
 
-* Implement support for `play.libs.F.Promise`
 * Improve API for creating the client proxy (make it simpler for the simple cases)
 * Document how to create and configure the client proxy
 * Tests, and general clean up of code.

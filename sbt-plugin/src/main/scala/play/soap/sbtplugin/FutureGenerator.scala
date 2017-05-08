@@ -26,9 +26,9 @@ class FutureGenerator(futureApi: FutureApi) {
 
   /**
    * Generate the correct future type that holds the given Java type. E.g. for a Java type of
-   * "void" this could be "scala.concurrent.Future<scala.Unit>" or "play.libs.F.Promise<Void>".
+   * "void" this could be "scala.concurrent.Future<scala.Unit>" or "java.util.concurrent.CompletionStage<Void>".
    * For a Java type of "int" it could be "scala.concurrent.Future<java.lang.Integer>" or
-   * "play.libs.F.Promise<java.lang.Integer>"
+   * "java.util.concurrent.CompletionStage<java.lang.Integer>"
    *
    * @param javaType The Java type to wrap.
    */

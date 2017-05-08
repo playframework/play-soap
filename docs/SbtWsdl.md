@@ -5,7 +5,7 @@
 To install sbt WSDL into your Play project, add the following dependency to your `project/plugins.sbt`:
 
 ```scala
-addSbtPlugin("com.typesafe.play" % "play-soap-sbt" % "1.0.0-M1")
+addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.0")
 ```
 
 The plugin is automatically activated on install, and this will also cause the necessary Play SOAP client libraries to be added to your project.
@@ -26,7 +26,7 @@ The other is to place WSDLs in the `conf/wsdls` directory for a Play project, or
 
 ### Selecting the future API
 
-sbt WSDL can generate clients to either return `scala.concurrent.Future` for Scala projects, or `play.libs.F.Promise` for Java projects.  If your project is a Play project, the future API will automatically be selected based on whether you enabled the `PlayJava` or `PlayScala` plugin.  If it's an ordinary sbt project, it will default to `scala.concurrent.Future`.  This can be configured to use the Java promise using the `futureApi` setting:
+sbt WSDL can generate clients to either return `scala.concurrent.Future` for Scala projects, or `java.util.concurrent.CompletionStage` for Java projects.  If your project is a Play project, the future API will automatically be selected based on whether you enabled the `PlayJava` or `PlayScala` plugin.  If it's an ordinary sbt project, it will default to `scala.concurrent.Future`.  This can be configured to use the Java promise using the `futureApi` setting:
 
 ```scala
 WsdlKeys.futureApi := WsdlKeys.PlayJavaFutureApi

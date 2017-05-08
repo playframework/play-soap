@@ -22,8 +22,8 @@ lazy val plugin = (project in file("sbt-plugin"))
   .enablePlugins(PlaySbtPlugin)
   .settings(scriptedSettings: _*)
   .settings(
-    name := "play-soap-sbt",
-    organization := "com.typesafe.play",
+    name := "sbt-play-soap",
+    organization := "com.typesafe.sbt",
     libraryDependencies ++= Common.pluginDeps,
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
     (resourceGenerators in Compile) += generateVersionFile.taskValue,
@@ -100,7 +100,7 @@ def generateVersionFile = Def.task {
   val file = (resourceManaged in Compile).value / "play-soap.version.properties"
   val content =
     s"""play-soap-client.version=$clientVersion
-       |play-soap-sbt.version=$pluginVersion
+       |sbt-play-soap.version=$pluginVersion
      """.stripMargin
   if (!file.exists() || !(IO.read(file) == content)) {
     IO.write(file, content)
