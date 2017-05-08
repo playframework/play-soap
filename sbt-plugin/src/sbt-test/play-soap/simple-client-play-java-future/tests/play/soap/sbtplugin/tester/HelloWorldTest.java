@@ -56,8 +56,11 @@ public class HelloWorldTest {
             try {
                 await(client.sayHelloException("world"));
                 fail();
-            } catch (HelloException_Exception e) {
-                assertEquals("Hello world", e.getMessage());
+            } catch (Exception ex) {
+                assertEquals(
+                    "play.soap.testservice.client.HelloException_Exception: Hello world",
+                    ex.getMessage()
+                );
             }
         });
     }

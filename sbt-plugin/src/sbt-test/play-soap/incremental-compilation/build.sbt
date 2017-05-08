@@ -1,6 +1,8 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
+scalaVersion := sys.props.getOrElse("scala.version", "2.11.11")
+
 libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current
 
 // turn off cross paths so that expressions don't need to include the scala version
