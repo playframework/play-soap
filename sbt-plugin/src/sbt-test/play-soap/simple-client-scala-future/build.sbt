@@ -1,6 +1,8 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
+scalaVersion := sys.props.getOrElse("scala.version", "2.11.11")
+
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
