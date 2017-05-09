@@ -5,10 +5,11 @@
 lazy val root = project
   .in(file("."))
   .enablePlugins(PlayRootProject)
-  .enablePlugins(CrossPerProjectPlugin)
-  .aggregate(client, plugin)
-  .settings(name := "play-soap-root")
-  .settings(Release.settings: _*)
+  .aggregate(client)
+  .settings(
+    name := "play-soap-root",
+    releaseCrossBuild := false
+  )
 
 lazy val client = project
   .in(file("client"))
@@ -26,8 +27,6 @@ lazy val plugin = project
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
-    scalaVersion := "2.10.6",
-    crossScalaVersions := Seq("2.10.6"),
     libraryDependencies ++= Common.pluginDeps,
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
     resourceGenerators in Compile += generateVersionFile.taskValue,
