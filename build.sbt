@@ -2,7 +2,8 @@
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
 
-lazy val root = (project in file("."))
+lazy val root = project
+  .in(file("."))
   .enablePlugins(PlayRootProject)
   .aggregate(client)
   .settings(
@@ -10,7 +11,8 @@ lazy val root = (project in file("."))
     releaseCrossBuild := false
   )
 
-lazy val client = (project in file("client"))
+lazy val client = project
+  .in(file("client"))
   .enablePlugins(PlayLibrary)
   .settings(
     name := "play-soap-client",
@@ -19,15 +21,15 @@ lazy val client = (project in file("client"))
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
   )
 
-lazy val plugin = (project in file("sbt-plugin"))
+lazy val plugin = project
+  .in(file("sbt-plugin"))
   .enablePlugins(PlaySbtPlugin)
-  .settings(scriptedSettings: _*)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
     libraryDependencies ++= Common.pluginDeps,
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
-    (resourceGenerators in Compile) += generateVersionFile.taskValue,
+    resourceGenerators in Compile += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
       s"-Dscala.version=2.11.11",
       s"-Dproject.version=${version.value}",
