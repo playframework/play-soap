@@ -1,13 +1,11 @@
 /*
- * Copyright (C) 2009-2017 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
 import sbt._
-import sbt.Keys._
 import sbt.complete.Parser
 
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
-import bintray.BintrayPlugin.autoImport._
 
 object Release {
 
@@ -21,7 +19,6 @@ object Release {
       commitReleaseVersion,
       tagRelease,
       releaseStepCommandAndRemaining("+publishSigned"),
-      releaseStepTask(bintrayRelease in thisProjectRef.value),
       releaseStepCommand("sonatypeRelease"),
       setNextVersion,
       commitNextVersion,
