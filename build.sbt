@@ -6,7 +6,8 @@ lazy val root = (project in file("."))
   .enablePlugins(PlayRootProject)
   .aggregate(client)
   .settings(
-    releaseCrossBuild := true
+    name := "play-soap-root",
+    releaseCrossBuild := false
   )
 
 lazy val client = (project in file("client"))
