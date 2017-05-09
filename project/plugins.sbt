@@ -1,8 +1,6 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
-libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
-
 addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("1.1.2"))
 
 // Used for generating docs

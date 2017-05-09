@@ -44,7 +44,7 @@ class PlayJaxWsClientProxySpec extends Specification {
       }
 
       "allow calling a method with no return value" in withScalaClient { client =>
-        await(client.noReturn("nothing")) must_== ()
+        await(client.noReturn("nothing")) must_== ((): Unit)
       }
 
       "allow calling a method that throws a declared exception" in withScalaClient { client =>
