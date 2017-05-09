@@ -28,16 +28,23 @@ Or in Java:
 
 ```java
 public class MyComponent {
-  @Inject HelloWorldService helloWorldService;
   
-  ...
+    private final HelloWorldService helloWorldService;
 
-  HelloWorld client = helloWorldService.getHelloWorld();
+    @Inject
+    public MyComponent(HelloWorldService helloWorldService) {
+        this.helloWorldService - helloWorldService;
+    }
+
+    public void someMethod() {
+        HelloWorld client = helloWorldService.getHelloWorld();
+        // use the client somehow
+    }
 ```
 
 ## Using the client
 
-Once you've got a reference to the client, you can invoke methods on it.  For example, let's assume our client has operation called `sayHello` that takes a String parameter and returns a String parameter.  To invoke this from a Play Scala action, you would do this:
+Once you've got a reference to the `client`, you can invoke methods on it.  For example, let's assume our client has operation called `sayHello` that takes a String parameter and returns a String parameter.  To invoke this from a Play Scala action, you would do this:
 
 ```scala
 import play.api.libs.concurrent.Execution.Implicits._
@@ -53,9 +60,9 @@ def hello(name: String) = Action.async {
 To invoke it from a Play Java action you would do this:
 
 ```java
-import play.api.libs.F.*;
+import java.util.concurrent.CompletionStage;
 
-public Promise<Result> hello(String name) {
+public CompletionStage<Result> hello(String name) {
     HelloWorld client = helloWorldService.getHelloWorld();
     return client.sayHello(name).map(answer -> {
         return ok(answer);
