@@ -25,7 +25,6 @@ lazy val plugin = project
   .enablePlugins(PlaySbtPlugin)
   .settings(
     name := "sbt-play-soap",
-    bintrayPackage := "sbt-play-soap",
     organization := "com.typesafe.sbt",
     scalaVersion := "2.10.6",
     crossScalaVersions := Seq("2.10.6"),
