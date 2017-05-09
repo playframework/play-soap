@@ -16,10 +16,12 @@ Play SOAP is an sbt plugin that transforms WSDLs into SOAP client interfaces, an
 
 #### Installation
 
-To install sbt WSDL into your Play project, add the following dependency to your `project/plugins.sbt`:
+To install sbt WSDL into your Play project, add the following lines to your `project/plugins.sbt`:
 
 ```scala
-addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.0")
+resolvers += Resolver.url("play-sbt-plugins", url("https://dl.bintray.com/playframework/sbt-plugin-releases/"))(Resolver.ivyStylePatterns)
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.3")
 ```
 
 For more information about how to use Play SOAP, see the [documentation](#docs).
@@ -43,7 +45,7 @@ Note that Scala support is a lower priority than Java support because a Java cli
 
 ### Proxy interceptor
 
-To implement the proxy, we have to implement our own version of JaxWsClientProxy. This is the CXF JDK proxy interceptor that implements JAX WS interfaces.  It's here that asynchronous requests are handled, and the logic here is hard coded - it implements the JAX WS requirements, if a method ends in `Async` and returns something that implements `Future` then dispatch an asynchronous call.  Hence why we have to implement our own to make every method asynchronous regardless of name, and to allow scala Future and Play Promise return types.
+To implement the proxy, we have to implement our own version of JaxWsClientProxy. This is the CXF JDK proxy interceptor that implements JAX WS interfaces.  It's here that asynchronous requests are handled, and the logic here is hard coded - it implements the JAX WS requirements, if a method ends in `Async` and returns something that implements `Future` then dispatch an asynchronous call.  Hence why we have to implement our own to make every method asynchronous regardless of name, and to allow scala Future and Java CompletionStage return types.
 
 This class has a lot of logic copied from JaxWsClientProxy, the actual part that has been customised is quite simple, it just creates a promise, and sends an asynchronous callback that redeems the promise.
 
