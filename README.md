@@ -24,7 +24,7 @@ resolvers += Resolver.url("play-sbt-plugins", url("https://dl.bintray.com/playfr
 addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.3")
 ```
 
-For more information about how to use Play SOAP, see the [documentation](#docs).
+For more information about how to use Play SOAP, see the [documentation](https://playframework.github.io/play-soap/Home.html).
 
 -------------------
 
@@ -89,13 +89,13 @@ Not likely to ever be implemented.
 
 # Docs
 
-Start sbt, and run:
+The documentation is deployed to the `gh-pages` branch and so is available at https://playframework.github.io/play-soap/Home.html.
+
+To develop the documentation, start sbt, and run:
 
     project docs
     ~webStage
 
-Now modify the docs (either markdown, or the template, or the stylesheets), and open `target/web/stage/Home.html` to view them.
+Now modify the docs (either markdown, or the template, or the stylesheets), and open `docs/target/web/stage/Home.html` to view them.
 
-To deploy the docs, simply run:
-
-    sbt docs/publish
+To deploy the docs, cd into the the `docs/target/web/stage` directory, create a git repository, and then force push to the `gh-pages` branch of the `play-soap` repo.
