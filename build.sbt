@@ -31,7 +31,7 @@ lazy val plugin = project
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
     resourceGenerators in Compile += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
-      s"-Dscala.version=2.11.11",
+      s"-Dscala.version=2.12.5",
       s"-Dproject.version=${version.value}",
       s"-Dcxf.version=${Common.CxfVersion}",
       s"-Dplay.version=${Common.PlayVersion}"
@@ -47,8 +47,8 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(SbtWeb)
   .enablePlugins(PlayNoPublish)
   .settings(
-    scalaVersion := "2.11.11",
-    crossScalaVersions := Seq("2.11.11"),
+    scalaVersion := "2.12.5",
+    crossScalaVersions := Seq("2.12.5"),
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, _name) => file -> ("api/client/" + _name)
