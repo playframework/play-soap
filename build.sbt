@@ -8,7 +8,7 @@ lazy val root = project
   .aggregate(client)
   .settings(
     name := "play-soap-root",
-    releaseCrossBuild := false
+    releaseCrossBuild := true
   )
 
 lazy val client = project
@@ -30,6 +30,11 @@ lazy val plugin = project
     libraryDependencies ++= Common.pluginDeps,
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
     resourceGenerators in Compile += generateVersionFile.taskValue,
+    crossScalaVersions := Seq("2.11.11","2.12.5"),
+    scalaCompilerBridgeSource := {
+      val sv = appConfiguration.value.provider.id.version
+        ("org.scala-sbt" % "compiler-interface" % sv % "component").sources
+    },
     scriptedLaunchOpts ++= Seq(
       s"-Dscala.version=2.12.5",
       s"-Dproject.version=${version.value}",
@@ -48,7 +53,7 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(PlayNoPublish)
   .settings(
     scalaVersion := "2.12.5",
-    crossScalaVersions := Seq("2.12.5"),
+    crossScalaVersions := Seq("2.11.11","2.12.5"),
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, _name) => file -> ("api/client/" + _name)
