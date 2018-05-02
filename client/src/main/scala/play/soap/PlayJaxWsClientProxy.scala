@@ -93,8 +93,8 @@ private[soap] object PlayJaxWsClientProxy {
             }
 
             if (sf.getSubCodes != null && !isSoap11) {
-              import scala.collection.JavaConversions._
-              for (fsc <- sf.getSubCodes) {
+              import scala.collection.JavaConverters._
+              for (fsc <- sf.getSubCodes.asScala) {
                 soapFault.appendFaultSubcode(fsc)
               }
             }
@@ -219,9 +219,9 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     val respContext = client.getResponseContext
     val scopes = CastUtils.cast(respContext.get(WrappedMessageContext.SCOPES).asInstanceOf[JMap[_, _]])
     if (scopes != null) {
-      import scala.collection.JavaConversions._
-      for (scope <- scopes.entrySet) {
-        if (scope.getValue == Scope.HANDLER) {
+      import scala.collection.JavaConverters._
+      for (scope <- scopes.entrySet.asScala) {
+        if (Scope.HANDLER.equals(scope.getValue)) {
           respContext.remove(scope.getKey)
         }
       }

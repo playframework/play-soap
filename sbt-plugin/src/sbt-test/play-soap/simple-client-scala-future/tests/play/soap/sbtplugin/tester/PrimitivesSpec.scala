@@ -12,7 +12,7 @@ import javax.xml.ws.handler.MessageContext
 
 import org.apache.cxf.jaxws.EndpointImpl
 import play.soap.testservice.client._
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
