@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
-addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("2.0.1"))
+addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("1.3.15"))
 
 // Used for generating docs
 addSbtPlugin("com.typesafe.sbt" %% "sbt-twirl" % "1.3.15")
