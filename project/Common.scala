@@ -1,8 +1,8 @@
 import sbt._
 
 object Common {
-  val CxfVersion = "3.2.4"
-  val PlayVersion = "2.6.13"
+  val CxfVersion = "3.2.5"
+  val PlayVersion = "2.6.15"
 
   val clientDeps = Seq(
     "com.typesafe.play" %% "play" % PlayVersion % "provided",
