@@ -2,6 +2,15 @@
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
 
+ import interplay.ScalaVersions._
+
+// To keep all the Scala versions consistent with the Scala versions
+// provided by interplay.
+ val commonSettings = Seq(
+   scalaVersion := scala212,
+   crossScalaVersions := Seq(scala211, scala212)
+ )
+
 lazy val root = project
   .in(file("."))
   .enablePlugins(PlayRootProject)
@@ -30,13 +39,8 @@ lazy val plugin = project
     libraryDependencies ++= Common.pluginDeps,
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
     resourceGenerators in Compile += generateVersionFile.taskValue,
-    crossScalaVersions := Seq("2.11.11","2.12.6"),
-    scalaCompilerBridgeSource := {
-      val sv = appConfiguration.value.provider.id.version
-        ("org.scala-sbt" % "compiler-interface" % sv % "component").sources
-    },
     scriptedLaunchOpts ++= Seq(
-      s"-Dscala.version=2.12.6",
+      s"-Dscala.version=${scalaVersion.value}",
       s"-Dproject.version=${version.value}",
       s"-Dcxf.version=${Common.CxfVersion}",
       s"-Dplay.version=${Common.PlayVersion}"
@@ -51,9 +55,8 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
   .enablePlugins(SbtWeb)
   .enablePlugins(PlayNoPublish)
+  .settings(commonSettings: _*)
   .settings(
-    scalaVersion := "2.12.6",
-    crossScalaVersions := Seq("2.11.11","2.12.6"),
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, _name) => file -> ("api/client/" + _name)
