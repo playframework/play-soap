@@ -31,7 +31,7 @@ object HelloWorldSpec extends ServiceSpec {
     }
 
     "say hello to many people" in withClient { client =>
-      await(client.sayHelloToMany(List("foo", "bar"))).toList must_== List("Hello foo", "Hello bar")
+      await(client.sayHelloToMany(java.util.Arrays.asList("foo", "bar"))).asScala must_== List("Hello foo", "Hello bar")
     }
 
     "say hello to one user" in withClient { client =>
@@ -47,7 +47,7 @@ object HelloWorldSpec extends ServiceSpec {
     }
 
     "dont say hello" in withClient { client =>
-      await(client.dontSayHello()) must_== ()
+      await(client.dontSayHello()) must_== ((): Unit)
     }
 
     "allow adding custom handlers" in {

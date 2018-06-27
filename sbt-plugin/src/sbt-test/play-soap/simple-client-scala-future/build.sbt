@@ -27,7 +27,7 @@ TaskKey[Unit]("checkServiceClients") := {
     val f = path / filename
     println(s"Checking $f for $expectedString")
     val contents = IO.read(f)
-    if (!contents.contains(expectedString)) error(s"File $f didn't contain: $expectedString")
+    if (!contents.contains(expectedString)) sys.error(s"File $f didn't contain: $expectedString")
   }
   ()
 }

@@ -31,7 +31,7 @@
 #end
 package $intf.PackageName;
 
-#if ($mark-generated == "true")
+#if ($markGenerated == "true")
 import javax.annotation.Generated;
 #end
 #foreach ($import in $intf.Imports)
@@ -53,7 +53,7 @@ import javax.xml.ws.FaultAction;
 #foreach ($annotation in $intf.Annotations)
     $annotation
 #end
-#if ($mark-generated == "true")
+#if ($markGenerated == "true")
 @Generated(value = "$generatorclass", date = "$currentdate", comments = "$fullversion")
 #end
 public interface $intf.Name {
@@ -70,11 +70,11 @@ public interface $intf.Name {
     #if($method.Exceptions.size() > 0)
         @Action(fault = {
           #foreach($exception in $method.Exceptions)
-            @FaultAction(className = ${exception.ClassName}.class)#if($method.Exceptions.size() != $velocityCount),#end
+            @FaultAction(className = ${exception.ClassName}.class)#if($method.Exceptions.size() != $foreach.count),#end
           #end
         })
     #end
-    #if ($mark-generated == "true")
+    #if ($markGenerated == "true")
     @Generated(value = "$generatorclass", date = "$currentdate")
     #end
 public $future.futureType($method.returnValue) ${method.Name}(#if($method.ParameterList.size() == 0))#end
@@ -83,6 +83,6 @@ public $future.futureType($method.returnValue) ${method.Name}(#if($method.Parame
         #foreach ($param in ${method.ParameterList})
             $param
         #end
-    )#end#if($method.Exceptions.size() > 0) throws#foreach($exception in $method.Exceptions) $exception.ClassName#if($method.Exceptions.size() != $velocityCount),#end#end#end;
+    )#end#if($method.Exceptions.size() > 0) throws#foreach($exception in $method.Exceptions) $exception.ClassName#if($method.Exceptions.size() != $foreach.count),#end#end#end;
 #end
 }

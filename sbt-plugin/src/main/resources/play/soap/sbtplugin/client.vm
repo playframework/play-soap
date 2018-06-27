@@ -5,7 +5,7 @@ package $service.packageName
 
 import javax.xml.namespace.QName
 import javax.xml.ws.handler.{MessageContext, Handler}
-#if ($mark-generated == "true")
+#if ($markGenerated == "true")
 import javax.annotation.Generated
 #end
 
@@ -18,7 +18,7 @@ import ${import}
 * Generated source version: $version
 *
 */
-#if ($mark-generated == "true")
+#if ($markGenerated == "true")
 @Generated(value = "$generatorclass", date = "$currentdate", comments = "$fullversion")
 #end
 @javax.inject.Singleton
@@ -31,21 +31,21 @@ class ${service.name} @javax.inject.Inject() (apacheCxfBus: play.soap.ApacheCxfB
   #end
   #set($portMethodName = $portMethod.transform($port))
 
-  #if ($mark-generated == "true")
+  #if ($markGenerated == "true")
   @Generated(value = "$generatorclass", date = "$currentdate")
   #end
   lazy val $portMethod.transform($port): $portClassName = {
     createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.bindingAdress")
   }
 
-  #if ($mark-generated == "true")
+  #if ($markGenerated == "true")
   @Generated(value = "$generatorclass", date = "$currentdate")
   #end
   def $portMethod.transform($port)(handlers: Handler[_ <: MessageContext]*): $portClassName = {
     createPort[$portClassName](new QName("$service.namespace"), "$port.portName", "$port.bindingAdress", handlers: _*)
   }
 
-  #if ($mark-generated == "true")
+  #if ($markGenerated == "true")
   @Generated(value = "$generatorclass", date = "$currentdate")
   #end
   @annotation.varargs

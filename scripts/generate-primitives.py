@@ -265,7 +265,7 @@ object PrimitivesSpec extends ServiceSpec {
     }}
 
     "handle {p} sequences" in withClient {{ client =>
-      await(client.{p}Sequence(Arrays.asList({s}, {s}))).toList must_== List({s}, {s}, {s})
+      await(client.{p}Sequence(Arrays.asList({s}, {s}))).asScala must_== List({s}, {s}, {s})
     }}""")
 
   gen(f, """
@@ -298,6 +298,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.function.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
