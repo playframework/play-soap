@@ -11,7 +11,7 @@ import org.apache.cxf.interceptor.{LoggingInInterceptor, LoggingOutInterceptor}
 import org.apache.cxf.jaxws.EndpointImpl
 import play.soap.PlayJaxWsProxyFactoryBean
 import play.soap.testservice.client._
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 

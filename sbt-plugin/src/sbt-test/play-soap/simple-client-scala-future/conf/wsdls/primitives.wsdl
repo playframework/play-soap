@@ -12,7 +12,7 @@
 
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://testservice.soap.play/primitives">
-
+    
       <xs:element name="booleanOp">
         <xs:complexType name="booleanOp">
           <xs:sequence>

@@ -7,7 +7,7 @@ import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.soap.{SOAPMessageContext, SOAPHandler}
 
 import java.util.{Map => JMap, List => JList}
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class ServerAuthenticationHandler extends SOAPHandler[SOAPMessageContext] {
   def getHeaders = null

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.function.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
@@ -19,7 +20,6 @@ import play.soap.testservice.client.*;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.CompletionStage;
 
 import static org.junit.Assert.*;
@@ -118,7 +118,6 @@ public class PrimitivesTest {
             assertEquals(Arrays.asList((short) 1, (short) 1, (short) 1), await(client.shortSequence(Arrays.asList((short) 1, (short) 1))))
         );
     }
-
     private static <T> T await(CompletionStage<T> promise) {
         try {
             return promise.toCompletableFuture().get(10, TimeUnit.SECONDS);

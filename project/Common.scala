@@ -1,8 +1,8 @@
 import sbt._
 
 object Common {
-  val CxfVersion = "3.1.11"
-  val PlayVersion = "2.5.14"
+  val CxfVersion = "3.2.5"
+  val PlayVersion = "2.6.15"
 
   val clientDeps = Seq(
     "com.typesafe.play" %% "play" % PlayVersion % "provided",
@@ -17,7 +17,7 @@ object Common {
   val pluginDeps = Seq(
     "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws" % CxfVersion,
     "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % CxfVersion,
-    "org.specs2" %% "specs2-core" % "2.4.15" % "test",
+    "org.specs2" %% "specs2-core" % "4.1.0" % "test",
     "commons-codec" % "commons-codec" % "1.10"
   )
 }

@@ -151,8 +151,8 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
     if (serviceInfo == null) {
       return false
     }
-    import scala.collection.JavaConversions._
-    for (opInfo <- serviceInfo.getInterface.getOperations) {
+    import scala.collection.JavaConverters._
+    for (opInfo <- serviceInfo.getInterface.getOperations.asScala) {
       if (opInfo.isUnwrappedCapable && opInfo.getProperty(ReflectionServiceFactoryBean.WRAPPERGEN_NEEDED) != null) {
         return true
       }
@@ -173,8 +173,8 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
       resourceManager = new DefaultResourceManager(resolvers)
       resourceManager.addResourceResolver(new WebServiceContextResourceResolver)
       val injector: ResourceInjector = new ResourceInjector(resourceManager)
-      import scala.collection.JavaConversions._
-      for (h <- chain) {
+      import scala.collection.JavaConverters._
+      for (h <- chain.asScala) {
         if (Proxy.isProxyClass(h.getClass) && getServiceClass != null) {
           injector.inject(h, getServiceClass)
           injector.construct(h, getServiceClass)

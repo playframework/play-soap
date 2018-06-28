@@ -75,7 +75,7 @@ public CompletionStage<Result> hello(String name) {
 The generated data objects will all be Java beans, with getter/setter style properties, and using Java collections.  For convenience when working with the Java collections, you may import the Scala implicit conversions for Scala collections, like so:
 
 ```scala
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 ```
 
 Using this you can work with Java collections as if they were Scala collections, and pass Scala collections to setters and methods that accept Java collections.

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2015-2017 Lightbend Inc. <https://www.lightbend.com>
  */
+import scala.sys.process._
 
 libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-io" % "1.3.2",
@@ -28,9 +29,9 @@ generateDocs := {
   // Clear the output directory first
   IO.delete(outdir)
 
-  toError(scalaRun.run("play.soap.docs.Generator",
+  scalaRun.run("play.soap.docs.Generator",
     Attributed.data(classpath), Seq(outdir.getAbsolutePath, baseDir.getAbsolutePath) ++ markdownFiles.map(_.getName.dropRight(3)),
-    log))
+    log).failed foreach (sys error _.getMessage)
 
   (outdir * "*.html").get
 }
@@ -48,9 +49,11 @@ pipelineStages := Seq(uglify)
 watchSources ++= (sources in generateDocs).value
 
 publish := {
+  import sys.process._
+  
   val stageDir = WebKeys.stage.value.getAbsolutePath
   println("Syncing files with S3")
-  val rc = s"s3cmd sync --guess-mime-type --delete-removed $stageDir/ s3://downloads.typesafe.com/rp/play-soap/".!
+  val rc = s"s3cmd sync --guess-mime-type --delete-removed $stageDir/ s3://downloads.typesafe.com/rp/play-soap/".!!
   if (rc != 0) {
     throw new FeedbackProvidedException {}
   }
