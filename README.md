@@ -102,6 +102,6 @@ To deploy the docs, cd into the the `docs/target/web/stage` directory, create a 
 
 ## Support
 
-The Play Mailer library is *[Community Driven][]*.
+The Play Soap library is *[Community Driven][]*.
 
 [Community Driven]: https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#community-driven
