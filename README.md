@@ -99,3 +99,9 @@ To develop the documentation, start sbt, and run:
 Now modify the docs (either markdown, or the template, or the stylesheets), and open `docs/target/web/stage/Home.html` to view them.
 
 To deploy the docs, cd into the the `docs/target/web/stage` directory, create a git repository, and then force push to the `gh-pages` branch of the `play-soap` repo.
+
+## Support
+
+The Play Mailer library is *[Community Driven][]*.
+
+[Community Driven]: https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#community-driven
