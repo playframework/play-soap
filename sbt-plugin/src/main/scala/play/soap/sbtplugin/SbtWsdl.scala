@@ -7,7 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.cxf.tools.common.ToolContext
 import org.apache.cxf.tools.util.OutputStreamCreator
 import org.apache.cxf.tools.wsdlto.WSDLToJava
-import play.sbt.{Play, PlayJava}
+import play.sbt.{PlayWeb, PlayJava}
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
@@ -307,7 +307,7 @@ object SbtWsdlJava extends AutoPlugin {
  */
 object SbtWsdlPlay extends AutoPlugin {
   override def trigger = allRequirements
-  override def requires = SbtWsdl && Play
+  override def requires = SbtWsdl && PlayWeb
 
   override def projectSettings = Seq(
     sourceDirectories in (Compile, wsdlToCode) := Seq((resourceDirectory in Compile).value / "wsdls")
