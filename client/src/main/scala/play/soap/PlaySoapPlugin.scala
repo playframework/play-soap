@@ -72,7 +72,7 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
  * Configures and manages the lifecycle of an Apache CXF bus
  */
 @Singleton
-class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) {
+class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
 
   private lazy val asyncTransport = new AsyncHttpTransportFactory
   private[soap] lazy val bus = {
@@ -105,7 +105,7 @@ class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) {
     } catch {
       // Ignore, just print the stack trace so we know something has gone wrong
       case e: Exception =>
-        Logger.warn("Error shutting down CXF bus", e)
+        logger.warn("Error shutting down CXF bus", e)
     }
 
     Future.successful(())

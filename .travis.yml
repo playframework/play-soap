@@ -1,16 +1,19 @@
 language: scala
-jdk:
-  - oraclejdk8
+
+before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
+install: jabba install "$TRAVIS_JDK" && jabba use $_ && java -Xmx32m -version
+
 env:
-  - SCRIPT="sbt test"
-  - SCRIPT="sbt +publishLocal"
-  - SCRIPT="sbt plugin/scripted"
+  - SCRIPT="sbt +test"              TRAVIS_JDK=adopt@1.8.202-08
+  - SCRIPT="sbt +publishLocal"      TRAVIS_JDK=adopt@1.8.202-08
+  - SCRIPT="sbt plugin/scripted"    TRAVIS_JDK=adopt@1.8.202-08
+  - SCRIPT="sbt docs/generateDocs"  TRAVIS_JDK=adopt@1.8.202-08
+
 script:
   - $SCRIPT
+
 cache:
   directories:
+  - $HOME/.jabba/jdk
   - $HOME/.ivy2/cache
   - $HOME/.sbt/
-notifications:
-  slack:
-    secure: BhZ8eskcVBTgJTOg0Qaq5hqZF3Wzjw42AVQV3L73xpIPCYp+jgp79C3j9hbdWuUsVGf++tr6yJj5dg4VqIdYLwY2txjq1FF1TPU3ttAvdONZWzJYx5qQZMfUPajvJGWSMhJsw30aM7cZFHE85JBZ+HwFY/yDUkf5JIwImSpK/BZweSokYbr61aaJVQQdQgP45Pm0NAQoqQgGBb8JGjvy38VDxA0C1YF8O3aoWhgDyQOIyo13KADWlENJxT10cN7FgE0yVFnCgEOE1umqB+Ui2fcSGDu/58eJ9O1YixlGC2vxAvJawb0hPLzUdnmVlfe38/wmZlrbbR0NNPgugMPnhvsUtLQu7MEdaAuFCOys0Llsn6n5KggI5MaCaTjhJR7G1fUpCPg1/F3VI6EVC8p1KIhoVo/HQnrR9IqewJZEJllm2ZFTfprBRuto+TJkTjvacZGmx99VfV6l2Q6fXjSv+dAo45Oo9KdwP0u8G2YdT0w3iumlbTxserJY/QKk69974aPrijWnnmqbOk+Pb7pk0OkYhDh2HFOUyGuSjfSCiLVBDsvHhJVd9QY+djC4lDPSsK8sC5WAFgrS9okWc+CstzHNxCYgXG89qJVabucYJTVgcCcIAT55pG+rYxNw0RGIogNm/3Bon5Wt4omch5BazaOqGWTSlancdN59VPj1TDQ=
