@@ -2,11 +2,18 @@
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
 
+import de.heikoseeberger.sbtheader.FileType
 import interplay.ScalaVersions._
 
 val commonSettings = Seq(
   scalaVersion := scala212,
-  crossScalaVersions := Seq(scala212)
+  crossScalaVersions := Seq(scala212),
+  headerEmptyLine := false,
+  headerLicense := Some(
+    HeaderLicense.Custom(
+      "Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>"
+    )
+  )
 )
 
 lazy val root = project
@@ -58,6 +65,8 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(PlayNoPublish)
   .settings(commonSettings: _*)
   .settings(
+    headerMappings := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
+    headerSources.in(Compile) ++= sources.in(Compile, TwirlKeys.compileTemplates).value,
     WebKeys.pipeline ++= {
       val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
         case (file, _name) => file -> ("api/client/" + _name)

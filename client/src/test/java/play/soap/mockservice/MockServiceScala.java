@@ -1,15 +1,16 @@
 /*
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
+
 package play.soap.mockservice;
+
+import scala.Unit;
+import scala.concurrent.Future;
 
 import javax.jws.WebService;
 import javax.xml.ws.Action;
 import javax.xml.ws.FaultAction;
 import javax.xml.ws.Holder;
-
-import scala.Unit;
-import scala.concurrent.Future;
 
 @WebService(name = "MockService")
 public interface MockServiceScala {
