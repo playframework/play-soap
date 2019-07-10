@@ -4,13 +4,17 @@ before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
 install: jabba install "$TRAVIS_JDK" && jabba use $_ && java -Xmx32m -version
 
 env:
-  - SCRIPT="sbt +test"              TRAVIS_JDK=adopt@1.8.202-08
-  - SCRIPT="sbt +publishLocal"      TRAVIS_JDK=adopt@1.8.202-08
-  - SCRIPT="sbt plugin/scripted"    TRAVIS_JDK=adopt@1.8.202-08
-  - SCRIPT="sbt docs/generateDocs"  TRAVIS_JDK=adopt@1.8.202-08
+  matrix:
+    - TRAVIS_JDK=adopt@1.8.202-08
 
 script:
-  - $SCRIPT
+  # Code validations
+  - scripts/validate-code-style
+  - sbt +test
+  - sbt +publishLocal
+  - sbt plugin/scripted
+  # Generate documentation
+  - sbt docs/webStage
 
 cache:
   directories:

@@ -2,19 +2,18 @@
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
 
- import interplay.ScalaVersions._
+import interplay.ScalaVersions._
 
-// To keep all the Scala versions consistent with the Scala versions
-// provided by interplay.
- val commonSettings = Seq(
-   scalaVersion := scala212,
-   crossScalaVersions := Seq(scala211, scala212)
- )
+val commonSettings = Seq(
+  scalaVersion := scala212,
+  crossScalaVersions := Seq(scala212)
+)
 
 lazy val root = project
   .in(file("."))
   .enablePlugins(PlayRootProject)
-  .aggregate(client)
+  .settings(commonSettings: _*)
+  .aggregate(client, plugin, docs)
   .settings(
     name := "play-soap-root",
     releaseCrossBuild := true
@@ -23,16 +22,18 @@ lazy val root = project
 lazy val client = project
   .in(file("client"))
   .enablePlugins(PlayLibrary)
+  .settings(commonSettings: _*)
   .settings(
     name := "play-soap-client",
     libraryDependencies ++= Common.clientDeps,
-    resolvers += "Scalaz Bintray Repo" at "https://dl.bintray.com/scalaz/releases",
+    resolvers += "Scalaz Bintray Repo".at("https://dl.bintray.com/scalaz/releases"),
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
   )
 
 lazy val plugin = project
   .in(file("sbt-plugin"))
   .enablePlugins(PlaySbtPlugin)
+  .settings(commonSettings: _*)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
@@ -71,7 +72,7 @@ lazy val docs = (project in file("docs"))
 def generateVersionFile = Def.task {
   val clientVersion = (version in client).value
   val pluginVersion = version.value
-  val file = (resourceManaged in Compile).value / "play-soap.version.properties"
+  val file          = (resourceManaged in Compile).value / "play-soap.version.properties"
   val content =
     s"""play-soap-client.version=$clientVersion
        |sbt-play-soap.version=$pluginVersion

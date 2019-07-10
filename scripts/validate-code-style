@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2009-2019 Lightbend Inc. <https://www.lightbend.com>
+
+. "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/scriptLib"
+
+printMessage "VALIDATE SCALA CODE FORMATTING"
+sbt scalafmtAll scalafmtSbt
+git diff --exit-code || (
+  echo "[error] ERROR: scalafmt check failed, see differences above."
+  echo "[error] To fix, format your sources using 'sbt scalafmtAll scalafmtSbt' before submitting a pull request."
+  false
+)

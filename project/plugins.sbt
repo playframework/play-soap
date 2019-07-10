@@ -3,8 +3,10 @@
  */
 addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("1.3.16"))
 
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.0.2")
+
 // Used for generating docs
-addSbtPlugin("com.typesafe.sbt" %% "sbt-twirl" % "1.3.15")
-addSbtPlugin("com.typesafe.sbt" %% "sbt-web" % "1.4.3")
-addSbtPlugin("com.typesafe.sbt" %% "sbt-less" % "1.1.2")
+addSbtPlugin("com.typesafe.sbt" %% "sbt-twirl"  % "1.3.15")
+addSbtPlugin("com.typesafe.sbt" %% "sbt-web"    % "1.4.3")
+addSbtPlugin("com.typesafe.sbt" %% "sbt-less"   % "1.1.2")
 addSbtPlugin("com.typesafe.sbt" %% "sbt-uglify" % "2.0.0")

@@ -13,15 +13,15 @@ class FutureGenerator(futureApi: FutureApi) {
 
   /** Pregenerated type mappings */
   private val mapping: Map[String, String] = Map(
-    "void" -> futureApi.voidType,
+    "void"    -> futureApi.voidType,
     "boolean" -> "java.lang.Boolean",
-    "byte" -> "java.lang.Byte",
-    "char" -> "java.lang.Character",
-    "double" -> "java.lang.Double",
-    "float" -> "java.lang.Float",
-    "int" -> "java.lang.Integer",
-    "long" -> "java.lang.Long",
-    "short" -> "java.lang.Short"
+    "byte"    -> "java.lang.Byte",
+    "char"    -> "java.lang.Character",
+    "double"  -> "java.lang.Double",
+    "float"   -> "java.lang.Float",
+    "int"     -> "java.lang.Integer",
+    "long"    -> "java.lang.Long",
+    "short"   -> "java.lang.Short"
   )
 
   /**

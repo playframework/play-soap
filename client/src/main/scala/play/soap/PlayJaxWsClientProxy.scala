@@ -28,23 +28,33 @@
  */
 package play.soap
 
-import java.io.{Closeable, IOException}
-import java.lang.reflect.{InvocationTargetException, Method, ParameterizedType}
+import java.io.Closeable
+import java.io.IOException
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
+import java.lang.reflect.ParameterizedType
 import java.net.HttpURLConnection
 import java.util.concurrent.CompletionStage
-import javax.xml.soap.{SOAPConstants, SOAPException, SOAPFault}
+import javax.xml.soap.SOAPConstants
+import javax.xml.soap.SOAPException
+import javax.xml.soap.SOAPFault
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.MessageContext.Scope
-import javax.xml.ws.http.{HTTPBinding, HTTPException}
-import javax.xml.ws.soap.{SOAPBinding, SOAPFaultException}
+import javax.xml.ws.http.HTTPBinding
+import javax.xml.ws.http.HTTPException
+import javax.xml.ws.soap.SOAPBinding
+import javax.xml.ws.soap.SOAPFaultException
 import javax.xml.ws._
 
 import org.apache.cxf.binding.soap.SoapFault
-import org.apache.cxf.binding.soap.saaj.{SAAJFactoryResolver, SAAJUtils}
+import org.apache.cxf.binding.soap.saaj.SAAJFactoryResolver
+import org.apache.cxf.binding.soap.saaj.SAAJUtils
 import org.apache.cxf.common.i18n.Message
 import org.apache.cxf.common.logging.LogUtils
 import org.apache.cxf.common.util.StringUtils
-import org.apache.cxf.endpoint.{Client, ClientCallback, Endpoint}
+import org.apache.cxf.endpoint.Client
+import org.apache.cxf.endpoint.ClientCallback
+import org.apache.cxf.endpoint.Endpoint
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.helpers.CastUtils
 import org.apache.cxf.interceptor.Fault
@@ -52,14 +62,16 @@ import org.apache.cxf.jaxws.EndpointReferenceBuilder
 import org.apache.cxf.jaxws.context.WrappedMessageContext
 import org.apache.cxf.jaxws.support.JaxWsEndpointImpl
 import org.apache.cxf.service.invoker.MethodDispatcher
-import java.util.{Locale, Map => JMap}
+import java.util.Locale
+import java.util.{ Map => JMap }
 
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
 import play.libs.F
 
 import scala.compat.java8.FutureConverters
-import scala.concurrent.{Future, Promise}
+import scala.concurrent.Future
+import scala.concurrent.Promise
 import scala.util.Try
 
 private[soap] object PlayJaxWsClientProxy {
@@ -69,13 +81,15 @@ private[soap] object PlayJaxWsClientProxy {
   def createSoapFault(binding: SOAPBinding, ex: Exception): SOAPFault = {
     Try(binding.getSOAPFactory.createFault)
       .orElse(Try(binding.getMessageFactory.createMessage.getSOAPPart.getEnvelope.getBody.addFault()))
-      .toOption.map { soapFault1 =>
+      .toOption
+      .map { soapFault1 =>
         ex match {
           case sf: SoapFault =>
-            val soapFault = if (!(soapFault1.getNamespaceURI() == sf.getFaultCode.getNamespaceURI) &&
-              (SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE == sf.getFaultCode.getNamespaceURI)) {
-              Try(SAAJFactoryResolver.createSOAPFactory(null).createFault).getOrElse(soapFault1)
-            } else soapFault1
+            val soapFault =
+              if (!(soapFault1.getNamespaceURI() == sf.getFaultCode.getNamespaceURI) &&
+                  (SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE == sf.getFaultCode.getNamespaceURI)) {
+                Try(SAAJFactoryResolver.createSOAPFactory(null).createFault).getOrElse(soapFault1)
+              } else soapFault1
 
             val isSoap11 = SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE == soapFault.getNamespaceURI()
 
@@ -118,8 +132,9 @@ private[soap] object PlayJaxWsClientProxy {
             }
 
             soapFault1
+        }
       }
-    }.orNull
+      .orNull
   }
 
   def stringToLocale(locale: String): Locale = {
@@ -145,8 +160,8 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     if (client == null) {
       throw new IllegalStateException("The client has been closed.")
     }
-    val endpoint = getClient.getEndpoint
-    val address = endpoint.getEndpointInfo.getAddress
+    val endpoint   = getClient.getEndpoint
+    val address    = endpoint.getEndpointInfo.getAddress
     val dispatcher = endpoint.getService.get(classOf[MethodDispatcher].getName).asInstanceOf[MethodDispatcher]
 
     val params = if (args == null) Array.empty[AnyRef] else args
@@ -154,7 +169,9 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     // The proxy returned by the factory bean implements a number of different interfaces, not just the service endpoint
     // interface. If the method invoked was declared by one of those interfaces, then we handle it here.
     try {
-      if ((method.getDeclaringClass == classOf[BindingProvider]) || (method.getDeclaringClass == classOf[AnyRef]) || (method.getDeclaringClass == classOf[Closeable])) {
+      if ((method.getDeclaringClass == classOf[BindingProvider]) || (method.getDeclaringClass == classOf[AnyRef]) || (method.getDeclaringClass == classOf[
+            Closeable
+          ])) {
         return method.invoke(this, params: _*)
       } else if (method.getDeclaringClass.isInstance(client)) {
         return method.invoke(client, params: _*)
@@ -176,7 +193,9 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
       } else if (returnType == classOf[CompletionStage[_]]) {
         invokePlayJavaFuture(method, oi, params)
       } else {
-        throw new WebServiceException(s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or java.util.concurrent.CompletionStage")
+        throw new WebServiceException(
+          s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or java.util.concurrent.CompletionStage"
+        )
       }
     } catch {
       case wex: WebServiceException => throw wex
@@ -202,8 +221,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
             val exception = new SOAPFaultException(soapFault)
             if (ex.isInstanceOf[Fault] && ex.getCause != null) {
               exception.initCause(ex.getCause)
-            }
-            else {
+            } else {
               exception.initCause(ex)
             }
             throw exception
@@ -217,7 +235,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     }
 
     val respContext = client.getResponseContext
-    val scopes = CastUtils.cast(respContext.get(WrappedMessageContext.SCOPES).asInstanceOf[JMap[_, _]])
+    val scopes      = CastUtils.cast(respContext.get(WrappedMessageContext.SCOPES).asInstanceOf[JMap[_, _]])
     if (scopes != null) {
       import scala.collection.JavaConverters._
       for (scope <- scopes.entrySet.asScala) {
@@ -236,19 +254,23 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
       case parameterized: ParameterizedType =>
         parameterized.getActualTypeArguments.headOption match {
           case Some(clazz) if clazz == classOf[Unit] => ()
-          case _ => null
+          case _                                     => null
         }
       case _ => null
     }
 
-    val promise = Promise[Any]()
+    val promise  = Promise[Any]()
     val callback = new PlayJaxwsClientCallback(promise, noResponseValue)
     client.invoke(callback, oi, params: _*)
     promise.future
   }
 
-  private def invokePlayJavaFuture(method: Method, oi: BindingOperationInfo, params: Array[AnyRef]): CompletionStage[Any] = {
-    val future: Future[Any] = invokeScalaFuture(method, oi, params)
+  private def invokePlayJavaFuture(
+      method: Method,
+      oi: BindingOperationInfo,
+      params: Array[AnyRef]
+  ): CompletionStage[Any] = {
+    val future: Future[Any]                   = invokeScalaFuture(method, oi, params)
     val playJavaPromise: CompletionStage[Any] = FutureConverters.toJava(future)
     playJavaPromise
   }
