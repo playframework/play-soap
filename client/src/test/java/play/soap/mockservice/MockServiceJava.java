@@ -12,18 +12,16 @@ import java.util.concurrent.CompletionStage;
 @WebService(name = "MockService")
 public interface MockServiceJava {
 
-    CompletionStage<Bar> getBar(Foo foo);
+  CompletionStage<Bar> getBar(Foo foo);
 
-    CompletionStage<Integer> add(int a, int b);
+  CompletionStage<Integer> add(int a, int b);
 
-    CompletionStage<String> multiReturn(Holder<String> part, String toSplit, int index);
+  CompletionStage<String> multiReturn(Holder<String> part, String toSplit, int index);
 
-    CompletionStage<Void> noReturn(String nothing);
+  CompletionStage<Void> noReturn(String nothing);
 
-    @Action(fault = {
-            @FaultAction(className = SomeException.class)
-    })
-    CompletionStage<String> declaredException();
+  @Action(fault = {@FaultAction(className = SomeException.class)})
+  CompletionStage<String> declaredException();
 
-    CompletionStage<String> runtimeException();
+  CompletionStage<String> runtimeException();
 }
