@@ -3,7 +3,8 @@
  */
 addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("1.3.16"))
 
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.0.2")
+addSbtPlugin("org.scalameta"     % "sbt-scalafmt"       % "2.0.2")
+addSbtPlugin("com.lightbend.sbt" % "sbt-java-formatter" % "0.4.4")
 
 // Used for generating docs
 addSbtPlugin("com.typesafe.sbt" %% "sbt-twirl"  % "1.3.15")

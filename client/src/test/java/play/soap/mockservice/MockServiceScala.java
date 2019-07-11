@@ -14,18 +14,16 @@ import scala.concurrent.Future;
 @WebService(name = "MockService")
 public interface MockServiceScala {
 
-    public Future<Bar> getBar(Foo foo);
+  public Future<Bar> getBar(Foo foo);
 
-    public Future<Integer> add(int a, int b);
+  public Future<Integer> add(int a, int b);
 
-    public Future<String> multiReturn(Holder<String> part, String toSplit, int index);
+  public Future<String> multiReturn(Holder<String> part, String toSplit, int index);
 
-    public Future<Unit> noReturn(String nothing);
+  public Future<Unit> noReturn(String nothing);
 
-    @Action(fault = {
-            @FaultAction(className = SomeException.class)
-    })
-    public Future<String> declaredException();
+  @Action(fault = {@FaultAction(className = SomeException.class)})
+  public Future<String> declaredException();
 
-    public Future<String> runtimeException();
+  public Future<String> runtimeException();
 }
