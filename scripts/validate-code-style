@@ -4,6 +4,9 @@
 
 . "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/scriptLib"
 
+printMessage "VALIDATE FILE HEADERS"
+sbt +headerCheck +test:headerCheck
+
 printMessage "VALIDATE SCALA CODE FORMATTING"
 sbt scalafmtAll scalafmtSbt
 git diff --exit-code || (
