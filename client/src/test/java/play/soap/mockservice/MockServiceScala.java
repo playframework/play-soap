@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
-
 package play.soap.mockservice;
 
 import scala.Unit;
