@@ -3,7 +3,9 @@
  */
 package play.soap
 
-import java.lang.reflect.{Method, ParameterizedType, Type}
+import java.lang.reflect.Method
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 import org.apache.cxf.wsdl.service.factory.AbstractServiceConfiguration
 import java.util.concurrent.CompletionStage
@@ -34,11 +36,11 @@ private[soap] class PlayServiceConfiguration extends AbstractServiceConfiguratio
   override def hasOutMessage(m: Method) = {
     m.getGenericReturnType match {
       case future: ParameterizedType
-        if future.getRawType == classOf[Future[_]] ||
-          future.getRawType == classOf[CompletionStage[_]] =>
+          if future.getRawType == classOf[Future[_]] ||
+            future.getRawType == classOf[CompletionStage[_]] =>
         future.getActualTypeArguments.headOption match {
           case Some(unit) if unit == classOf[Unit] || unit == classOf[Void] => FALSE
-          case _ => null
+          case _                                                            => null
         }
       case _ => null
     }

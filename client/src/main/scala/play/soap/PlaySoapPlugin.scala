@@ -3,14 +3,19 @@
  */
 package play.soap
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
+import javax.inject.Singleton
 import javax.xml.namespace.QName
-import javax.xml.ws.handler.{MessageContext, Handler}
+import javax.xml.ws.handler.MessageContext
+import javax.xml.ws.handler.Handler
 
 import org.apache.cxf.BusFactory
-import org.apache.cxf.interceptor.{LoggingOutInterceptor, LoggingInInterceptor}
+import org.apache.cxf.interceptor.LoggingOutInterceptor
+import org.apache.cxf.interceptor.LoggingInInterceptor
 import org.apache.cxf.transport.ConduitInitiatorManager
-import org.apache.cxf.transport.http.asyncclient.{AsyncHTTPConduitFactory, AsyncHTTPConduit, AsyncHttpTransportFactory}
+import org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduitFactory
+import org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduit
+import org.apache.cxf.transport.http.asyncclient.AsyncHttpTransportFactory
 import play.api._
 import play.api.inject.ApplicationLifecycle
 
@@ -21,13 +26,14 @@ import scala.reflect.ClassTag
 /**
  * Abstract plugin extended by all generated SOAP clients.
  */
-abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
+abstract class PlaySoapClient @Inject()(apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
 
-  private lazy val config = Configuration(configuration.underlying.getConfig("play.soap"))
-  private lazy val serviceConfig = config.getOptional[Configuration]("services." + this.getClass.getName)
+  private lazy val config                  = Configuration(configuration.underlying.getConfig("play.soap"))
+  private lazy val serviceConfig           = config.getOptional[Configuration]("services." + this.getClass.getName)
   private def portConfig(portName: String) = serviceConfig.flatMap(_.getOptional[Configuration]("ports." + portName))
   private def readConfig[T](portName: String, read: Configuration => Option[T], default: T): T = {
-    portConfig(portName).flatMap(read)
+    portConfig(portName)
+      .flatMap(read)
       .orElse(serviceConfig.flatMap(read))
       .orElse(read(config))
       .getOrElse(default)
@@ -42,7 +48,12 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
    * @param handlers The handlers to use
    * @return The port
    */
-  protected def createPort[T](qname: QName, portName: String, defaultAddress: String, handlers: Handler[_ <: MessageContext]*)(implicit ct: ClassTag[T]): T = {
+  protected def createPort[T](
+      qname: QName,
+      portName: String,
+      defaultAddress: String,
+      handlers: Handler[_ <: MessageContext]*
+  )(implicit ct: ClassTag[T]): T = {
 
     val factory = createFactory
 
@@ -72,7 +83,7 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
  * Configures and manages the lifecycle of an Apache CXF bus
  */
 @Singleton
-class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
+class ApacheCxfBus @Inject()(lifecycle: ApplicationLifecycle) extends Logging {
 
   private lazy val asyncTransport = new AsyncHttpTransportFactory
   private[soap] lazy val bus = {
@@ -114,4 +125,3 @@ class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
 }
 
 private case class PortConfig(namespace: QName, address: Option[String], debugLog: Boolean)
-

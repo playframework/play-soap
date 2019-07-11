@@ -9,11 +9,13 @@ package play.soap.sbtplugin
 object Version {
 
   private lazy val versionProps = {
-    val props = new java.util.Properties
+    val props  = new java.util.Properties
     val stream = getClass.getClassLoader.getResourceAsStream("play-soap.version.properties")
-    try { props.load(stream) }
-    catch { case e: Exception => }
-    finally { if (stream ne null) stream.close() }
+    try {
+      props.load(stream)
+    } catch { case e: Exception => } finally {
+      if (stream ne null) stream.close()
+    }
     props
   }
 

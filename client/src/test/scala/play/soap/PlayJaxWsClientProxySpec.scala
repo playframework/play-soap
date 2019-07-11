@@ -5,13 +5,15 @@ package play.soap
 
 import java.net.ServerSocket
 import java.util.concurrent.CompletionStage
-import javax.xml.ws.{Endpoint, Holder}
+import javax.xml.ws.Endpoint
+import javax.xml.ws.Holder
 
 import org.apache.cxf.jaxws.EndpointImpl
 import org.specs2.mutable.Specification
 import play.soap.mockservice._
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Await
+import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 import org.apache.cxf.binding.soap.SoapFault
@@ -38,7 +40,7 @@ class PlayJaxWsClientProxySpec extends Specification {
 
       "allow calling a method with multiple return types" in withScalaClient { client =>
         val second = new Holder[String]
-        val first = await(client.multiReturn(second, "hello", 2))
+        val first  = await(client.multiReturn(second, "hello", 2))
         first must_== "he"
         second.value must_== "llo"
       }
@@ -77,7 +79,7 @@ class PlayJaxWsClientProxySpec extends Specification {
 
       "allow calling a method with multiple return types" in withJavaClient { client =>
         val second = new Holder[String]
-        val first = await(client.multiReturn(second, "hello", 2))
+        val first  = await(client.multiReturn(second, "hello", 2))
         first must_== "he"
         second.value must_== "llo"
       }
@@ -110,7 +112,7 @@ class PlayJaxWsClientProxySpec extends Specification {
 
   def withJavaClient[T](block: MockServiceJava => T): T = withClient(block)
 
-  def withClient[T, S](block: S => T)(implicit serviceClass: ClassTag[S]): T =  withService { port =>
+  def withClient[T, S](block: S => T)(implicit serviceClass: ClassTag[S]): T = withService { port =>
     val factory = new PlayJaxWsProxyFactoryBean
     factory.setServiceClass(serviceClass.runtimeClass)
     factory.setAddress(s"http://localhost:$port/mockService")
@@ -119,7 +121,7 @@ class PlayJaxWsClientProxySpec extends Specification {
   }
 
   def withService[T](block: Int => T): T = {
-    val port = findAvailablePort()
+    val port     = findAvailablePort()
     val endpoint = Endpoint.publish(s"http://localhost:$port/mockService", new MockServiceImpl)
     try {
       block(port)

@@ -46,4 +46,3 @@ class PlayClientGenerator extends ServiceGenerator with PlayGenerator {
     }
   }
 }
-
