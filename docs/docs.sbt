@@ -51,14 +51,3 @@ LessKeys.compress := true
 pipelineStages := Seq(uglify)
 
 watchSources ++= (sources in generateDocs).value
-
-publish := {
-  import sys.process._
-
-  val stageDir = WebKeys.stage.value.getAbsolutePath
-  println("Syncing files with S3")
-  val rc = s"s3cmd sync --guess-mime-type --delete-removed $stageDir/ s3://downloads.typesafe.com/rp/play-soap/".!!
-  if (rc != 0) {
-    throw new FeedbackProvidedException {}
-  }
-}
