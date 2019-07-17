@@ -21,7 +21,7 @@ import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.soap.testservice.HelloWorldImpl
 
-object HelloWorldSpec extends ServiceSpec {
+class HelloWorldSpec extends ServiceSpec {
 
   sequential
 

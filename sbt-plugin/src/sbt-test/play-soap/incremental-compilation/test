@@ -9,7 +9,7 @@ $ exists target/wsdl/main/sources/play/soap/testservice/HelloWorldService.scala
 $ touch target/change1
 $ sleep 1100
 > products
-> newer target/change1 target/wsdl/main/sources/play/soap/testservice/HelloWorldService.scala
+$ newer target/change1 target/wsdl/main/sources/play/soap/testservice/HelloWorldService.scala
 
 # Try changing the file, and make sure it's recompiled
 > replace src/main/wsdl/helloWorld.wsdl HelloWorldService MyHelloWorldService
@@ -23,7 +23,7 @@ $ touch target/change2
 $ sleep 1100
 > products
 $ exists target/wsdl/main/sources/play/soap/testservice2/HelloWorldService.scala
-> newer target/change2 target/wsdl/main/sources/play/soap/testservice/MyHelloWorldService.scala
+$ newer target/change2 target/wsdl/main/sources/play/soap/testservice/MyHelloWorldService.scala
 
 # Remove it, make sure it gets removed
 $ delete src/main/wsdl/helloWorld2.wsdl

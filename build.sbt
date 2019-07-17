@@ -2,12 +2,13 @@
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
 
+import Dependencies.Versions
 import de.heikoseeberger.sbtheader.FileType
 import interplay.ScalaVersions._
 
 val commonSettings = Seq(
   scalaVersion := scala212,
-  crossScalaVersions := Seq(scala212),
+  crossScalaVersions := Seq("2.11.12", scala212, scala213),
   headerEmptyLine := false,
   headerLicense := Some(
     HeaderLicense.Custom(
@@ -32,27 +33,27 @@ lazy val client = project
   .settings(commonSettings: _*)
   .settings(
     name := "play-soap-client",
-    libraryDependencies ++= Common.clientDeps,
-    resolvers += "Scalaz Bintray Repo".at("https://dl.bintray.com/scalaz/releases"),
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+    Dependencies.`play-client`,
   )
 
 lazy val plugin = project
   .in(file("sbt-plugin"))
-  .enablePlugins(PlaySbtPlugin)
+  .enablePlugins(PlaySbtPlugin, SbtPlugin)
   .settings(commonSettings: _*)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
-    libraryDependencies ++= Common.pluginDeps,
-    addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Common.PlayVersion),
+    Dependencies.plugin,
+    crossScalaVersions := Seq(scala212),
+    addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
     resourceGenerators in Compile += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
       s"-Dscala.version=${scalaVersion.value}",
+      s"-Dscala.crossVersions=${(crossScalaVersions in client).value.mkString(",")}",
       s"-Dproject.version=${version.value}",
-      s"-Dcxf.version=${Common.CxfVersion}",
-      s"-Dplay.version=${Common.PlayVersion}"
+      s"-Dcxf.version=${Versions.CXF}",
     ),
+    scriptedBufferLog := false,
     scriptedDependencies := {
       val () = publishLocal.value
       val () = (publishLocal in client).value
@@ -65,6 +66,7 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(PlayNoPublish)
   .settings(commonSettings: _*)
   .settings(
+    crossScalaVersions := Seq(scala212),
     headerMappings := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
     headerSources.in(Compile) ++= sources.in(Compile, TwirlKeys.compileTemplates).value,
     WebKeys.pipeline ++= {

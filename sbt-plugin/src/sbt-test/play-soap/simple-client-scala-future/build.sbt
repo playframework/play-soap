@@ -1,7 +1,8 @@
 /*
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
-scalaVersion := sys.props.getOrElse("scala.version", "2.11.11")
+scalaVersion := sys.props("scala.version")
+crossScalaVersions := sys.props("scala.crossVersions").split(",").toSeq
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -18,7 +19,7 @@ libraryDependencies ++= Seq(
 scalaSource in Test := baseDirectory.value / "tests"
 
 TaskKey[Unit]("checkServiceClients") := {
-  val path = crossTarget.value / "wsdl" / "main" / "sources" / "play" / "soap" / "testservice" / "client"
+  val path = target.value / "wsdl" / "main" / "sources" / "play" / "soap" / "testservice" / "client"
   val tests: Seq[(String, String)] = Seq(
     ("HelloWorldService.scala", "createPort[HelloWorld](new QName(\"http://testservice.soap.play/\"), \"HelloWorld\", \"http://localhost:53915/helloWorld\")"),
     ("PrimitivesService.scala", "createPort[Primitives](new QName(\"http://testservice.soap.play/primitives\"), \"Primitives\", \"http://localhost:53916/primitives\")")
