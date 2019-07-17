@@ -58,7 +58,7 @@ object Imports {
       def fqn: String
 
       /**
-       * The type that the future returns if the methed returns void
+       * The type that the future returns if the method returns void
        */
       def voidType: String
     }
@@ -80,14 +80,14 @@ object Imports {
     }
 
     /**
-     * A task for wsdltocode to run
+     * A task for wsdl2code to run
      *
      * @param url The url of the WSDL
      * @param futureApi The future API to use
      * @param packageName The name of the package to generate into, if overriding is desired
      * @param packageMappings Mappings of namespaces to package names to se
      * @param serviceName The name of the service to generate
-     * @param args Any additional args for wsdltocode
+     * @param args Any additional args for wsdl2code
      */
     case class WsdlTask(
         url: URL,
@@ -142,7 +142,7 @@ object SbtWsdl extends AutoPlugin {
       )
       .value,
     watchSources in Defaults.ConfigGlobal ++= (sources in wsdlToCode).value,
-    target in wsdlToCode := crossTarget.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
+    target in wsdlToCode := target.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
     wsdlTasks := wsdlTasksTask.value,
     wsdlToCode := wsdlToCodeTask.value,
     sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,

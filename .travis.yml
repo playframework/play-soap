@@ -9,12 +9,12 @@ env:
 
 script:
   # Code validations
-  - scripts/validate-code-style
-  - sbt +test
-  - sbt +publishLocal
-  - sbt plugin/scripted
+  - scripts/validate-code-style || travis_terminate 1;
+  - sbt +test || travis_terminate 1;
+  - sbt +publishLocal || travis_terminate 1;
+  - sbt plugin/scripted || travis_terminate 1;
   # Generate documentation
-  - sbt docs/webStage
+  - sbt docs/webStage || travis_terminate 1;
 
 deploy:
   # Publishing documentation
