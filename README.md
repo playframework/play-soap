@@ -104,4 +104,4 @@ To deploy the docs, cd into the the `docs/target/web/stage` directory, create a 
 
 The Play Soap library is *[Community Driven][]*.
 
-[Community Driven]: https://developer.lightbend.com/docs/reactive-platform/2.0/support-terminology/index.html#community-driven
+[Community Driven]: https://developer.lightbend.com/docs/lightbend-platform/introduction/getting-help/support-terminology.html#community-driven
