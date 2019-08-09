@@ -24,7 +24,7 @@ deploy:
     local_dir: docs/target/web/stage
     target_branch: gh-pages
     on:
-      tags: true
+      branch: master
 
 cache:
   directories:
