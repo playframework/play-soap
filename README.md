@@ -21,7 +21,7 @@ To install sbt WSDL into your Play project, add the following lines to your `pro
 ```scala
 resolvers += Resolver.url("play-sbt-plugins", url("https://dl.bintray.com/playframework/sbt-plugin-releases/"))(Resolver.ivyStylePatterns)
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.3")
+addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.1.4")
 ```
 
 For more information about how to use Play SOAP, see the [documentation](https://playframework.github.io/play-soap/Home.html).
