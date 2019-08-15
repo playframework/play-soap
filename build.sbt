@@ -54,10 +54,7 @@ lazy val plugin = project
       s"-Dcxf.version=${Versions.CXF}",
     ),
     scriptedBufferLog := false,
-    scriptedDependencies := {
-      val () = publishLocal.value
-      val () = (publishLocal in client).value
-    }
+    scriptedDependencies := { () }
   )
 
 lazy val docs = (project in file("docs"))
@@ -101,3 +98,5 @@ playBuildRepoName in ThisBuild := "play-soap"
 playBuildExtraPublish := {
   (PgpKeys.publishSigned in plugin).value
 }
+
+dynverVTagPrefix in ThisBuild := false
