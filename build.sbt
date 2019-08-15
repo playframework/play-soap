@@ -7,6 +7,7 @@ import de.heikoseeberger.sbtheader.FileType
 import interplay.ScalaVersions._
 
 val commonSettings = Seq(
+  organization := "org.taymyr.play", // TODO: remove after successfully tests
   scalaVersion := scala212,
   crossScalaVersions := Seq("2.11.12", scala212, scala213),
   headerEmptyLine := false,
@@ -42,7 +43,8 @@ lazy val plugin = project
   .settings(commonSettings: _*)
   .settings(
     name := "sbt-play-soap",
-    organization := "com.typesafe.sbt",
+    organization := "org.taymyr.sbt", // TODO: remove after successfully tests
+//    organization := "com.typesafe.sbt",
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
@@ -100,3 +102,11 @@ playBuildExtraPublish := {
 }
 
 dynverVTagPrefix in ThisBuild := false
+dynverSonatypeSnapshots in ThisBuild := true
+
+credentials in ThisBuild += Credentials(
+  "Sonatype Nexus Repository Manager",
+  "oss.sonatype.org",
+  sys.env.get("SONATYPE_USER").orNull,
+  sys.env.get("SONATYPE_PASS").orNull
+)

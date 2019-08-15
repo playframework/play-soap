@@ -26,6 +26,15 @@ deploy:
     on:
       branch: master
 
+  # Publishing snapshot artifacts
+  - provider: script
+    skip_cleanup: true
+    script: scripts/publish-snapshots
+    on:
+      branch: snapshots # TODO: after successfully tests change to master before to merge
+      # branch: master
+      tags: false # Disable publishing for release tags
+
 cache:
   directories:
   - $HOME/.jabba/jdk
