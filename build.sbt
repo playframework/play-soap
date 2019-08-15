@@ -100,3 +100,11 @@ playBuildExtraPublish := {
 }
 
 dynverVTagPrefix in ThisBuild := false
+dynverSonatypeSnapshots in ThisBuild := true
+
+credentials in ThisBuild += Credentials(
+  "Sonatype Nexus Repository Manager",
+  "oss.sonatype.org",
+  sys.env.get("SONATYPE_USER").orNull,
+  sys.env.get("SONATYPE_PASS").orNull
+)

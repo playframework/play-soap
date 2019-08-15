@@ -1,5 +1,8 @@
 language: scala
 
+git:
+  depth: false # Avoid sbt-dynver not seeing the tag
+
 before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
 install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
 env:
@@ -24,6 +27,14 @@ deploy:
     target_branch: gh-pages
     on:
       branch: master
+
+  # Publishing snapshot artifacts
+  - provider: script
+    skip_cleanup: true
+    script: scripts/publish-snapshots
+    on:
+      branch: master
+      tags: false # Disable publishing for release tags
 
 cache:
   directories:
