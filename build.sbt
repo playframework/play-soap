@@ -3,10 +3,22 @@
  */
 
 import Dependencies.Versions
+import com.jsuereth.sbtpgp.PgpKeys.gpgCommand
 import de.heikoseeberger.sbtheader.FileType
 import interplay.ScalaVersions._
 
+version in ThisBuild := "1.1.4.1" // TODO: remove before merge
+isSnapshot in ThisBuild := false  // TODO: remove before merge
+
+val gpgSettings = Seq(
+  useGpgAgent := true,
+  useGpgPinentry := true,
+  usePgpKeyHex("76DFD6F9") // TODO: change to Lightbend key id before merge
+) ++ sys.env.get("TRAVIS").map( _ => gpgCommand in Global := "gpg2" )
+
 val commonSettings = Seq(
+  organization := "org.taymyr.play",   // TODO: remove before merge
+  sonatypeProfileName := "org.taymyr", // TODO: remove before merge
   scalaVersion := scala212,
   headerEmptyLine := false,
   headerLicense := Some(
@@ -14,7 +26,7 @@ val commonSettings = Seq(
       "Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
     )
   )
-)
+) ++ gpgSettings
 
 lazy val root = project
   .in(file("."))
@@ -43,7 +55,9 @@ lazy val plugin = project
   .settings(commonSettings: _*)
   .settings(
     name := "sbt-play-soap",
-    organization := "com.typesafe.sbt",
+//    organization := "com.typesafe.sbt", // TODO: uncomment before merge
+    organization := "org.taymyr.sbt",      // TODO: remove before merge
+    bintrayOrganization := Some("taymyr"), // TODO: remove before merge
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
@@ -55,7 +69,7 @@ lazy val plugin = project
       s"-Dcxf.version=${Versions.CXF}",
     ),
     scriptedBufferLog := false,
-    scriptedDependencies := { () }
+    scriptedDependencies := (())
   )
 
 lazy val docs = (project in file("docs"))
@@ -93,20 +107,7 @@ def generateVersionFile =
     Seq(file)
   }
 
-lazy val scriptedTask = TaskKey[Unit]("scripted-task")
-
 playBuildRepoName in ThisBuild := "play-soap"
-
-playBuildExtraPublish := {
-  (PgpKeys.publishSigned in plugin).value
-}
 
 dynverVTagPrefix in ThisBuild := false
 dynverSonatypeSnapshots in ThisBuild := true
-
-credentials in ThisBuild += Credentials(
-  "Sonatype Nexus Repository Manager",
-  "oss.sonatype.org",
-  sys.env.get("SONATYPE_USER").orNull,
-  sys.env.get("SONATYPE_PASS").orNull
-)

@@ -9,18 +9,48 @@ env:
   matrix:
     - TRAVIS_JDK=8
   global:
+    # NOTE: Very important don't forget about escaping symbols.
+    # See https://docs.travis-ci.com/user/encryption-keys#note-on-escaping-certain-symbols
+
     # GITHUB_TOKEN needs for publishing documentation to GitHub Pages. See https://docs.travis-ci.com/user/deployment/pages/
-    # travis encrypt --pro GITHUB_TOKEN="***"
+    # travis encrypt --pro GITHUB_TOKEN="*****"
     - secure: "TzcfXRgEhmMPG8EH5RBlOa6YJ6HnYdQYAJ7OIEu84ig/b5d/vodkTW0uy7n+nqUb9HyXBs3dlE/Yfi1LHDUy/UVtmvCXZcvywduW64K38m1hG3M2jZ3TIG9Id5jAufMg6Z734wzH1v2tIG0zrZtcq05lXPzKFLutPOsdbYgUwKH8liBzRMGs/UlqnxVdTWLrL43hPoTQBIPT99g9/wja+dXnvE1+aRoiMI4VWGumhRdijoX/69gKjnSgwPBrksU7AZkm3k+UDtg2r/+To95aaCj95AanUUjiNWR+gbeTB81DhzTyqccqw5Kl4nP2gJkOLFNenfcRHSY7V2M1oiGcnWmTCEW5pj2lAEUpDiqeqTSZYme1XZPPfwHlXsu3Pyx/GZ+hwRvpbAHR4I+4jyDH+mQRZ+C4dNx6s2QjYah/rnmv9uZ8TpnZ7MNqWIH/wP6VSf8ouC5PqO0i8GVqYfT0kp0LCme3M++OZipC+8xRzXKJLDxl2Mi3h34f1rtQQkJsn0ff4qRcnmXvhCLOa0szgL849ebVcHXCC5WkYVYg7wxdHbxH0e/kl2ujun19cl6Sh1YBkTNiwK60TOJO/W4JGNuQRXPAiuo+9nX/3oipl5mfN7Uda3u4kcOMyDexc5+oBFUsstfR2lSaemcpWgSbmJskJ0X4d3LSOdoShgR4xG4="
 
+    # Settings for publishing artifacts to Bintray. See https://github.com/sbt/sbt-bintray
+    # NOTE: BINTRAY_USER is a username on Bintray, not email.
+    # travis encrypt --pro BINTRAY_USER="*****"
+    - secure: "DoWBSVJVeHBDYP6RmWril+2S3hx0s+HS+Q97/FBevXUD3zn+3Gr8FoxFs+Mk5lstu7nDLEMnRfdOQ9Jvxa2cP4V1qo98oHK3W3wXChLYvqo4D9lB48jU9lVrwvdXNBG7F1KT2mlraaaeSKyAXh9m2KsY1wUITcoTrG0eMC2x7TsIiEZ2vXRkW5AkS9LlqJ9RV7yxqJq+yHQQJF8aTfwXefCO5Z7wiQAlwWMJkmI3gzwzLJtD7ST1bpH9OsA2iBYBEcXOljWcBAv60GsrhP+2R+aVcJ+hzVzdIor+tiXdf2T2gGCAzoaps9GKIFAIgDvtGk0h6aP/9YCWzZqEJoqM1Ycy6iS3MXl4y6RNAxlLLCiJxn12RsJKVVw5qfHUmW4aqxMrby9EEkmaTW6Y4sEXrCThp4vGLyr3MLvBHXHgkjN2TDSzr0A80rsENvVPXCy1+qSC0UKgKg+woV7fYFkd9O/8JuhqmX5kEvxoWWtFhphtgfzof/U9XNcX9WIhCbD1BIwahjfYpYTl7+Mi9HcZvbQ58GsuEwnwoaeNx8V+M7zpFbzXK+dhF/Q/+1MikVAqa/7Kr/iVsNg3UfW7IFKTItO0r9z7h12Nh1SVIBgjfnMEwjmKWYs2oXrkmWjNt47qVFZR+6MghtN/TOmqx0Ob/mvvWkAamaX105F2ygYSodg="
+    # NOTE: BINTRAY_PASS is a API Key, not password. See https://www.jfrog.com/confluence/display/BT/Uploading#Uploading-GettingyourAPIKey
+    # travis encrypt --pro BINTRAY_PASS="*****"
+    - secure: "bv5CdDW8ddIGzEGJ79MktuyNueWQ7knsqgLlCFqhkSbpZ7qG/TKMPJEXxaoH6B/uIHVHrJd1bj5XaprErdqGzkB5LVmbBYakWwJTIhTSbixA0e93q40PSTCwecgxQLH2/UWz+Lyp/2dBLzMVu7mx74BJTAhf7hCEnC4Xq9Xp9y+eiQmiSwOqc2+/kV38oC3rpQstXPyW+u3KU164FmEmxgy7E1TzPCqc6BwDfeo3ud8n+6R91eMK5FAygmRNZpejFs2FHNmGwqjfkG1R9N5kHVtul/C9LAT7/TTqViedWI9qkSXrXH2Ojj9MuA6lwsPYqJbT2qvrcBzQ4ri2Uh/XqZwt0LMX1eiA+Wf55tYiTnspSg559oaLm0WWHnValaGhJOGovdGGu0H9cWdT44ZPV3Y9UPxER+56D//wgOHFb74fgp2dTl7Syx/FAPRuR2eB/RphIG9E92p6wBE+yThznjXcq/Vvyp340ptpUkzw/u/gA+8Irzi/Xu8F2pmCt06jJQQvm1GBdfSh7TJQXYIP4HL5FZX4dskt37d77pYaVVX9GZx/tHNoothRBhdmQXbGmfKQINZ+5fN0utx3yN1gwzdmDIZgpVNaAE0O4m+nDtVVylreMiKY7kz2OFGA14Ttu23nMrkzzoLumqsfv0wSSeEFDG0Vg1gAdK4XKz+mAzk="
+
+    # Settings for signing artifacts. See https://github.com/sbt/sbt-pgp
+    # travis encrypt --pro PGP_PASSPHRASE="*****"
+    - secure: "ocu2t8VXRKIhz3RXtvghx32wtUC7qMJPOBG7YxKSN4vOh/T/sGEDTOJ6zfMieMcTte4wcqOFpgKZZ8KIXyb9yX3LyNAFhuD1zjZBwmlB/QMP15kvotJNuDcCEo99xrZD7TeKCSlf3MdhSKI7kIW5cmpK8zB4bayz0umrXojGY3iow9fE+P8fs6wOA2tmizDcSrWlCxtGOivBWEmFB2vyLZupfF4+Zcg+CTMuF0r5Vh1PANtPhrWJiIzJc4mI1SfRvpjJzsdXri9hjJrRKU7axwe9DQc1yMiKox4yVo7NNTB5xU8kTUktVbsmJlWwELBkXcSthdI4+8uV5Ea0mPLLwcEDcglhkxmbySxyusHd3Z3X6sEs+GO11EQj3T1MsV5hIZ40uHvcxM/w+xIDJu0V5aMR4TGlCmi4GQkH+Tl/35LZMMKEuMk9zUxw4Pc0KDzuAsG8Kxu70iYHvlRGXdldtgB+JUwpt5sdP++BkAZBP4LavY3GqCBbV0Fq4q+zLRCxellN2AWO3KUSlhEGvROPD+awJPVEReK/wrXPUkEoFDbowKIVLaHvtREe966PRrYU9HXvgmLHpOuIgYKxFFepax5Cl2oCmMnPGXZTlmzFrb4YH2XHrBPtjf0SA8Qkb8BRMwa3k0RrKRsKJ76dBG7SPDTik6Mv9hp5dFYmY6sAad8="
+    # travis env set --pro PGP_SECRET "$(gpg --armor --export-secret-keys <KEY_ID> | base64)"
+    # KEY_ID should be set in gpgSettings (build.sbt) as parameter of `usePgpKeyHex`
+
+    # Settings for publishing artifacts to Sonatype. See https://github.com/xerial/sbt-sonatype
+    # travis encrypt --pro SONATYPE_USERNAME="*****"
+    - secure: "fLg+3y+SrKK9b8hhpTSB+tJAKac1a3kEl7yczOOQmsYEw0KBJyCmsR3IKgTTKkbEdNhc5t5Bb/+77aVDsXNJc6xXLIukVzV9G1TelTsUun6ex+lWnbmIPuF4vqJM81E1y0vYZk4ylUZe1Bh/hY7PkO9E4O0RChSyjzKeyyoszHAI4cRjBnCI3PK1nJ9/lbiclA9WPUy4RFgoGt+Zws+UApMq0KKUKJIGswAEgb8RcE0on8Qr2Uaay3yCcGapCuRjF6eNHfpvGuxs58dJNghfuASjNL19Q7glSXWIVdBTjo+kHFtvhTS6LAIfkwMQrEMDYIqOa70VuAj8bg5grjr5HoYxg04lngYtoVkILjqvLrEFaL3MIndjbOzPBnBgnZrvSOq5mqlST/VYouZNRhmafubs9/s1FxSWYwLN85JTYIebVDprj9ihnQDpqpKsTS1pzDhNH2DgP3v+k19VumXfTQrl/YrLARpWgF5rIj2xJWcIrJM9DMQEUOBAmSNZowUB38V/uMJkZ2NSQAiX4yik2ufYb7Y933kdpUtHYxoHTA4ymy8n6sdJMVluxRFpg2t9YjIdO3epBuL4oKk3hiRonV0gMMO4jBDDTu3Z7yYDRTx+tdk9zdbMxinexZ9SZP9ZWnB95L6R66+cNbiJDKrmAwp52YAxKjSOHbUYWxGVBSo="
+    # travis encrypt --pro SONATYPE_PASSWORD="*****"
+    - secure: "GY9j86c1RM68UN6b/+yrDbZ50D/Qbv75uPPznp41xYGF9xRHG4jT90h0xol1maxJj3c2qAateHRxX4hr0LaZROBj+kiUc6utpFHiFA+y2rLX/EBAfAe0f4hG2+9nn5Aewyah4aF+0KMI7HkoyyJXy4ljP5UcNG6X4L8WjmFmLShhUW8+SPZN+o8hFWY/5L0s+saq+L0PTrRnPckc5LXI9/D0RyRBHJuLodYI73fYAzSlZbQn0ikWWWPvmUN+S19bVYUQwvSBt6k/mZMal5ZKwTMpkQQHtjFxh68WWvo8gawe8fwUMMPJhy0yJBPuqRI1H5HWYiE2M9uRreg0hzVuaxFgmGvmkFZL9CYcU+A9juWUBJCA5CLW/VPQUHciWsmlbL/Lsvnc7QPRegV72C/HRwrtgKUY/7O3f5ngRbbZAsqfLAhoB3r0PAry7GQD1OJ5HlYOI1X9ySFI2jGusY0rd7yJEkP2SGHMbJMDDuyDAaXdy203PzJ1x9z/SOremQgUi99HnvNI8jXcaz+qCiqJGpyZl1aYy5UlfysXWt8LTY76tdQV3RmLw93Oin17LXSKN6H2mf8TgEl9EGURARATyphNSExDIWfe9yet/HMslg6ST5O6j4srP+vndZy2Xj/FagBsGRTnAUSAW1B/YKwjJJWf4/1SDEOge9bZEcwUqD0="
+
+
 script:
+  - echo "skip scipts" # TODO: remove before merge
   # Code validations
-  - scripts/validate-code-style || travis_terminate 1;
-  - sbt +test || travis_terminate 1;
-  - sbt +publishLocal || travis_terminate 1;
-  - sbt plugin/scripted || travis_terminate 1;
+#  - scripts/validate-code-style || travis_terminate 1; TODO: uncomment before merge
+#  - sbt +test || travis_terminate 1; TODO: uncomment before merge
+#  - sbt +publishLocal || travis_terminate 1; TODO: uncomment before merge
+#  - sbt plugin/scripted || travis_terminate 1; TODO: uncomment before merge
   # Generate documentation
-  - sbt docs/webStage || travis_terminate 1;
+#  - sbt docs/webStage || travis_terminate 1; TODO: uncomment before merge
+
+before_deploy:
+  # Configure GPG
+  - echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+  - echo $PGP_SECRET | base64 --decode | gpg2 --import --no-tty --batch --yes
 
 deploy:
   # Publishing documentation
@@ -39,6 +69,14 @@ deploy:
     on:
       branch: master
       tags: false # Disable publishing for release tags
+
+  # Publishing release artifacts
+  - provider: script
+    skip_cleanup: true
+    script: scripts/publish-release
+    on:
+      branch: releases # TODO: remove before to merge
+#      tags: true  TODO: uncomment before merge
 
 cache:
   directories:

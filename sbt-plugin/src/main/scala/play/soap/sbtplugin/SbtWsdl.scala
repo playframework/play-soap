@@ -172,7 +172,8 @@ object SbtWsdl extends AutoPlugin {
   def dependencySettings: Seq[Setting[_]] =
     Seq(
       playSoapVersion := Version.clientVersion,
-      libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value
+//      libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value // TODO: uncomment before merge
+      libraryDependencies += "org.taymyr.play" %% "play-soap-client" % playSoapVersion.value // TODO: remove before merge
     )
 
   private def wsdlTasksTask =
