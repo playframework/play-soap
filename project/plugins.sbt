@@ -5,7 +5,7 @@ addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.versio
 
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.2.0")
 
-addSbtPlugin("org.scalameta"     % "sbt-scalafmt"       % "2.0.3")
+addSbtPlugin("org.scalameta"     % "sbt-scalafmt"       % "2.0.4")
 addSbtPlugin("com.lightbend.sbt" % "sbt-java-formatter" % "0.4.4")
 addSbtPlugin("com.dwijnand"      % "sbt-dynver"         % "4.0.0")
 
