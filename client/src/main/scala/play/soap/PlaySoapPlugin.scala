@@ -26,7 +26,7 @@ import scala.reflect.ClassTag
 /**
  * Abstract plugin extended by all generated SOAP clients.
  */
-abstract class PlaySoapClient @Inject()(apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
+abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
 
   private lazy val config                  = Configuration(configuration.underlying.getConfig("play.soap"))
   private lazy val serviceConfig           = config.getOptional[Configuration]("services." + this.getClass.getName)
@@ -83,7 +83,7 @@ abstract class PlaySoapClient @Inject()(apacheCxfBus: ApacheCxfBus, configuratio
  * Configures and manages the lifecycle of an Apache CXF bus
  */
 @Singleton
-class ApacheCxfBus @Inject()(lifecycle: ApplicationLifecycle) extends Logging {
+class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
 
   private lazy val asyncTransport = new AsyncHttpTransportFactory
   private[soap] lazy val bus = {
