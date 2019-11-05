@@ -27,7 +27,6 @@ import scala.reflect.ClassTag
  * Abstract plugin extended by all generated SOAP clients.
  */
 abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configuration: Configuration) {
-
   private lazy val config                  = Configuration(configuration.underlying.getConfig("play.soap"))
   private lazy val serviceConfig           = config.getOptional[Configuration]("services." + this.getClass.getName)
   private def portConfig(portName: String) = serviceConfig.flatMap(_.getOptional[Configuration]("ports." + portName))
@@ -54,7 +53,6 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
       defaultAddress: String,
       handlers: Handler[_ <: MessageContext]*
   )(implicit ct: ClassTag[T]): T = {
-
     val factory = createFactory
 
     if (readConfig(portName, _.getOptional[Boolean]("debugLog"), false)) {
@@ -84,10 +82,8 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
  */
 @Singleton
 class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
-
   private lazy val asyncTransport = new AsyncHttpTransportFactory
   private[soap] lazy val bus = {
-
     val bus = BusFactory.newInstance.createBus
 
     // Although Apache CXF will automatically select the async http transport conduit, we want to ensure that it will
@@ -121,7 +117,6 @@ class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
 
     Future.successful(())
   }
-
 }
 
 private case class PortConfig(namespace: QName, address: Option[String], debugLog: Boolean)

@@ -2,7 +2,6 @@ import sbt.Keys.libraryDependencies
 import sbt._
 
 object Dependencies {
-
   object Versions {
     val CXF  = "3.3.4"
     val Play = "2.7.3"

@@ -149,7 +149,6 @@ private[soap] object PlayJaxWsClientProxy {
 }
 
 private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends ClientProxy(c) with BindingProvider {
-
   setupEndpointAddressContext(getClient.getEndpoint)
   private val builder = new EndpointReferenceBuilder(getClient.getEndpoint.asInstanceOf[JaxWsEndpointImpl])
 

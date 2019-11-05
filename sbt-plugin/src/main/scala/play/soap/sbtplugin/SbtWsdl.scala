@@ -17,12 +17,10 @@ import sbt.plugins.JvmPlugin
  * The imports that the WSDL plugin brings in to all .sbt files
  */
 object Imports {
-
   /**
    * The keys that the WSDL plugin uses
    */
   object WsdlKeys {
-
     val wsdlUrls  = SettingKey[Seq[URL]]("wsdlUrls", "A set of URLs to get the WSDL from.")
     val futureApi = SettingKey[FutureApi]("wsdlFutureApi", "Which Future API to use in generated interfaces.")
 
@@ -51,7 +49,6 @@ object Imports {
      * The future API
      */
     trait FutureApi {
-
       /**
        * The fully qualify class name of the future API
        */
@@ -106,7 +103,6 @@ object Imports {
      */
     case class WsdlTaskResult(sources: Seq[File], plugins: Seq[String])
   }
-
 }
 
 import Imports.WsdlKeys._
@@ -198,7 +194,6 @@ object SbtWsdl extends AutoPlugin {
     import com.typesafe.sbt.web.incremental._
 
     withContextClassLoader {
-
       // The result here is a map of WsdlTask to the plugins that were generated
       val (files, plugins) = syncIncremental[WsdlTask, Map[WsdlTask, Seq[String]]](cacheDir, tasks) { ops =>
         val results = ops.map { task =>
@@ -301,7 +296,6 @@ object SbtWsdl extends AutoPlugin {
     } finally {
       Thread.currentThread.setContextClassLoader(oldClassLoader)
     }
-
   }
 
   private def readResourceProperty(resource: String, property: String): String = {
@@ -314,7 +308,6 @@ object SbtWsdl extends AutoPlugin {
     }
     props.getProperty(property)
   }
-
 }
 
 /**

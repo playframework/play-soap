@@ -21,12 +21,10 @@ import org.apache.cxf.binding.soap.SoapFault
 import scala.compat.java8.FutureConverters
 
 class PlayJaxWsClientProxySpec extends Specification {
-
   sequential
 
   "The client proxy" should {
     "work with a scala client" in {
-
       "allow calling a simple method" in withScalaClient { client =>
         await(client.add(3, 4)) must_== 7
       }
@@ -65,7 +63,6 @@ class PlayJaxWsClientProxySpec extends Specification {
     }
 
     "work with a java client" in {
-
       "allow calling a simple method" in withJavaClient { client =>
         await(client.add(3, 4)) must_== 7
       }

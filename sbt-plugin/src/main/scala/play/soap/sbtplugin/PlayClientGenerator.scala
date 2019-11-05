@@ -13,7 +13,6 @@ import org.apache.cxf.tools.wsdlto.frontend.jaxws.generators.ServiceGenerator
  * Generator for the Play plugin
  */
 class PlayClientGenerator extends ServiceGenerator with PlayGenerator {
-
   override def setCommonAttributes() = {
     super.setCommonAttributes()
     setPlayAttributes()

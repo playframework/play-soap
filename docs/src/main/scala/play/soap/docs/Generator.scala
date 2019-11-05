@@ -16,7 +16,6 @@ import play.doc.PrettifyVerbatimSerializer
 import play.twirl.api.Html
 
 object Generator extends App {
-
   val outDir  = new File(args(0))
   val inDir   = new File(args(1))
   val inPages = args.drop(2)
@@ -54,6 +53,5 @@ object Generator extends App {
     val title       = titleMap.get(name)
     val htmlPage    = html.template(title, nav)(Html(htmlSnippet))
     FileUtils.writeStringToFile(new File(outDir, name + ".html"), htmlPage.body)
-
   }
 }
