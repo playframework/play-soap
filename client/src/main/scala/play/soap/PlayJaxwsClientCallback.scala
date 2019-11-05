@@ -16,7 +16,6 @@ import scala.concurrent.Promise
  * @param noResponseValue If no response comes back, redeem the future with this value
  */
 private[soap] class PlayJaxwsClientCallback(promise: Promise[Any], noResponseValue: Any = null) extends ClientCallback {
-
   override def handleResponse(ctx: util.Map[String, AnyRef], response: Array[AnyRef]) = {
     // If there's no return value, the response will be null
     if (response != null) {

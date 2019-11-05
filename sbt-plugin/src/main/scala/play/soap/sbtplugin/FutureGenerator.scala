@@ -10,7 +10,6 @@ import play.soap.sbtplugin.Imports.WsdlKeys.FutureApi
  * @param futureApi
  */
 class FutureGenerator(futureApi: FutureApi) {
-
   /** Pregenerated type mappings */
   private val mapping: Map[String, String] = Map(
     "void"    -> futureApi.voidType,

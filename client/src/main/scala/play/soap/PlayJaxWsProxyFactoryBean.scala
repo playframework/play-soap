@@ -130,7 +130,6 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
    *         before making remote calls
    */
   override def create: AnyRef = {
-
     var orig: ClassLoaderUtils.ClassLoaderHolder = null
     try {
       if (getBus != null) {
