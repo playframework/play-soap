@@ -5,7 +5,7 @@ libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-io" % "1.3.2",
   "org.webjars"        % "jquery"     % "1.12.4",
   "org.webjars"        % "prettify"   % "4-Mar-2013",
-  "com.typesafe.play"  %% "play-doc"  % "2.0.2"
+  "com.typesafe.play"  %% "play-doc"  % "2.1.0"
 )
 
 resolvers += Resolver.typesafeRepo("releases")
