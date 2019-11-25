@@ -23,7 +23,7 @@ public interface MockServiceScala {
   public Future<Unit> noReturn(String nothing);
 
   @Action(fault = {@FaultAction(className = SomeException.class)})
-  public Future<String> declaredException();
+  public Future<String> declaredException() throws SomeException;
 
   public Future<String> runtimeException();
 }

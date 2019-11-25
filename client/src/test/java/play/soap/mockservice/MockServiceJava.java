@@ -3,11 +3,11 @@
  */
 package play.soap.mockservice;
 
+import java.util.concurrent.CompletionStage;
 import javax.jws.WebService;
 import javax.xml.ws.Action;
 import javax.xml.ws.FaultAction;
 import javax.xml.ws.Holder;
-import java.util.concurrent.CompletionStage;
 
 @WebService(name = "MockService")
 public interface MockServiceJava {
@@ -21,7 +21,7 @@ public interface MockServiceJava {
   CompletionStage<Void> noReturn(String nothing);
 
   @Action(fault = {@FaultAction(className = SomeException.class)})
-  CompletionStage<String> declaredException();
+  CompletionStage<String> declaredException() throws SomeException;
 
   CompletionStage<String> runtimeException();
 }
