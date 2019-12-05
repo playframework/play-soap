@@ -4,7 +4,7 @@ import sbt._
 object Dependencies {
   object Versions {
     val CXF  = "3.3.4"
-    val Play = "2.7.3"
+    val Play = "2.7.4"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
