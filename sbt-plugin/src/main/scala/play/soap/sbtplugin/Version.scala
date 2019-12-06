@@ -12,7 +12,9 @@ object Version {
     val stream = getClass.getClassLoader.getResourceAsStream("play-soap.version.properties")
     try {
       props.load(stream)
-    } catch { case e: Exception => } finally {
+    } catch {
+      case e: Exception =>
+    } finally {
       if (stream ne null) stream.close()
     }
     props
