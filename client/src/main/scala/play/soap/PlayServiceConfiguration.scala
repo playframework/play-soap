@@ -15,6 +15,7 @@ import scala.concurrent.Future
 import java.lang.Boolean.FALSE
 
 private[soap] class PlayServiceConfiguration extends AbstractServiceConfiguration {
+
   /**
    * We say future/promise is a holder type so that JAXB will create bindings for the inner type, not the outer.
    */

@@ -17,6 +17,7 @@ import sbt.plugins.JvmPlugin
  * The imports that the WSDL plugin brings in to all .sbt files
  */
 object Imports {
+
   /**
    * The keys that the WSDL plugin uses
    */
@@ -49,6 +50,7 @@ object Imports {
      * The future API
      */
     trait FutureApi {
+
       /**
        * The fully qualify class name of the future API
        */
@@ -303,7 +305,8 @@ object SbtWsdl extends AutoPlugin {
     val stream = getClass.getClassLoader.getResourceAsStream(resource)
     try {
       props.load(stream)
-    } catch { case e: Exception => } finally {
+    } catch { case e: Exception => }
+    finally {
       if (stream ne null) stream.close()
     }
     props.getProperty(property)

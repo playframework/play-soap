@@ -184,53 +184,54 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     }
 
     client.getRequestContext.put(classOf[Method].getName, method)
-    val result = try {
-      val returnType: Class[_] = method.getReturnType
-      if (returnType == classOf[Future[_]]) {
-        invokeScalaFuture(method, oi, params)
-      } else if (returnType == classOf[CompletionStage[_]]) {
-        invokePlayJavaFuture(method, oi, params)
-      } else {
-        throw new WebServiceException(
-          s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or java.util.concurrent.CompletionStage"
-        )
-      }
-    } catch {
-      case wex: WebServiceException => throw wex
-      case ex: Exception =>
-        for (excls <- method.getExceptionTypes) {
-          if (excls.isInstance(ex)) {
-            throw ex
+    val result =
+      try {
+        val returnType: Class[_] = method.getReturnType
+        if (returnType == classOf[Future[_]]) {
+          invokeScalaFuture(method, oi, params)
+        } else if (returnType == classOf[CompletionStage[_]]) {
+          invokePlayJavaFuture(method, oi, params)
+        } else {
+          throw new WebServiceException(
+            s"Can't invoke method with return type of $returnType, expected return type of scala.concurrent.Future or java.util.concurrent.CompletionStage"
+          )
+        }
+      } catch {
+        case wex: WebServiceException => throw wex
+        case ex: Exception =>
+          for (excls <- method.getExceptionTypes) {
+            if (excls.isInstance(ex)) {
+              throw ex
+            }
           }
-        }
-        if (ex.isInstanceOf[Fault] && ex.getCause.isInstanceOf[IOException]) {
-          throw new WebServiceException(ex.getMessage, ex.getCause)
-        }
-        getBinding match {
-          case http: HTTPBinding =>
-            val exception = new HTTPException(HttpURLConnection.HTTP_INTERNAL_ERROR)
-            exception.initCause(ex)
-            throw exception
-          case soap: SOAPBinding =>
-            val soapFault = createSoapFault(getBinding.asInstanceOf[SOAPBinding], ex)
-            if (soapFault == null) {
-              throw new WebServiceException(ex)
-            }
-            val exception = new SOAPFaultException(soapFault)
-            if (ex.isInstanceOf[Fault] && ex.getCause != null) {
-              exception.initCause(ex.getCause)
-            } else {
+          if (ex.isInstanceOf[Fault] && ex.getCause.isInstanceOf[IOException]) {
+            throw new WebServiceException(ex.getMessage, ex.getCause)
+          }
+          getBinding match {
+            case http: HTTPBinding =>
+              val exception = new HTTPException(HttpURLConnection.HTTP_INTERNAL_ERROR)
               exception.initCause(ex)
-            }
-            throw exception
-          case _ =>
-            throw new WebServiceException(ex)
+              throw exception
+            case soap: SOAPBinding =>
+              val soapFault = createSoapFault(getBinding.asInstanceOf[SOAPBinding], ex)
+              if (soapFault == null) {
+                throw new WebServiceException(ex)
+              }
+              val exception = new SOAPFaultException(soapFault)
+              if (ex.isInstanceOf[Fault] && ex.getCause != null) {
+                exception.initCause(ex.getCause)
+              } else {
+                exception.initCause(ex)
+              }
+              throw exception
+            case _ =>
+              throw new WebServiceException(ex)
+          }
+      } finally {
+        if (addressChanged(address)) {
+          setupEndpointAddressContext(getClient.getEndpoint)
         }
-    } finally {
-      if (addressChanged(address)) {
-        setupEndpointAddressContext(getClient.getEndpoint)
       }
-    }
 
     val respContext = client.getResponseContext
     val scopes      = CastUtils.cast(respContext.get(WrappedMessageContext.SCOPES).asInstanceOf[JMap[_, _]])

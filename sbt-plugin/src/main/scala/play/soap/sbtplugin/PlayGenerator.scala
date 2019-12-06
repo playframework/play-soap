@@ -7,6 +7,7 @@ package play.soap.sbtplugin
  * Adds common attributes for all source generation templates
  */
 trait PlayGenerator {
+
   /**
    * Set the Play attributes
    */

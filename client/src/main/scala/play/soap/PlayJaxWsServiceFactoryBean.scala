@@ -13,6 +13,7 @@ import org.apache.cxf.service.model.OperationInfo
 import org.apache.cxf.service.model.InterfaceInfo
 
 private[soap] class PlayJaxWsServiceFactoryBean extends JaxWsServiceFactoryBean {
+
   /**
    * Since we're returning futures, we don't set a throws clause, because the method doesn't throw anything,
    * it redeems its returned future with a failure.  This means though that the automatic binding doesn't detect the
