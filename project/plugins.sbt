@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
  */
-addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("2.1.4"))
+addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("3.0.0"))
 
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.3.1")
 
