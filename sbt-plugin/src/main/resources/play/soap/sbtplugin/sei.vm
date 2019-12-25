@@ -37,8 +37,6 @@ import javax.annotation.Generated;
 #foreach ($import in $intf.Imports)
 import ${import};
 #end
-import javax.xml.ws.Action;
-import javax.xml.ws.FaultAction;
 
 /**
 #if ($intf.classJavaDoc != "")
@@ -66,13 +64,6 @@ public interface $intf.Name {
     #end
     #foreach ($annotation in $method.Annotations)
         $annotation
-    #end
-    #if($method.Exceptions.size() > 0)
-        @Action(fault = {
-          #foreach($exception in $method.Exceptions)
-            @FaultAction(className = ${exception.ClassName}.class)#if($method.Exceptions.size() != $foreach.count),#end
-          #end
-        })
     #end
     #if ($markGenerated == "true")
     @Generated(value = "$generatorclass", date = "$currentdate")
