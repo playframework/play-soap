@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
  */
 libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-io" % "1.3.2",
