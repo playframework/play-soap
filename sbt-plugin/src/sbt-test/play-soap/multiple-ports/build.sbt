@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
  */
 scalaVersion := sys.props("scala.version")
 crossScalaVersions := sys.props("scala.crossVersions").split(",").toSeq

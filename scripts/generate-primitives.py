@@ -40,7 +40,7 @@ for project in ['simple-client-scala-future', 'simple-client-play-java-future']:
 """<?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice.soap.play/primitives" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Primitives" targetNamespace="http://testservice.soap.play/primitives">
   <!--
-   ~ Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+   ~ Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
    -->
 
   <!--
@@ -156,7 +156,7 @@ for project in ['simple-client-scala-future', 'simple-client-play-java-future']:
 
   with open(os.path.join(pluginTestDir, project, 'app', 'play', 'soap', 'testservice', 'Primitives.java'), 'w') as f:
     gen(f, """/*
- * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
  */
 package play.soap.testservice;
 
@@ -184,7 +184,7 @@ public interface Primitives {""")
 
   with open(os.path.join(pluginTestDir, project, 'app', 'play', 'soap', 'testservice', 'PrimitivesImpl.java'), 'w') as f:
     gen(f, """/*
- * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
  */
 package play.soap.testservice;
 
@@ -225,7 +225,7 @@ public class PrimitivesImpl implements Primitives {""")
 
 with open(os.path.join(pluginTestDir, "simple-client-scala-future", "tests", "play", "soap", "sbtplugin", "tester", "PrimitivesSpec.scala"), 'w') as f:
   gen(f, """/*
- * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
  */
 package play.soap.sbtplugin.tester
 
@@ -278,7 +278,7 @@ class PrimitivesSpec extends ServiceSpec {
 
 with open(os.path.join(pluginTestDir, "simple-client-play-java-future", "tests", "play", "soap", "sbtplugin", "tester", "PrimitivesTest.java"), 'w') as f:
   gen(f, """/*
- * Copyright (C) 2015-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
  */
 package play.soap.sbtplugin.tester;
 
