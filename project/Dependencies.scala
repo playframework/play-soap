@@ -17,7 +17,7 @@ object Dependencies {
   )
 
   val plugin = libraryDependencies ++= Seq(
-    "commons-codec"  % "commons-codec"                     % "1.13",
+    "commons-codec"  % "commons-codec"                     % "1.14",
     "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws"   % Versions.CXF,
     "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % Versions.CXF,
     "org.specs2"     %% "specs2-core"                      % "4.8.2" % Test
