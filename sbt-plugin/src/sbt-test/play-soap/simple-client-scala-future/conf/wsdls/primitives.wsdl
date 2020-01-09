@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://testservice.soap.play/primitives" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="Primitives" targetNamespace="http://testservice.soap.play/primitives">
   <!--
-   ~ Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
+   ~ Copyright (C) Lightbend Inc. <https://www.lightbend.com>
    -->
 
   <!--
