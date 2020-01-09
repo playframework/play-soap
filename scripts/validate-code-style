@@ -5,21 +5,10 @@
 . "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/scriptLib"
 
 printMessage "VALIDATE FILE HEADERS"
-sbt +headerCheck +test:headerCheck
+sbt +headerCheckAll
 
 printMessage "VALIDATE SCALA CODE FORMATTING"
-sbt scalafmtAll scalafmtSbt
-git diff --exit-code || (
-  echo "[error] ERROR: scalafmt check failed, see differences above."
-  echo "[error] To fix, format your sources using 'sbt scalafmtAll scalafmtSbt' before submitting a pull request."
-  false
-)
+sbt scalafmtCheckAll scalafmtSbtCheck
 
 printMessage "VALIDATE JAVA CODE FORMATTING"
-sbt javafmt test:javafmt
-git diff --exit-code || (
-  echo "[error] ERROR: javafmt check failed, see differences above."
-  echo "[error] To fix, format your sources using sbt javafmt test:javafmt before submitting a pull request."
-  false
-)
-
+sbt javafmtCheckAll
