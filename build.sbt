@@ -8,7 +8,6 @@ import interplay.ScalaVersions._
 
 val commonSettings = Seq(
   scalaVersion := scala212,
-  crossScalaVersions := Seq("2.11.12", scala212, scala213),
   headerEmptyLine := false,
   headerLicense := Some(
     HeaderLicense.Custom(
@@ -23,7 +22,8 @@ lazy val root = project
   .settings(commonSettings: _*)
   .aggregate(client, plugin, docs)
   .settings(
-    name := "play-soap-root",
+    name := "play-soap",
+    crossScalaVersions := Nil,
     releaseCrossBuild := true
   )
 
@@ -33,6 +33,7 @@ lazy val client = project
   .settings(commonSettings: _*)
   .settings(
     name := "play-soap-client",
+    crossScalaVersions := Seq("2.11.12", scala212, scala213),
     Dependencies.`play-client`,
   )
 

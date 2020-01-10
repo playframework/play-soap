@@ -38,6 +38,7 @@ deploy:
 
 cache:
   directories:
+  - $HOME/.cache/coursier
   - $HOME/.jabba/jdk
   - $HOME/.ivy2/cache
   - $HOME/.sbt/
