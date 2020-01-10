@@ -30,7 +30,7 @@ deploy:
     local_dir: docs/target/web/stage
     target_branch: gh-pages
     on:
-      branch: github_token_travis # TODO remove before merge
+      branch: master
 
   # Publishing snapshot artifacts
   - provider: script
