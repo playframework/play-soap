@@ -8,6 +8,10 @@ install: jabba install $(jabba ls-remote "adopt@~1.$TRAVIS_JDK.0-0" --latest=pat
 env:
   matrix:
     - TRAVIS_JDK=8
+  global:
+    # GITHUB_TOKEN needs for publishing documentation to GitHub Pages. See https://docs.travis-ci.com/user/deployment/pages/
+    # travis encrypt --pro GITHUB_TOKEN="***"
+    - secure: "TzcfXRgEhmMPG8EH5RBlOa6YJ6HnYdQYAJ7OIEu84ig/b5d/vodkTW0uy7n+nqUb9HyXBs3dlE/Yfi1LHDUy/UVtmvCXZcvywduW64K38m1hG3M2jZ3TIG9Id5jAufMg6Z734wzH1v2tIG0zrZtcq05lXPzKFLutPOsdbYgUwKH8liBzRMGs/UlqnxVdTWLrL43hPoTQBIPT99g9/wja+dXnvE1+aRoiMI4VWGumhRdijoX/69gKjnSgwPBrksU7AZkm3k+UDtg2r/+To95aaCj95AanUUjiNWR+gbeTB81DhzTyqccqw5Kl4nP2gJkOLFNenfcRHSY7V2M1oiGcnWmTCEW5pj2lAEUpDiqeqTSZYme1XZPPfwHlXsu3Pyx/GZ+hwRvpbAHR4I+4jyDH+mQRZ+C4dNx6s2QjYah/rnmv9uZ8TpnZ7MNqWIH/wP6VSf8ouC5PqO0i8GVqYfT0kp0LCme3M++OZipC+8xRzXKJLDxl2Mi3h34f1rtQQkJsn0ff4qRcnmXvhCLOa0szgL849ebVcHXCC5WkYVYg7wxdHbxH0e/kl2ujun19cl6Sh1YBkTNiwK60TOJO/W4JGNuQRXPAiuo+9nX/3oipl5mfN7Uda3u4kcOMyDexc5+oBFUsstfR2lSaemcpWgSbmJskJ0X4d3LSOdoShgR4xG4="
 
 script:
   # Code validations
@@ -22,11 +26,11 @@ deploy:
   # Publishing documentation
   - provider: pages
     skip_cleanup: true
-    github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+    github_token: $GITHUB_TOKEN
     local_dir: docs/target/web/stage
     target_branch: gh-pages
     on:
-      branch: master
+      branch: github_token_travis # TODO remove before merge
 
   # Publishing snapshot artifacts
   - provider: script
