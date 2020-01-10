@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
  */
 
 import Dependencies.Versions
@@ -11,7 +11,7 @@ val commonSettings = Seq(
   headerEmptyLine := false,
   headerLicense := Some(
     HeaderLicense.Custom(
-      "Copyright (C) 2015-2020 Lightbend Inc. <https://www.lightbend.com>"
+      "Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
     )
   )
 )
