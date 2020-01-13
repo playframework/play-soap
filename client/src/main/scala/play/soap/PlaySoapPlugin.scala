@@ -8,6 +8,7 @@ import javax.inject.Singleton
 import javax.xml.namespace.QName
 import javax.xml.ws.handler.MessageContext
 import javax.xml.ws.handler.Handler
+import javax.xml.ws.soap.SOAPBinding
 
 import org.apache.cxf.BusFactory
 import org.apache.cxf.interceptor.LoggingOutInterceptor
@@ -62,6 +63,9 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
     factory.setServiceClass(ct.runtimeClass)
     val address = readConfig(portName, _.getOptional[String]("address"), defaultAddress)
     factory.setAddress(address)
+
+    val bindingId = readConfig(portName, _.getOptional[String]("bindingId"), SOAPBinding.SOAP11HTTP_BINDING)
+    factory.setBindingId(bindingId)
 
     factory.setHandlers(handlers.asJava)
 
