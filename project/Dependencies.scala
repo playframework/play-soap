@@ -3,7 +3,7 @@ import sbt._
 
 object Dependencies {
   object Versions {
-    val CXF  = "3.3.4"
+    val CXF  = "3.3.5"
     val Play = "2.7.4"
   }
 
