@@ -25,9 +25,7 @@ class PlayJaxWsClientProxySpec extends Specification {
 
   "The client proxy" should {
     "work with a scala client" in {
-      "allow calling a simple method" in withScalaClient { client =>
-        await(client.add(3, 4)) must_== 7
-      }
+      "allow calling a simple method" in withScalaClient { client => await(client.add(3, 4)) must_== 7 }
 
       "allow calling a method with complex types" in withScalaClient { client =>
         val foo = new Foo(10, "foo")
@@ -63,9 +61,7 @@ class PlayJaxWsClientProxySpec extends Specification {
     }
 
     "work with a java client" in {
-      "allow calling a simple method" in withJavaClient { client =>
-        await(client.add(3, 4)) must_== 7
-      }
+      "allow calling a simple method" in withJavaClient { client => await(client.add(3, 4)) must_== 7 }
 
       "allow calling a method with complex types" in withJavaClient { client =>
         val foo = new Foo(10, "foo")
