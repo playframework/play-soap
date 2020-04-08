@@ -20,6 +20,6 @@ object Dependencies {
     "commons-codec"  % "commons-codec"                     % "1.14",
     "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws"   % Versions.CXF,
     "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % Versions.CXF,
-    "org.specs2"     %% "specs2-core"                      % "4.9.2" % Test
+    "org.specs2"     %% "specs2-core"                      % "4.9.3" % Test
   )
 }
