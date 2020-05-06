@@ -78,19 +78,20 @@ lazy val docs = (project in file("docs"))
     }
   )
 
-def generateVersionFile = Def.task {
-  val clientVersion = (version in client).value
-  val pluginVersion = version.value
-  val file          = (resourceManaged in Compile).value / "play-soap.version.properties"
-  val content =
-    s"""play-soap-client.version=$clientVersion
-       |sbt-play-soap.version=$pluginVersion
+def generateVersionFile =
+  Def.task {
+    val clientVersion = (version in client).value
+    val pluginVersion = version.value
+    val file          = (resourceManaged in Compile).value / "play-soap.version.properties"
+    val content =
+      s"""play-soap-client.version=$clientVersion
+         |sbt-play-soap.version=$pluginVersion
      """.stripMargin
-  if (!file.exists() || !(IO.read(file) == content)) {
-    IO.write(file, content)
+    if (!file.exists() || !(IO.read(file) == content)) {
+      IO.write(file, content)
+    }
+    Seq(file)
   }
-  Seq(file)
-}
 
 lazy val scriptedTask = TaskKey[Unit]("scripted-task")
 

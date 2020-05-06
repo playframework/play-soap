@@ -105,13 +105,14 @@ class PlayJaxWsClientProxySpec extends Specification {
 
   def withJavaClient[T](block: MockServiceJava => T): T = withClient(block)
 
-  def withClient[T, S](block: S => T)(implicit serviceClass: ClassTag[S]): T = withService { port =>
-    val factory = new PlayJaxWsProxyFactoryBean
-    factory.setServiceClass(serviceClass.runtimeClass)
-    factory.setAddress(s"http://localhost:$port/mockService")
-    val client = factory.create().asInstanceOf[S]
-    block(client)
-  }
+  def withClient[T, S](block: S => T)(implicit serviceClass: ClassTag[S]): T =
+    withService { port =>
+      val factory = new PlayJaxWsProxyFactoryBean
+      factory.setServiceClass(serviceClass.runtimeClass)
+      factory.setAddress(s"http://localhost:$port/mockService")
+      val client = factory.create().asInstanceOf[S]
+      block(client)
+    }
 
   def withService[T](block: Int => T): T = {
     val port     = findAvailablePort()
