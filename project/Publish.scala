@@ -14,20 +14,29 @@ object NoPublish extends AutoPlugin {
   )
 }
 
-class Publish(releaseRepo: String, snapshotRepo: String) extends AutoPlugin {
+class Publish(isLibrary: Boolean) extends AutoPlugin {
   import bintray.BintrayPlugin
   import bintray.BintrayPlugin.autoImport._
 
   override def trigger  = allRequirements
   override def requires = BintrayPlugin
 
+  val (releaseRepo, snapshotRepo) = 
+    if (isLibrary) 
+      ("maven", "snapshots")
+    else 
+      ("sbt-plugin-releases", "sbt-plugin-snapshots")
+
   override def projectSettings = Seq(
     bintrayOrganization := Some("playframework"),
     bintrayRepository := (if (isSnapshot.value) snapshotRepo else releaseRepo),
     bintrayPackage := "play-soap",
-    bintrayReleaseOnPublish := false
+    bintrayReleaseOnPublish := false,
+    // maven style should only be used for libraries, not for plugins
+    publishMavenStyle := isLibrary,
+    bintrayPackageLabels := Seq("playframework", "soap", "plugin")
   )
 }
 
-object PublishLibrary extends Publish("maven", "snapshots")
-object PublishSbtPlugin extends Publish("sbt-plugin-releases", "sbt-plugin-snapshots")
+object PublishLibrary extends Publish(isLibrary = true)
+object PublishSbtPlugin extends Publish(isLibrary = false)
