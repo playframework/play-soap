@@ -3,18 +3,11 @@
  */
 
 import Dependencies.Versions
-import com.jsuereth.sbtpgp.PgpKeys.gpgCommand
 import de.heikoseeberger.sbtheader.FileType
-import interplay.ScalaVersions._
+import Dependencies.ScalaVersions._
 
 version in ThisBuild := "1.1.4.1" // TODO: remove before merge
 isSnapshot in ThisBuild := false  // TODO: remove before merge
-
-val gpgSettings = Seq(
-  useGpgAgent := true,
-  useGpgPinentry := true,
-  usePgpKeyHex("76DFD6F9") // TODO: change to Lightbend key id before merge
-) ++ sys.env.get("TRAVIS").map( _ => gpgCommand in Global := "gpg2" )
 
 val commonSettings = Seq(
   scalaVersion := scala212,
@@ -24,32 +17,31 @@ val commonSettings = Seq(
       "Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
     )
   )
-) ++ gpgSettings
+)
 
 lazy val root = project
   .in(file("."))
-  .enablePlugins(PlayRootProject)
   .settings(commonSettings: _*)
   .aggregate(client, plugin, docs)
   .settings(
     name := "play-soap",
-    crossScalaVersions := Nil,
-    releaseCrossBuild := true
+    crossScalaVersions := Nil
   )
+  .enablePlugins(build.play.soap.NoPublish)
 
 lazy val client = project
   .in(file("client"))
-  .enablePlugins(PlayLibrary)
   .settings(commonSettings: _*)
   .settings(
     name := "play-soap-client",
-    crossScalaVersions := Seq("2.11.12", scala212, scala213),
+    crossScalaVersions := Seq(scala211, scala212, scala213),
     Dependencies.`play-client`,
   )
+  .enablePlugins(build.play.soap.PublishLibrary)
 
 lazy val plugin = project
   .in(file("sbt-plugin"))
-  .enablePlugins(PlaySbtPlugin, SbtPlugin)
+  .enablePlugins(SbtPlugin)
   .settings(commonSettings: _*)
   .settings(
     name := "sbt-play-soap",
@@ -67,11 +59,11 @@ lazy val plugin = project
     scriptedBufferLog := false,
     scriptedDependencies := (())
   )
+  .enablePlugins(build.play.soap.PublishSbtPlugin)
 
 lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
   .enablePlugins(SbtWeb)
-  .enablePlugins(PlayNoPublish)
   .settings(commonSettings: _*)
   .settings(
     crossScalaVersions := Seq(scala212),
@@ -87,6 +79,7 @@ lazy val docs = (project in file("docs"))
       clientDocs ++ pluginDocs
     }
   )
+  .enablePlugins(build.play.soap.NoPublish)
 
 def generateVersionFile =
   Def.task {
@@ -102,8 +95,6 @@ def generateVersionFile =
     }
     Seq(file)
   }
-
-playBuildRepoName in ThisBuild := "play-soap"
 
 dynverVTagPrefix in ThisBuild := false
 dynverSonatypeSnapshots in ThisBuild := true

@@ -19,22 +19,10 @@ env:
     # Settings for publishing artifacts to Bintray. See https://github.com/sbt/sbt-bintray
     # NOTE: BINTRAY_USER is a username on Bintray, not email.
     # travis encrypt --pro BINTRAY_USER="*****"
-    - secure: "DoWBSVJVeHBDYP6RmWril+2S3hx0s+HS+Q97/FBevXUD3zn+3Gr8FoxFs+Mk5lstu7nDLEMnRfdOQ9Jvxa2cP4V1qo98oHK3W3wXChLYvqo4D9lB48jU9lVrwvdXNBG7F1KT2mlraaaeSKyAXh9m2KsY1wUITcoTrG0eMC2x7TsIiEZ2vXRkW5AkS9LlqJ9RV7yxqJq+yHQQJF8aTfwXefCO5Z7wiQAlwWMJkmI3gzwzLJtD7ST1bpH9OsA2iBYBEcXOljWcBAv60GsrhP+2R+aVcJ+hzVzdIor+tiXdf2T2gGCAzoaps9GKIFAIgDvtGk0h6aP/9YCWzZqEJoqM1Ycy6iS3MXl4y6RNAxlLLCiJxn12RsJKVVw5qfHUmW4aqxMrby9EEkmaTW6Y4sEXrCThp4vGLyr3MLvBHXHgkjN2TDSzr0A80rsENvVPXCy1+qSC0UKgKg+woV7fYFkd9O/8JuhqmX5kEvxoWWtFhphtgfzof/U9XNcX9WIhCbD1BIwahjfYpYTl7+Mi9HcZvbQ58GsuEwnwoaeNx8V+M7zpFbzXK+dhF/Q/+1MikVAqa/7Kr/iVsNg3UfW7IFKTItO0r9z7h12Nh1SVIBgjfnMEwjmKWYs2oXrkmWjNt47qVFZR+6MghtN/TOmqx0Ob/mvvWkAamaX105F2ygYSodg="
+    - secure: "pG1YuTuF076djAQfkY3ig5XebEUSqbPTdg9U3+rLN/rFL+MAVbccUj3SNyP8LRc23Bd99i2q7Oo6brNzLdr3XIEr/UbIIj2Ur/t0IcGla4RE68AqsJK8LcyKKel419IZrpGlmqwTyNOkIZs3o8rauU7PUYwZsxgKxN+7mrdYJpd0JEf6BaW/tTMx9ybV2+u+0RvXnACDYYlluoStkEl2FNIHhI9jKKp3NXRfFAkFvCxF+KqyWDnlCIx8pyfKT8pxKRewl0yr0O90gq7h7gHTPuwsNQgNJPWp7M4lXr/ItPDe80qQnapQcAbIwv1w6v/WqNyGhznOK8S63w48Pkobjasycj7r4nEmH4Tjb199uMs3mPOLYDJxqR4hbMT/4LWL2/XuhQEbXgCew5Rjbd5wt+ZEs4gCbtznlBgQ9qD2PVHWWo5TDRm9g99S0RGTKMJ1nxGl25z2kDJPigoAoaNuqgUtAuulNXtscHZgDLGVx84SODlWHQzUf7M3jS2NVCzl8Ig0CbWOPBgGqdd+XX2blc7IBDGYQPUMiyHAtRDF3lPq1BityghwQg5a6ToRn3JOlkrqIzCW1BonEt6S1LXFnLFMegW5sZOODuyxPoYCdXpHUAqB2WfdogqwkPicvvk+kiszdd3TBhWAUiQvk7Grvzvz775/QRIS7SsHf2R9YCY="
     # NOTE: BINTRAY_PASS is a API Key, not password. See https://www.jfrog.com/confluence/display/BT/Uploading#Uploading-GettingyourAPIKey
     # travis encrypt --pro BINTRAY_PASS="*****"
-    - secure: "bv5CdDW8ddIGzEGJ79MktuyNueWQ7knsqgLlCFqhkSbpZ7qG/TKMPJEXxaoH6B/uIHVHrJd1bj5XaprErdqGzkB5LVmbBYakWwJTIhTSbixA0e93q40PSTCwecgxQLH2/UWz+Lyp/2dBLzMVu7mx74BJTAhf7hCEnC4Xq9Xp9y+eiQmiSwOqc2+/kV38oC3rpQstXPyW+u3KU164FmEmxgy7E1TzPCqc6BwDfeo3ud8n+6R91eMK5FAygmRNZpejFs2FHNmGwqjfkG1R9N5kHVtul/C9LAT7/TTqViedWI9qkSXrXH2Ojj9MuA6lwsPYqJbT2qvrcBzQ4ri2Uh/XqZwt0LMX1eiA+Wf55tYiTnspSg559oaLm0WWHnValaGhJOGovdGGu0H9cWdT44ZPV3Y9UPxER+56D//wgOHFb74fgp2dTl7Syx/FAPRuR2eB/RphIG9E92p6wBE+yThznjXcq/Vvyp340ptpUkzw/u/gA+8Irzi/Xu8F2pmCt06jJQQvm1GBdfSh7TJQXYIP4HL5FZX4dskt37d77pYaVVX9GZx/tHNoothRBhdmQXbGmfKQINZ+5fN0utx3yN1gwzdmDIZgpVNaAE0O4m+nDtVVylreMiKY7kz2OFGA14Ttu23nMrkzzoLumqsfv0wSSeEFDG0Vg1gAdK4XKz+mAzk="
-
-    # Settings for signing artifacts. See https://github.com/sbt/sbt-pgp
-    # travis encrypt --pro PGP_PASSPHRASE="*****"
-    - secure: "ocu2t8VXRKIhz3RXtvghx32wtUC7qMJPOBG7YxKSN4vOh/T/sGEDTOJ6zfMieMcTte4wcqOFpgKZZ8KIXyb9yX3LyNAFhuD1zjZBwmlB/QMP15kvotJNuDcCEo99xrZD7TeKCSlf3MdhSKI7kIW5cmpK8zB4bayz0umrXojGY3iow9fE+P8fs6wOA2tmizDcSrWlCxtGOivBWEmFB2vyLZupfF4+Zcg+CTMuF0r5Vh1PANtPhrWJiIzJc4mI1SfRvpjJzsdXri9hjJrRKU7axwe9DQc1yMiKox4yVo7NNTB5xU8kTUktVbsmJlWwELBkXcSthdI4+8uV5Ea0mPLLwcEDcglhkxmbySxyusHd3Z3X6sEs+GO11EQj3T1MsV5hIZ40uHvcxM/w+xIDJu0V5aMR4TGlCmi4GQkH+Tl/35LZMMKEuMk9zUxw4Pc0KDzuAsG8Kxu70iYHvlRGXdldtgB+JUwpt5sdP++BkAZBP4LavY3GqCBbV0Fq4q+zLRCxellN2AWO3KUSlhEGvROPD+awJPVEReK/wrXPUkEoFDbowKIVLaHvtREe966PRrYU9HXvgmLHpOuIgYKxFFepax5Cl2oCmMnPGXZTlmzFrb4YH2XHrBPtjf0SA8Qkb8BRMwa3k0RrKRsKJ76dBG7SPDTik6Mv9hp5dFYmY6sAad8="
-    # travis env set --pro PGP_SECRET "$(gpg --armor --export-secret-keys <KEY_ID> | base64)"
-    # KEY_ID should be set in gpgSettings (build.sbt) as parameter of `usePgpKeyHex`
-
-    # Settings for publishing artifacts to Sonatype. See https://github.com/xerial/sbt-sonatype
-    # travis encrypt --pro SONATYPE_USERNAME="*****"
-    - secure: "fLg+3y+SrKK9b8hhpTSB+tJAKac1a3kEl7yczOOQmsYEw0KBJyCmsR3IKgTTKkbEdNhc5t5Bb/+77aVDsXNJc6xXLIukVzV9G1TelTsUun6ex+lWnbmIPuF4vqJM81E1y0vYZk4ylUZe1Bh/hY7PkO9E4O0RChSyjzKeyyoszHAI4cRjBnCI3PK1nJ9/lbiclA9WPUy4RFgoGt+Zws+UApMq0KKUKJIGswAEgb8RcE0on8Qr2Uaay3yCcGapCuRjF6eNHfpvGuxs58dJNghfuASjNL19Q7glSXWIVdBTjo+kHFtvhTS6LAIfkwMQrEMDYIqOa70VuAj8bg5grjr5HoYxg04lngYtoVkILjqvLrEFaL3MIndjbOzPBnBgnZrvSOq5mqlST/VYouZNRhmafubs9/s1FxSWYwLN85JTYIebVDprj9ihnQDpqpKsTS1pzDhNH2DgP3v+k19VumXfTQrl/YrLARpWgF5rIj2xJWcIrJM9DMQEUOBAmSNZowUB38V/uMJkZ2NSQAiX4yik2ufYb7Y933kdpUtHYxoHTA4ymy8n6sdJMVluxRFpg2t9YjIdO3epBuL4oKk3hiRonV0gMMO4jBDDTu3Z7yYDRTx+tdk9zdbMxinexZ9SZP9ZWnB95L6R66+cNbiJDKrmAwp52YAxKjSOHbUYWxGVBSo="
-    # travis encrypt --pro SONATYPE_PASSWORD="*****"
-    - secure: "GY9j86c1RM68UN6b/+yrDbZ50D/Qbv75uPPznp41xYGF9xRHG4jT90h0xol1maxJj3c2qAateHRxX4hr0LaZROBj+kiUc6utpFHiFA+y2rLX/EBAfAe0f4hG2+9nn5Aewyah4aF+0KMI7HkoyyJXy4ljP5UcNG6X4L8WjmFmLShhUW8+SPZN+o8hFWY/5L0s+saq+L0PTrRnPckc5LXI9/D0RyRBHJuLodYI73fYAzSlZbQn0ikWWWPvmUN+S19bVYUQwvSBt6k/mZMal5ZKwTMpkQQHtjFxh68WWvo8gawe8fwUMMPJhy0yJBPuqRI1H5HWYiE2M9uRreg0hzVuaxFgmGvmkFZL9CYcU+A9juWUBJCA5CLW/VPQUHciWsmlbL/Lsvnc7QPRegV72C/HRwrtgKUY/7O3f5ngRbbZAsqfLAhoB3r0PAry7GQD1OJ5HlYOI1X9ySFI2jGusY0rd7yJEkP2SGHMbJMDDuyDAaXdy203PzJ1x9z/SOremQgUi99HnvNI8jXcaz+qCiqJGpyZl1aYy5UlfysXWt8LTY76tdQV3RmLw93Oin17LXSKN6H2mf8TgEl9EGURARATyphNSExDIWfe9yet/HMslg6ST5O6j4srP+vndZy2Xj/FagBsGRTnAUSAW1B/YKwjJJWf4/1SDEOge9bZEcwUqD0="
+    - secure: "AMX8SEP6hDywa5QRwVUNYCE55gYW1RHLs6jkQ/NwVJpX7fOPNynkbyLvau/snZzYvUYqapX8ntUvKmDHwHLceHfAt14B+ehg4Z18C203gr5VsOJwfmzttd3Ohl4eoUETbE+R2sfWLDEINkf9+v6pvYC6bb91o2SDG8sxiLt3tyCMTb/5/V+cYU5go1e8+LXVPVRZctqpsm9dK5ajdHk5SJWQI+Wnd1ADnPdrbN4pFEPgSHIybEPuntn9SNbdyXuRSsqKoeTzkblo9Q/DAtjLb19SS0+wG8BDLSPPqptaByVAPR/bLyqy3bTjm9rTdLxXq2i9K2I7o7VbY1XnhhbOrAcbVnUeVNTovNSMhCaAggYbyA3HC3nVlas4I9qP0jDXCrkVLK9DA/CSVBYnRyu5L9jcg3EbQyhAhGxUoR2cZN/qY40HgeueRCYWvRWo6G8Wswds5uAn2QLEHnpX7fAuGd7XNooo4UN4CjGYI6R0k10v7I9InZSGrmcCHJ7MZgaFoYXXEEJcJcWSFxyAsskxLuG6cTrLDbp2czI5jHYANvvoQw3w3h7ulOdeXDkEnzDVDm8HLJW43FazLYVoMuwIYLmkFhjhcWWCBUv8p/hFCae3QOXgLrB4WlAAAUC6A9aYKmiS3Xh2q4R4DOQQYb7f5eYXfe1Owg+Br0Gh5THG28o="
 
 
 script:
@@ -46,11 +34,6 @@ script:
 #  - sbt plugin/scripted || travis_terminate 1; TODO: uncomment before merge
   # Generate documentation
 #  - sbt docs/webStage || travis_terminate 1; TODO: uncomment before merge
-
-before_deploy:
-  # Configure GPG
-  - echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-  - echo $PGP_SECRET | base64 --decode | gpg2 --import --no-tty --batch --yes
 
 deploy:
   # Publishing documentation
