@@ -17,8 +17,6 @@ val gpgSettings = Seq(
 ) ++ sys.env.get("TRAVIS").map( _ => gpgCommand in Global := "gpg2" )
 
 val commonSettings = Seq(
-  organization := "org.taymyr.play",   // TODO: remove before merge
-  sonatypeProfileName := "org.taymyr", // TODO: remove before merge
   scalaVersion := scala212,
   headerEmptyLine := false,
   headerLicense := Some(
@@ -55,9 +53,7 @@ lazy val plugin = project
   .settings(commonSettings: _*)
   .settings(
     name := "sbt-play-soap",
-//    organization := "com.typesafe.sbt", // TODO: uncomment before merge
-    organization := "org.taymyr.sbt",      // TODO: remove before merge
-    bintrayOrganization := Some("taymyr"), // TODO: remove before merge
+    organization := "com.typesafe.sbt",
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
