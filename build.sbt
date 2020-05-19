@@ -25,9 +25,9 @@ lazy val root = project
   .aggregate(client, plugin, docs)
   .settings(
     name := "play-soap",
-    crossScalaVersions := Nil
+    crossScalaVersions := Nil,
+    publish / skip := true
   )
-  .enablePlugins(build.play.soap.NoPublish)
 
 lazy val client = project
   .in(file("client"))
@@ -77,9 +77,9 @@ lazy val docs = (project in file("docs"))
         case (file, _name) => file -> ("api/sbtwsdl/" + _name)
       }
       clientDocs ++ pluginDocs
-    }
+    },
+    publish / skip := true
   )
-  .enablePlugins(build.play.soap.NoPublish)
 
 def generateVersionFile =
   Def.task {

@@ -6,8 +6,3 @@
 
 printMessage "PUBLISH RELEASE ARTIFACTS"
 sbt +publishSigned
-# TODO: remove before merge
-sbt sonatypePrepare sonatypeBundleUpload
-# TODO: Uncomment before merge
-#sbt bintrayRelease
-#sbt sonatypeBundleRelease
