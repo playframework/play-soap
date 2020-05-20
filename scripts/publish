@@ -4,5 +4,5 @@
 
 . "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/scriptLib"
 
-printMessage "PUBLISH SNAPSHOT ARTIFACTS"
+printMessage "PUBLISH ARTIFACTS"
 sbt +publish

@@ -44,21 +44,11 @@ deploy:
     on:
       branch: master
 
-  # Publishing snapshot artifacts
+  # Publishing release and snapshot artifacts
   - provider: script
     skip_cleanup: true
-    script: scripts/publish-snapshots
-    on:
-      branch: master
-      tags: false # Disable publishing for release tags
-
-  # Publishing release artifacts
-  - provider: script
-    skip_cleanup: true
-    script: scripts/publish-release
-    on:
-      branch: master
-      tags: true  
+    script: scripts/publish
+    if: repo = akka/akka-projection AND ( ( branch = master AND type = push ) OR tag =~ ^v )
 
 cache:
   directories:
