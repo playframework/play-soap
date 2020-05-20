@@ -5,6 +5,7 @@
 import Dependencies.Versions
 import de.heikoseeberger.sbtheader.FileType
 import Dependencies.ScalaVersions._
+import build.play.soap._
 
 val commonSettings = Seq(
   scalaVersion := scala212,
@@ -30,17 +31,18 @@ lazy val root = project
 lazy val client = project
   .in(file("client"))
   .settings(commonSettings: _*)
+  .settings(PublishSettings.forLibrary)
   .settings(
     name := "play-soap-client",
     crossScalaVersions := Seq(scala211, scala212, scala213),
     Dependencies.`play-client`,
   )
-  .enablePlugins(build.play.soap.PublishLibrary)
 
 lazy val plugin = project
   .in(file("sbt-plugin"))
   .enablePlugins(SbtPlugin)
   .settings(commonSettings: _*)
+  .settings(PublishSettings.forPlugin)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
@@ -57,7 +59,6 @@ lazy val plugin = project
     scriptedBufferLog := false,
     scriptedDependencies := (())
   )
-  .enablePlugins(build.play.soap.PublishSbtPlugin)
 
 lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
