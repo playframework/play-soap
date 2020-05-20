@@ -6,9 +6,6 @@ import Dependencies.Versions
 import de.heikoseeberger.sbtheader.FileType
 import Dependencies.ScalaVersions._
 
-version in ThisBuild := "1.1.4.1" // TODO: remove before merge
-isSnapshot in ThisBuild := false  // TODO: remove before merge
-
 val commonSettings = Seq(
   scalaVersion := scala212,
   headerEmptyLine := false,
@@ -16,7 +13,8 @@ val commonSettings = Seq(
     HeaderLicense.Custom(
       "Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
     )
-  )
+  ), 
+  licenses := Seq(("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
 )
 
 lazy val root = project

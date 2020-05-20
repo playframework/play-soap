@@ -25,15 +25,14 @@ env:
     - secure: "a/BIiPkrgECjW5QUrt8N4LuL6ENj9Anjcxux7Nm8myTBXzYd+SCuEdAFBTQg6Jd9w6osWBCQdPfsSZMZSazYpE+b/CqDkYoLVPEE8BvffPSWEvCYenSfKYNHvpbW4rY834wDW6dsDZgBLpLnWlrEufR6ITUaUPxdb2ENcSnTo29aQqz3T3ZUQiSfoHG3PifeVKSQdWeJlr/yB0GD5ShuaUegipzPNY6+7uz77hC9cPScvecIR19YOyyLLpWWHPVm0GwiHVfeNwOUrfq1fhuduGRI2UK2rL17Y9DKaAmsRyzaTTKJ2VaCDTp/gUHPso0N1fI77+mhEp6JO6YT6Wqh57/9Fgn2Qdc2p1daJejbQykRNIY/LyMUeMcRLUPwepipRlB/LCpdH1RuZZi9f8kSbk+n8HrfIfk14DMhjDMQ3MB0MmuR0drsJ5C2tpLo26dZFrv8xRqQihqwbf9XthB38h/wLlUyGX5gfj78g0UjPN38aEq6rNAznABToATnoKKHFnYLoY25pdAoCngT8Qp32umQ5TJtbHGLh02rq8BmBu7he5m29A5y4J4D3GR7R9qGjRbNRvlhNeyThMoihKnHYBiqbVEYi4Ry+U6eCxMzApODbMarVQdI7LfKIx8Hj3PfpN2FnXNpLvuqcuTKh2GvuC4YGAVCsXHdgBm2SNs7htM="
 
 
-script:
-  - echo "skip scipts" # TODO: remove before merge
+script:  
   # Code validations
-#  - scripts/validate-code-style || travis_terminate 1; TODO: uncomment before merge
-#  - sbt +test || travis_terminate 1; TODO: uncomment before merge
-#  - sbt +publishLocal || travis_terminate 1; TODO: uncomment before merge
-#  - sbt plugin/scripted || travis_terminate 1; TODO: uncomment before merge
+  - scripts/validate-code-style || travis_terminate 1; 
+  - sbt +test || travis_terminate 1; 
+  - sbt +publishLocal || travis_terminate 1; 
+  - sbt plugin/scripted || travis_terminate 1; 
   # Generate documentation
-#  - sbt docs/webStage || travis_terminate 1; TODO: uncomment before merge
+  - sbt docs/webStage || travis_terminate 1; 
 
 deploy:
   # Publishing documentation
@@ -58,8 +57,8 @@ deploy:
     skip_cleanup: true
     script: scripts/publish-release
     on:
-      branch: releases # TODO: remove before to merge
-#      tags: true  TODO: uncomment before merge
+      branch: master
+      tags: true  
 
 cache:
   directories:
