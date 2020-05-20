@@ -1,31 +1,30 @@
-package build.play.soap
-
 import sbt._
 import Keys._
-import bintray.BintrayPlugin
-import bintray.BintrayPlugin.autoImport._
 
-object PublishSettings {
+class Publish(isLibrary: Boolean) extends AutoPlugin {
 
-  private def settings(isLibrary: Boolean) = {
+  import bintray.BintrayPlugin
+  import bintray.BintrayPlugin.autoImport._
 
-    val (releaseRepo, snapshotRepo) = 
-      if (isLibrary) 
-        ("maven", "snapshots")
-      else 
-        ("sbt-plugin-releases", "sbt-plugin-snapshots")
-    
-    Seq(
-      bintrayOrganization := Some("playframework"),
-      bintrayRepository := (if (isSnapshot.value) snapshotRepo else releaseRepo),
-      bintrayPackage := "play-soap",
-      bintrayReleaseOnPublish := false,
-      // maven style should only be used for libraries, not for plugins
-      publishMavenStyle := isLibrary,
-      bintrayPackageLabels := Seq("playframework", "soap", "plugin")
-    )
-  }
+  override def trigger  = noTrigger
+  override def requires = BintrayPlugin
 
-  val forLibrary = settings(isLibrary = true)
-  val forPlugin = settings(isLibrary = false)
+  val (releaseRepo, snapshotRepo) = 
+    if (isLibrary) 
+      ("maven", "snapshots")
+    else 
+      ("sbt-plugin-releases", "sbt-plugin-snapshots")
+
+  override def projectSettings = Seq(
+    bintrayOrganization := Some("playframework"),
+    bintrayRepository := (if (isSnapshot.value) snapshotRepo else releaseRepo),
+    bintrayPackage := (if (isLibrary) "play-soap" else "sbt-play-soap"), 
+    bintrayReleaseOnPublish := false,
+    // maven style should only be used for libraries, not for plugins
+    publishMavenStyle := isLibrary,
+    bintrayPackageLabels := Seq("playframework", "soap", "plugin")
+  )
 }
+
+object PublishLibrary extends Publish(isLibrary = true)
+object PublishSbtPlugin extends Publish(isLibrary = false)

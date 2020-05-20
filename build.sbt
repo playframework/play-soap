@@ -5,22 +5,9 @@
 import Dependencies.Versions
 import de.heikoseeberger.sbtheader.FileType
 import Dependencies.ScalaVersions._
-import build.play.soap._
-
-val commonSettings = Seq(
-  scalaVersion := scala212,
-  headerEmptyLine := false,
-  headerLicense := Some(
-    HeaderLicense.Custom(
-      "Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
-    )
-  ), 
-  licenses := Seq(("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")))
-)
 
 lazy val root = project
   .in(file("."))
-  .settings(commonSettings: _*)
   .aggregate(client, plugin, docs)
   .settings(
     name := "play-soap",
@@ -30,10 +17,10 @@ lazy val root = project
 
 lazy val client = project
   .in(file("client"))
-  .settings(commonSettings: _*)
-  .settings(PublishSettings.forLibrary)
+  .enablePlugins(PublishLibrary)
   .settings(
     name := "play-soap-client",
+    description := "play-soap client",
     crossScalaVersions := Seq(scala211, scala212, scala213),
     Dependencies.`play-client`,
   )
@@ -41,11 +28,11 @@ lazy val client = project
 lazy val plugin = project
   .in(file("sbt-plugin"))
   .enablePlugins(SbtPlugin)
-  .settings(commonSettings: _*)
-  .settings(PublishSettings.forPlugin)
+  .enablePlugins(PublishSbtPlugin)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
+    description := "play-soap sbt plugin",
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
@@ -63,7 +50,6 @@ lazy val plugin = project
 lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
   .enablePlugins(SbtWeb)
-  .settings(commonSettings: _*)
   .settings(
     crossScalaVersions := Seq(scala212),
     headerMappings := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
