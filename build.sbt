@@ -95,4 +95,3 @@ def generateVersionFile =
   }
 
 dynverVTagPrefix in ThisBuild := false
-dynverSonatypeSnapshots in ThisBuild := true
