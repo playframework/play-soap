@@ -25,13 +25,13 @@ env:
     - secure: "L/ZnXE4D8F61/K+Plzb7+ehwjJL3NxdRvPOz15ec3ez3X1rjXG+H3bGQewdij1IsNaxbrInLHYH1FxkRjPPqM49wQbuzSJcEsprhD66xQ3iHti+cQKHJa90HxsVlWM8S67hva+GlwUpTnpzDIJyuzS4JTBdS+XyFmzeFtNPdbGL7zAHzCIKij1FIXSqIAKX3mfLk8RHOjNPSSvYlsxP0y9MNwhtJQIpY4Wa9bQikaNMaXaTlmiDx3itW5bFohIfYnC277yMrvMsLf61WSF8O+bcRh6Y5ZdsRbpDOQ6zZN/hVIJVWlEnikFRvgQl3EWs67uY00HEtYHHKvVJAkBqeYvQLBVdp3dZbd4xH8/UrnFvcF1cUxkfBvVYgluSfrfXH18g3QkCqOSKCxBUEWpGEqw7GCL/0mGcBsx0V67c1BTZV4ebojYq8pmDqgcoh0yoJCKIR7o45wzGvqJNKObqqlBZPDeogp80V0MakziBoxdjQ9OYZpw0N/9YWktp8z+BabOe56ztqshBfkg8MwyQQVRPnAEjnjgxQcAjWAG+9p5Db8DUn5awJXKUGukeDF/QB7BOiL0+/jZ9bQ7XwsX6fQ9PVi+KdZ0uIscIB7UXU9Mwa1qTyeEEqZC4zsVbxS9yeLIZ99+HNH3H6WShC9DmWjy6n3JHJ0+rXDb8FNkRHk90="
 
 stages:
-  - name: test
-  - name: publish
+  - name: Test
+  - name: Publish
     if: ((branch = master AND type = push) OR (tag IS present)) AND NOT fork
 
 jobs:
   include:
-    - stage: test
+    - stage: Test
       script:
         # Code validations
         - scripts/validate-code-style || travis_terminate 1;
@@ -40,7 +40,7 @@ jobs:
         - sbt plugin/scripted || travis_terminate 1;
         # Generate documentation
         - sbt docs/webStage || travis_terminate 1;
-    - stage: publish
+    - stage: Publish
       name: "Publishing release and snapshot artifacts to Bintray"
       script: scripts/publish
 
@@ -52,7 +52,7 @@ deploy:
     local_dir: docs/target/web/stage
     target_branch: gh-pages
     on:
-      branch: master
+      condition: $TRAVIS_BUILD_STAGE_NAME = Publish
 
 cache:
   directories:
