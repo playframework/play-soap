@@ -4,46 +4,35 @@
 
 import Dependencies.Versions
 import de.heikoseeberger.sbtheader.FileType
-import interplay.ScalaVersions._
-
-val commonSettings = Seq(
-  scalaVersion := scala212,
-  headerEmptyLine := false,
-  headerLicense := Some(
-    HeaderLicense.Custom(
-      "Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
-    )
-  )
-)
+import Dependencies.ScalaVersions._
 
 lazy val root = project
   .in(file("."))
-  .enablePlugins(PlayRootProject)
-  .settings(commonSettings: _*)
   .aggregate(client, plugin, docs)
   .settings(
     name := "play-soap",
     crossScalaVersions := Nil,
-    releaseCrossBuild := true
+    publish / skip := true
   )
 
 lazy val client = project
   .in(file("client"))
-  .enablePlugins(PlayLibrary)
-  .settings(commonSettings: _*)
+  .enablePlugins(PublishLibrary)
   .settings(
     name := "play-soap-client",
-    crossScalaVersions := Seq("2.11.12", scala212, scala213),
+    description := "play-soap client",
+    crossScalaVersions := Seq(scala211, scala212, scala213),
     Dependencies.`play-client`,
   )
 
 lazy val plugin = project
   .in(file("sbt-plugin"))
-  .enablePlugins(PlaySbtPlugin, SbtPlugin)
-  .settings(commonSettings: _*)
+  .enablePlugins(SbtPlugin)
+  .enablePlugins(PublishSbtPlugin)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
+    description := "play-soap sbt plugin",
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
@@ -55,14 +44,12 @@ lazy val plugin = project
       s"-Dcxf.version=${Versions.CXF}",
     ),
     scriptedBufferLog := false,
-    scriptedDependencies := { () }
+    scriptedDependencies := (())
   )
 
 lazy val docs = (project in file("docs"))
   .enablePlugins(SbtTwirl)
   .enablePlugins(SbtWeb)
-  .enablePlugins(PlayNoPublish)
-  .settings(commonSettings: _*)
   .settings(
     crossScalaVersions := Seq(scala212),
     headerMappings := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
@@ -75,7 +62,8 @@ lazy val docs = (project in file("docs"))
         case (file, _name) => file -> ("api/sbtwsdl/" + _name)
       }
       clientDocs ++ pluginDocs
-    }
+    },
+    publish / skip := true
   )
 
 def generateVersionFile =
@@ -93,20 +81,4 @@ def generateVersionFile =
     Seq(file)
   }
 
-lazy val scriptedTask = TaskKey[Unit]("scripted-task")
-
-playBuildRepoName in ThisBuild := "play-soap"
-
-playBuildExtraPublish := {
-  (PgpKeys.publishSigned in plugin).value
-}
-
 dynverVTagPrefix in ThisBuild := false
-dynverSonatypeSnapshots in ThisBuild := true
-
-credentials in ThisBuild += Credentials(
-  "Sonatype Nexus Repository Manager",
-  "oss.sonatype.org",
-  sys.env.get("SONATYPE_USER").orNull,
-  sys.env.get("SONATYPE_PASS").orNull
-)
