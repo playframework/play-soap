@@ -1,9 +1,32 @@
-# Config for https://github.com/toolmantim/release-drafter
+# Config for https://github.com/release-drafter/release-drafter
 name-template: 'Play SOAP $NEXT_PATCH_VERSION'
 tag-template: '$NEXT_PATCH_VERSION'
 
-change-template: '- $TITLE #$NUMBER by [@$AUTHOR](https://github.com/$AUTHOR)'
+categories:
+  - title: ':rocket: Features'
+    labels:
+      - 'enhancement'
+  - title: ':bug: Bug Fixes'
+    labels:
+      - 'bug'
+  - title: ':toolbox: Maintenance'
+    labels:
+      - 'maintenance'
+  - title: ':dart: Dependencies'
+    labels:
+      - 'dependencies'
+
 template: |
-  ## Changes
+  # :mega: Play SOAP $NEXT_PATCH_VERSION released!
+
+  We are pleased to announce the release of SOAP module for [Play](https://playframework.org/) framework.
+
+  ## :green_book: What’s Changed
 
   $CHANGES
+
+  ## :bow: Credits
+
+  Thank you @scala-steward for the actual versions of dependencies :heart:
+
+  Special thanks to the following contributors who helped with this release: $CONTRIBUTORS
