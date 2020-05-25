@@ -27,7 +27,7 @@ env:
 stages:
   - name: Test
   - name: Publish
-    if: ((branch = master AND type = push) OR (tag IS present)) AND NOT fork
+    if: tag IS present AND NOT fork
 
 jobs:
   include:
