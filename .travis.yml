@@ -9,18 +9,40 @@ env:
   matrix:
     - TRAVIS_JDK=8
   global:
+    # NOTE: Very important don't forget about escaping symbols.
+    # See https://docs.travis-ci.com/user/encryption-keys#note-on-escaping-certain-symbols
+
     # GITHUB_TOKEN needs for publishing documentation to GitHub Pages. See https://docs.travis-ci.com/user/deployment/pages/
-    # travis encrypt --pro GITHUB_TOKEN="***"
+    # travis encrypt --pro GITHUB_TOKEN="*****"
     - secure: "TzcfXRgEhmMPG8EH5RBlOa6YJ6HnYdQYAJ7OIEu84ig/b5d/vodkTW0uy7n+nqUb9HyXBs3dlE/Yfi1LHDUy/UVtmvCXZcvywduW64K38m1hG3M2jZ3TIG9Id5jAufMg6Z734wzH1v2tIG0zrZtcq05lXPzKFLutPOsdbYgUwKH8liBzRMGs/UlqnxVdTWLrL43hPoTQBIPT99g9/wja+dXnvE1+aRoiMI4VWGumhRdijoX/69gKjnSgwPBrksU7AZkm3k+UDtg2r/+To95aaCj95AanUUjiNWR+gbeTB81DhzTyqccqw5Kl4nP2gJkOLFNenfcRHSY7V2M1oiGcnWmTCEW5pj2lAEUpDiqeqTSZYme1XZPPfwHlXsu3Pyx/GZ+hwRvpbAHR4I+4jyDH+mQRZ+C4dNx6s2QjYah/rnmv9uZ8TpnZ7MNqWIH/wP6VSf8ouC5PqO0i8GVqYfT0kp0LCme3M++OZipC+8xRzXKJLDxl2Mi3h34f1rtQQkJsn0ff4qRcnmXvhCLOa0szgL849ebVcHXCC5WkYVYg7wxdHbxH0e/kl2ujun19cl6Sh1YBkTNiwK60TOJO/W4JGNuQRXPAiuo+9nX/3oipl5mfN7Uda3u4kcOMyDexc5+oBFUsstfR2lSaemcpWgSbmJskJ0X4d3LSOdoShgR4xG4="
 
-script:
-  # Code validations
-  - scripts/validate-code-style || travis_terminate 1;
-  - sbt +test || travis_terminate 1;
-  - sbt +publishLocal || travis_terminate 1;
-  - sbt plugin/scripted || travis_terminate 1;
-  # Generate documentation
-  - sbt docs/webStage || travis_terminate 1;
+    # Settings for publishing artifacts to Bintray. See https://github.com/sbt/sbt-bintray
+    # NOTE: BINTRAY_USER is a username on Bintray, not email.
+    # travis encrypt --pro BINTRAY_USER="*****"
+    - secure: "hpJrvh2IS64hyKFs83FDJ15jU0pwqDWtd/coMYx5wWZwPFk0T0ozzbTLVJFN33ROMT9qkh2e9pL4AehgjT01+EAmz/Wz24smnXFZV/w7lh9ZgMfSyJqrhWjk171xbmG6UUL9IfFSqT09VQdFqL5JZp20jQ3oxcOCL8zRJwSiUJH0ZD6AF1F67iFZaDFs+O3nwqeNHFRDLn1c7Sl+9CKqheqvH+QfXgC35eBrz5fs/Yw9fqGylNWmVGLNiNkuFw7bg4b3Q5mCvyrzBIRgmjwxZV79/fzbFNvia0wiRgmjEIiLRs1/gH4THZW0mZodsm587mpflVJJ0z2BZwfQWNKh5pDSrUtl9rOcm78iuqDjIGerCJbeUNblW8e6wR9PunNE38mYvmvi9S79e0uWHxQkY3YdWBDYcbiXfadoWE/iszcZBf8ol0f6optwDifOUcn5SygOo3trZQXze/rjHBKph9tNrh+KO+qMzslHzJb00lqszhv1blolYDzIDwDTLkSoIuX0KsbzV5YQuQ5PSKQu3vnrNggaxByKL6aS2ons7ecAmZNXITyWTg3fRM6XgZ/0wBKz+6McPZZOmMj7On/N4wuzYy6cHIDKSBKe0218MXtWjm4/Owog9hXwnIkeBoVxI2XwL9DgNVi8jaMDJzKbpDAuJabcEtObDl0XPEwUQLA="
+    # NOTE: BINTRAY_PASS is a API Key, not password. See https://www.jfrog.com/confluence/display/BT/Uploading#Uploading-GettingyourAPIKey
+    # travis encrypt --pro BINTRAY_PASS="*****"
+    - secure: "L/ZnXE4D8F61/K+Plzb7+ehwjJL3NxdRvPOz15ec3ez3X1rjXG+H3bGQewdij1IsNaxbrInLHYH1FxkRjPPqM49wQbuzSJcEsprhD66xQ3iHti+cQKHJa90HxsVlWM8S67hva+GlwUpTnpzDIJyuzS4JTBdS+XyFmzeFtNPdbGL7zAHzCIKij1FIXSqIAKX3mfLk8RHOjNPSSvYlsxP0y9MNwhtJQIpY4Wa9bQikaNMaXaTlmiDx3itW5bFohIfYnC277yMrvMsLf61WSF8O+bcRh6Y5ZdsRbpDOQ6zZN/hVIJVWlEnikFRvgQl3EWs67uY00HEtYHHKvVJAkBqeYvQLBVdp3dZbd4xH8/UrnFvcF1cUxkfBvVYgluSfrfXH18g3QkCqOSKCxBUEWpGEqw7GCL/0mGcBsx0V67c1BTZV4ebojYq8pmDqgcoh0yoJCKIR7o45wzGvqJNKObqqlBZPDeogp80V0MakziBoxdjQ9OYZpw0N/9YWktp8z+BabOe56ztqshBfkg8MwyQQVRPnAEjnjgxQcAjWAG+9p5Db8DUn5awJXKUGukeDF/QB7BOiL0+/jZ9bQ7XwsX6fQ9PVi+KdZ0uIscIB7UXU9Mwa1qTyeEEqZC4zsVbxS9yeLIZ99+HNH3H6WShC9DmWjy6n3JHJ0+rXDb8FNkRHk90="
+
+stages:
+  - name: Test
+  - name: Publish
+    if: ((branch = master AND type = push) OR (tag IS present)) AND NOT fork
+
+jobs:
+  include:
+    - stage: Test
+      script:
+        # Code validations
+        - scripts/validate-code-style || travis_terminate 1;
+        - sbt +test || travis_terminate 1;
+        - sbt +publishLocal || travis_terminate 1;
+        - sbt plugin/scripted || travis_terminate 1;
+        # Generate documentation
+        - sbt docs/webStage || travis_terminate 1;
+    - stage: Publish
+      name: "Publishing release and snapshot artifacts to Bintray"
+      script: scripts/publish
 
 deploy:
   # Publishing documentation
@@ -30,15 +52,7 @@ deploy:
     local_dir: docs/target/web/stage
     target_branch: gh-pages
     on:
-      branch: master
-
-  # Publishing snapshot artifacts
-  - provider: script
-    skip_cleanup: true
-    script: scripts/publish-snapshots
-    on:
-      branch: master
-      tags: false # Disable publishing for release tags
+      condition: $TRAVIS_BUILD_STAGE_NAME = Publish
 
 cache:
   directories:

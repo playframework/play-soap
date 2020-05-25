@@ -127,163 +127,171 @@ object SbtWsdl extends AutoPlugin {
   /**
    * The WSDL settings to be scoped to a particular config
    */
-  def wsdlSettings: Seq[Setting[_]] = Seq(
-    wsdlUrls := Nil,
-    includeFilter in wsdlToCode := "*.wsdl",
-    excludeFilter in wsdlToCode := HiddenFileFilter,
-    sourceDirectories in wsdlToCode := Seq(sourceDirectory.value / "wsdl"),
-    sources in wsdlToCode := Defaults
-      .collectFiles(
-        sourceDirectories in wsdlToCode,
-        includeFilter in wsdlToCode,
-        excludeFilter in wsdlToCode
-      )
-      .value,
-    watchSources in Defaults.ConfigGlobal ++= (sources in wsdlToCode).value,
-    target in wsdlToCode := target.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
-    wsdlTasks := wsdlTasksTask.value,
-    wsdlToCode := wsdlToCodeTask.value,
-    sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
-    managedSourceDirectories += (target in wsdlToCode).value / "sources",
-    managedResourceDirectories += (target in wsdlToCode).value / "resources"
-  )
+  def wsdlSettings: Seq[Setting[_]] =
+    Seq(
+      wsdlUrls := Nil,
+      includeFilter in wsdlToCode := "*.wsdl",
+      excludeFilter in wsdlToCode := HiddenFileFilter,
+      sourceDirectories in wsdlToCode := Seq(sourceDirectory.value / "wsdl"),
+      sources in wsdlToCode := Defaults
+        .collectFiles(
+          sourceDirectories in wsdlToCode,
+          includeFilter in wsdlToCode,
+          excludeFilter in wsdlToCode
+        )
+        .value,
+      watchSources in Defaults.ConfigGlobal ++= (sources in wsdlToCode).value,
+      target in wsdlToCode := target.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
+      wsdlTasks := wsdlTasksTask.value,
+      wsdlToCode := wsdlToCodeTask.value,
+      sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
+      managedSourceDirectories += (target in wsdlToCode).value / "sources",
+      managedResourceDirectories += (target in wsdlToCode).value / "resources"
+    )
 
   /**
    * The default settings that don't apply to a particular scope
    */
-  def defaultSettings: Seq[Setting[_]] = Seq(
-    futureApi := ScalaFutureApi,
-    packageName := None,
-    packageMappings := Nil,
-    serviceName := None,
-    wsdlToCodeArgs := Nil,
-    wsdlToJavaHelp := {
-      withContextClassLoader {
-        new WSDLToJava(Array("-help")).run(new ToolContext())
+  def defaultSettings: Seq[Setting[_]] =
+    Seq(
+      futureApi := ScalaFutureApi,
+      packageName := None,
+      packageMappings := Nil,
+      serviceName := None,
+      wsdlToCodeArgs := Nil,
+      wsdlToJavaHelp := {
+        withContextClassLoader {
+          new WSDLToJava(Array("-help")).run(new ToolContext())
+        }
       }
-    }
-  )
+    )
 
   /**
    * The settings that add the play-soap-client to a projects dependencies
    */
-  def dependencySettings: Seq[Setting[_]] = Seq(
-    playSoapVersion := Version.clientVersion,
-    libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value
-  )
+  def dependencySettings: Seq[Setting[_]] =
+    Seq(
+      playSoapVersion := Version.clientVersion,
+      libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value
+    )
 
-  private def wsdlTasksTask = Def.task {
-    val allUrls = (sources in wsdlToCode).value.map(_.toURI.toURL) ++ wsdlUrls.value
-    allUrls.map { url =>
-      WsdlTask(
-        url,
-        futureApi.value,
-        packageName.value,
-        packageMappings.value.toMap,
-        serviceName.value,
-        wsdlToCodeArgs.value
-      )
-    }
-  }
-
-  private def wsdlToCodeTask = Def.task {
-    val cacheDir = streams.value.cacheDirectory
-    val tasks    = wsdlTasks.value
-    val outdir   = (target in wsdlToCode).value
-    val sources  = outdir / "sources"
-    val log      = streams.value.log
-
-    import com.typesafe.sbt.web.incremental._
-
-    withContextClassLoader {
-      // The result here is a map of WsdlTask to the plugins that were generated
-      val (files, plugins) = syncIncremental[WsdlTask, Map[WsdlTask, Seq[String]]](cacheDir, tasks) { ops =>
-        val results = ops.map { task =>
-          val packageArg = task.packageName.map(pkg => Seq("-p", pkg)).getOrElse(Nil)
-          val packageArgs = task.packageMappings.flatMap {
-            case (namespace, pkg) => Seq("-p", s"$namespace=$pkg")
-          }
-          val serviceNameArg = task.serviceName.map(sn => Seq("-sn", sn)).getOrElse(Nil)
-
-          val args = Array(
-            "-frontend",
-            "play",
-            "-d",
-            sources.getAbsolutePath
-          ) ++ packageArg ++ packageArgs ++ serviceNameArg ++ task.args :+ task.url.toString
-
-          val toolContext = new ToolContext()
-
-          toolContext.put(classOf[FutureApi], task.futureApi)
-
-          var filesWritten = Set.empty[File]
-          // Custom OutputStreamCreator is used to track every file generated
-          toolContext.put(classOf[OutputStreamCreator], new OutputStreamCreator() {
-            override def createOutputStream(file: File) = {
-              filesWritten += file
-              super.createOutputStream(file)
-            }
-          })
-
-          log.info("Processing WSDL: " + task.url)
-
-          new WSDLToJava(args).run(toolContext)
-
-          val plugins = Option(toolContext.get("play.plugins").asInstanceOf[Seq[String]]).getOrElse(Nil)
-
-          val filesRead = if (task.url.getProtocol == "file") {
-            Set(new File(task.url.toURI))
-          } else {
-            Set.empty[File]
-          }
-
-          // Map the task to the result of the operation and the plugins generated
-          task -> (OpSuccess(filesRead, filesWritten), plugins)
-        }.toMap
-
-        (results.mapValues(_._1), results.mapValues(_._2))
+  private def wsdlTasksTask =
+    Def.task {
+      val allUrls = (sources in wsdlToCode).value.map(_.toURI.toURL) ++ wsdlUrls.value
+      allUrls.map { url =>
+        WsdlTask(
+          url,
+          futureApi.value,
+          packageName.value,
+          packageMappings.value.toMap,
+          serviceName.value,
+          wsdlToCodeArgs.value
+        )
       }
+    }
 
-      // At this point we have all the new plugins that were generated, but we don't have any of the plugins that
-      // were generated from the previous run that were generated by wsdl tasks that haven't changed.  We use a
-      // separate cache to get them.
-      val pluginsCacheFile = cacheDir / "plugins.cache"
-      // Load the cache
-      val cachedPlugins = if (pluginsCacheFile.exists()) {
-        IO.read(pluginsCacheFile)
-          .split("\n")
-          .map { v =>
-            val splitted = v.split("=", 2)
-            if (splitted.length == 2) {
-              splitted(0) -> splitted(1).split(",").toSeq
+  private def wsdlToCodeTask =
+    Def.task {
+      val cacheDir = streams.value.cacheDirectory
+      val tasks    = wsdlTasks.value
+      val outdir   = (target in wsdlToCode).value
+      val sources  = outdir / "sources"
+      val log      = streams.value.log
+
+      import com.typesafe.sbt.web.incremental._
+
+      withContextClassLoader {
+        // The result here is a map of WsdlTask to the plugins that were generated
+        val (files, plugins) = syncIncremental[WsdlTask, Map[WsdlTask, Seq[String]]](cacheDir, tasks) { ops =>
+          val results = ops.map { task =>
+            val packageArg = task.packageName.map(pkg => Seq("-p", pkg)).getOrElse(Nil)
+            val packageArgs = task.packageMappings.flatMap {
+              case (namespace, pkg) => Seq("-p", s"$namespace=$pkg")
+            }
+            val serviceNameArg = task.serviceName.map(sn => Seq("-sn", sn)).getOrElse(Nil)
+
+            val args = Array(
+              "-frontend",
+              "play",
+              "-d",
+              sources.getAbsolutePath
+            ) ++ packageArg ++ packageArgs ++ serviceNameArg ++ task.args :+ task.url.toString
+
+            val toolContext = new ToolContext()
+
+            toolContext.put(classOf[FutureApi], task.futureApi)
+
+            var filesWritten = Set.empty[File]
+            // Custom OutputStreamCreator is used to track every file generated
+            toolContext.put(
+              classOf[OutputStreamCreator],
+              new OutputStreamCreator() {
+                override def createOutputStream(file: File) = {
+                  filesWritten += file
+                  super.createOutputStream(file)
+                }
+              }
+            )
+
+            log.info("Processing WSDL: " + task.url)
+
+            new WSDLToJava(args).run(toolContext)
+
+            val plugins = Option(toolContext.get("play.plugins").asInstanceOf[Seq[String]]).getOrElse(Nil)
+
+            val filesRead = if (task.url.getProtocol == "file") {
+              Set(new File(task.url.toURI))
             } else {
-              splitted(0) -> Nil
+              Set.empty[File]
             }
-          }
-          .toMap
-      } else Map.empty[String, Seq[String]]
 
-      // Filter out any tasks that no longer exist
-      val hashedTasks = tasks.map(hashTask).toSet
-      val existing    = cachedPlugins.filterKeys(hashedTasks)
-      // Add new/overwrite updated ones
-      val allPlugins = existing ++ plugins.map {
-        case (task, value) => hashTask(task) -> value
+            // Map the task to the result of the operation and the plugins generated
+            task -> (OpSuccess(filesRead, filesWritten), plugins)
+          }.toMap
+
+          (results.mapValues(_._1), results.mapValues(_._2))
+        }
+
+        // At this point we have all the new plugins that were generated, but we don't have any of the plugins that
+        // were generated from the previous run that were generated by wsdl tasks that haven't changed.  We use a
+        // separate cache to get them.
+        val pluginsCacheFile = cacheDir / "plugins.cache"
+        // Load the cache
+        val cachedPlugins = if (pluginsCacheFile.exists()) {
+          IO.read(pluginsCacheFile)
+            .split("\n")
+            .map { v =>
+              val splitted = v.split("=", 2)
+              if (splitted.length == 2) {
+                splitted(0) -> splitted(1).split(",").toSeq
+              } else {
+                splitted(0) -> Nil
+              }
+            }
+            .toMap
+        } else Map.empty[String, Seq[String]]
+
+        // Filter out any tasks that no longer exist
+        val hashedTasks = tasks.map(hashTask).toSet
+        val existing    = cachedPlugins.filterKeys(hashedTasks)
+        // Add new/overwrite updated ones
+        val allPlugins = existing ++ plugins.map {
+          case (task, value) => hashTask(task) -> value
+        }
+
+        // Write out cached plugins
+        IO.write(
+          pluginsCacheFile,
+          allPlugins
+            .map {
+              case (key, value) => key + "=" + value.mkString(",")
+            }
+            .mkString("\n")
+        )
+
+        WsdlTaskResult(files.toSeq, allPlugins.flatMap(_._2).map("900:" + _).toSeq)
       }
-
-      // Write out cached plugins
-      IO.write(
-        pluginsCacheFile,
-        allPlugins
-          .map {
-            case (key, value) => key + "=" + value.mkString(",")
-          }
-          .mkString("\n")
-      )
-
-      WsdlTaskResult(files.toSeq, allPlugins.flatMap(_._2).map("900:" + _).toSeq)
     }
-  }
 
   private def hashTask(task: WsdlTask) = {
     DigestUtils.md5Hex(task.toString)
@@ -320,9 +328,10 @@ object SbtWsdlJava extends AutoPlugin {
   override def trigger  = allRequirements
   override def requires = SbtWsdl && PlayJava
 
-  override def projectSettings = Seq(
-    futureApi := PlayJavaFutureApi
-  )
+  override def projectSettings =
+    Seq(
+      futureApi := PlayJavaFutureApi
+    )
 }
 
 /**
@@ -332,7 +341,8 @@ object SbtWsdlPlay extends AutoPlugin {
   override def trigger  = allRequirements
   override def requires = SbtWsdl && PlayWeb
 
-  override def projectSettings = Seq(
-    sourceDirectories in (Compile, wsdlToCode) := Seq((resourceDirectory in Compile).value / "wsdls")
-  )
+  override def projectSettings =
+    Seq(
+      sourceDirectories in (Compile, wsdlToCode) := Seq((resourceDirectory in Compile).value / "wsdls")
+    )
 }
