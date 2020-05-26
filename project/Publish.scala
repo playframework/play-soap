@@ -19,7 +19,7 @@ class Publish(isLibrary: Boolean) extends AutoPlugin {
     Seq(
       bintrayOrganization := Some("playframework"),
       bintrayRepository := (if (isSnapshot.value) snapshotRepo else releaseRepo),
-      bintrayPackage := (if (isLibrary) "play-soap" else "sbt-play-soap"),
+      bintrayPackage := "play-soap",
       // maven style should only be used for libraries, not for plugins
       publishMavenStyle := isLibrary,
       bintrayPackageLabels := Seq("playframework", "soap", "plugin")
