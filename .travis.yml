@@ -25,34 +25,44 @@ env:
     - secure: "L/ZnXE4D8F61/K+Plzb7+ehwjJL3NxdRvPOz15ec3ez3X1rjXG+H3bGQewdij1IsNaxbrInLHYH1FxkRjPPqM49wQbuzSJcEsprhD66xQ3iHti+cQKHJa90HxsVlWM8S67hva+GlwUpTnpzDIJyuzS4JTBdS+XyFmzeFtNPdbGL7zAHzCIKij1FIXSqIAKX3mfLk8RHOjNPSSvYlsxP0y9MNwhtJQIpY4Wa9bQikaNMaXaTlmiDx3itW5bFohIfYnC277yMrvMsLf61WSF8O+bcRh6Y5ZdsRbpDOQ6zZN/hVIJVWlEnikFRvgQl3EWs67uY00HEtYHHKvVJAkBqeYvQLBVdp3dZbd4xH8/UrnFvcF1cUxkfBvVYgluSfrfXH18g3QkCqOSKCxBUEWpGEqw7GCL/0mGcBsx0V67c1BTZV4ebojYq8pmDqgcoh0yoJCKIR7o45wzGvqJNKObqqlBZPDeogp80V0MakziBoxdjQ9OYZpw0N/9YWktp8z+BabOe56ztqshBfkg8MwyQQVRPnAEjnjgxQcAjWAG+9p5Db8DUn5awJXKUGukeDF/QB7BOiL0+/jZ9bQ7XwsX6fQ9PVi+KdZ0uIscIB7UXU9Mwa1qTyeEEqZC4zsVbxS9yeLIZ99+HNH3H6WShC9DmWjy6n3JHJ0+rXDb8FNkRHk90="
 
 stages:
-  - name: Test
-  - name: Publish
+  - name: check
+  - name: test
+  - name: publish
     if: tag IS present AND NOT fork
 
 jobs:
   include:
-    - stage: Test
+    - stage: check
+      name: "Code validations"
       script:
-        # Code validations
-        - scripts/validate-code-style || travis_terminate 1;
+        - scripts/validate-code-style
+    - stage: test
+      name: "Tests"
+      script:
         - sbt +test || travis_terminate 1;
+    - name: "Scripted tests"
+      script:
         - sbt +publishLocal || travis_terminate 1;
         - sbt plugin/scripted || travis_terminate 1;
-        # Generate documentation
+    - name: "Generate documentation"
+      script:
         - sbt docs/webStage || travis_terminate 1;
-    - stage: Publish
+    - stage: publish
       name: "Publishing release and snapshot artifacts to Bintray"
       script: scripts/publish
 
 deploy:
   # Publishing documentation
   - provider: pages
+    # [warn] on deploy: deprecated key: skip_cleanup (not supported in dpl v2, use cleanup)
+    # TODO: Change when dpl v2 will be stable. (See https://docs.travis-ci.com/user/deployment-v2)
     skip_cleanup: true
     github_token: $GITHUB_TOKEN
     local_dir: docs/target/web/stage
     target_branch: gh-pages
     on:
-      condition: $TRAVIS_BUILD_STAGE_NAME = Publish
+      branch: master
+      condition: $TRAVIS_JOB_NAME = "Generate documentation"
 
 cache:
   directories:
