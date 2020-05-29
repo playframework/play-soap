@@ -25,3 +25,10 @@ pull_request_rules:
     actions:
       label:
         add: ["status:block-merge"]
+
+  - name: Labeling for Scala Steward PR's
+    conditions:
+      - author=scala-steward
+    actions:
+      label:
+        add: ["dependencies"]
