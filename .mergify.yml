@@ -7,6 +7,7 @@ pull_request_rules:
       - "#review-requested=0"
       - "#changes-requested-reviews-by=0"
       - label!=status:block-merge
+      - label=status:merge-when-green
     actions:
       merge:
         method: merge
@@ -17,14 +18,6 @@ pull_request_rules:
       - merged
     actions:
       delete_head_branch: {}
-
-  - name: auto add wip
-    conditions:
-      # match a few flavours of wip
-      - title~=^(\[wip\]( |:) |\[WIP\]( |:) |wip( |:) |WIP( |:)).*
-    actions:
-      label:
-        add: ["status:block-merge"]
 
   - name: Labeling for Scala Steward PR's
     conditions:
