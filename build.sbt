@@ -55,11 +55,11 @@ lazy val docs = (project in file("docs"))
     headerMappings := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
     headerSources.in(Compile) ++= sources.in(Compile, TwirlKeys.compileTemplates).value,
     WebKeys.pipeline ++= {
-      val clientDocs = (mappings in (Compile, packageDoc) in client).value.map {
-        case (file, _name) => file -> ("api/client/" + _name)
+      val clientDocs = (mappings in (Compile, packageDoc) in client).value.map { case (file, _name) =>
+        file -> ("api/client/" + _name)
       }
-      val pluginDocs = (mappings in (Compile, packageDoc) in plugin).value.map {
-        case (file, _name) => file -> ("api/sbtwsdl/" + _name)
+      val pluginDocs = (mappings in (Compile, packageDoc) in plugin).value.map { case (file, _name) =>
+        file -> ("api/sbtwsdl/" + _name)
       }
       clientDocs ++ pluginDocs
     },
