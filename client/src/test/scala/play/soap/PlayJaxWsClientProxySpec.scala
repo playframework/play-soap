@@ -47,15 +47,15 @@ class PlayJaxWsClientProxySpec extends Specification {
 
       "allow calling a method that throws a declared exception" in withScalaClient { client =>
         val result = client.declaredException()
-        await(result) must throwA[SomeException].like {
-          case e: SomeException => e.getMessage must_== "an error occurred"
+        await(result) must throwA[SomeException].like { case e: SomeException =>
+          e.getMessage must_== "an error occurred"
         }
       }
 
       "allow calling a method that throws an undeclared exception" in withScalaClient { client =>
         val result = client.runtimeException()
-        await(result) must throwA[SoapFault].like {
-          case e: SoapFault => e.getMessage must_== "an error occurred"
+        await(result) must throwA[SoapFault].like { case e: SoapFault =>
+          e.getMessage must_== "an error occurred"
         }
       }
     }
@@ -83,15 +83,15 @@ class PlayJaxWsClientProxySpec extends Specification {
 
       "allow calling a method that throws a declared exception" in withJavaClient { client =>
         val result = client.declaredException()
-        await(result) must throwA[SomeException].like {
-          case e: SomeException => e.getMessage must_== "an error occurred"
+        await(result) must throwA[SomeException].like { case e: SomeException =>
+          e.getMessage must_== "an error occurred"
         }
       }
 
       "allow calling a method that throws an undeclared exception" in withJavaClient { client =>
         val result = client.runtimeException()
-        await(result) must throwA[SoapFault].like {
-          case e: SoapFault => e.getMessage must_== "an error occurred"
+        await(result) must throwA[SoapFault].like { case e: SoapFault =>
+          e.getMessage must_== "an error occurred"
         }
       }
     }

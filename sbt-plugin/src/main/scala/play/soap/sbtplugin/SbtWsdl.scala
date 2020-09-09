@@ -205,8 +205,8 @@ object SbtWsdl extends AutoPlugin {
         val (files, plugins) = syncIncremental[WsdlTask, Map[WsdlTask, Seq[String]]](cacheDir, tasks) { ops =>
           val results = ops.map { task =>
             val packageArg = task.packageName.map(pkg => Seq("-p", pkg)).getOrElse(Nil)
-            val packageArgs = task.packageMappings.flatMap {
-              case (namespace, pkg) => Seq("-p", s"$namespace=$pkg")
+            val packageArgs = task.packageMappings.flatMap { case (namespace, pkg) =>
+              Seq("-p", s"$namespace=$pkg")
             }
             val serviceNameArg = task.serviceName.map(sn => Seq("-sn", sn)).getOrElse(Nil)
 
@@ -275,16 +275,16 @@ object SbtWsdl extends AutoPlugin {
         val hashedTasks = tasks.map(hashTask).toSet
         val existing    = cachedPlugins.filterKeys(hashedTasks)
         // Add new/overwrite updated ones
-        val allPlugins = existing ++ plugins.map {
-          case (task, value) => hashTask(task) -> value
+        val allPlugins = existing ++ plugins.map { case (task, value) =>
+          hashTask(task) -> value
         }
 
         // Write out cached plugins
         IO.write(
           pluginsCacheFile,
           allPlugins
-            .map {
-              case (key, value) => key + "=" + value.mkString(",")
+            .map { case (key, value) =>
+              key + "=" + value.mkString(",")
             }
             .mkString("\n")
         )
