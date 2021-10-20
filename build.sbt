@@ -10,16 +10,16 @@ lazy val root = project
   .in(file("."))
   .aggregate(client, plugin, docs)
   .settings(
-    name := "play-soap",
+    name               := "play-soap",
     crossScalaVersions := Nil,
-    publish / skip := true
+    publish / skip     := true
   )
 
 lazy val client = project
   .in(file("client"))
   .settings(
-    name := "play-soap-client",
-    description := "play-soap client",
+    name               := "play-soap-client",
+    description        := "play-soap client",
     crossScalaVersions := Seq(scala211, scala212, scala213),
     Dependencies.`play-client`,
   )
@@ -28,9 +28,9 @@ lazy val plugin = project
   .in(file("sbt-plugin"))
   .enablePlugins(SbtPlugin)
   .settings(
-    name := "sbt-play-soap",
+    name         := "sbt-play-soap",
     organization := "com.typesafe.sbt",
-    description := "play-soap sbt plugin",
+    description  := "play-soap sbt plugin",
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
@@ -41,7 +41,7 @@ lazy val plugin = project
       s"-Dproject.version=${version.value}",
       s"-Dcxf.version=${Versions.CXF}",
     ),
-    scriptedBufferLog := false,
+    scriptedBufferLog    := false,
     scriptedDependencies := (())
   )
 
@@ -50,7 +50,7 @@ lazy val docs = (project in file("docs"))
   .enablePlugins(SbtWeb)
   .settings(
     crossScalaVersions := Seq(scala212),
-    headerMappings := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
+    headerMappings     := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
     (Compile / headerSources) ++= (Compile / TwirlKeys.compileTemplates / sources).value,
     WebKeys.pipeline ++= {
       val clientDocs = (client / Compile / packageDoc / mappings).value.map { case (file, _name) =>

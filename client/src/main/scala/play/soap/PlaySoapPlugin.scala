@@ -42,11 +42,16 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
   /**
    * Create a port for the given class
    *
-   * @param qname The qname of the class
-   * @param portName The name of the port
-   * @param defaultAddress The default address to use if none configured
-   * @param handlers The handlers to use
-   * @return The port
+   * @param qname
+   *   The qname of the class
+   * @param portName
+   *   The name of the port
+   * @param defaultAddress
+   *   The default address to use if none configured
+   * @param handlers
+   *   The handlers to use
+   * @return
+   *   The port
    */
   protected def createPort[T](
       qname: QName,

@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
 resolvers += Resolver.typesafeRepo("releases")
 
 generateDocs / sources := (baseDirectory.value * "*.md").get
-generateDocs / target := WebKeys.webTarget.value / "docs"
+generateDocs / target  := WebKeys.webTarget.value / "docs"
 
 lazy val generateDocs = TaskKey[Seq[File]]("generateDocs")
 

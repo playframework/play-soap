@@ -81,12 +81,18 @@ object Imports {
     /**
      * A task for wsdl2code to run
      *
-     * @param url The url of the WSDL
-     * @param futureApi The future API to use
-     * @param packageName The name of the package to generate into, if overriding is desired
-     * @param packageMappings Mappings of namespaces to package names to se
-     * @param serviceName The name of the service to generate
-     * @param args Any additional args for wsdl2code
+     * @param url
+     *   The url of the WSDL
+     * @param futureApi
+     *   The future API to use
+     * @param packageName
+     *   The name of the package to generate into, if overriding is desired
+     * @param packageMappings
+     *   Mappings of namespaces to package names to se
+     * @param serviceName
+     *   The name of the service to generate
+     * @param args
+     *   Any additional args for wsdl2code
      */
     case class WsdlTask(
         url: URL,
@@ -100,8 +106,10 @@ object Imports {
     /**
      * The result of running the wsdltocode task
      *
-     * @param sources The sources generated
-     * @param plugins The plugins generated
+     * @param sources
+     *   The sources generated
+     * @param plugins
+     *   The plugins generated
      */
     case class WsdlTaskResult(sources: Seq[File], plugins: Seq[String])
   }
@@ -129,24 +137,24 @@ object SbtWsdl extends AutoPlugin {
    */
   def wsdlSettings: Seq[Setting[_]] =
     Seq(
-      wsdlUrls := Nil,
-      includeFilter in wsdlToCode := "*.wsdl",
-      excludeFilter in wsdlToCode := HiddenFileFilter,
-      sourceDirectories in wsdlToCode := Seq(sourceDirectory.value / "wsdl"),
-      sources in wsdlToCode := Defaults
+      wsdlUrls                       := Nil,
+      wsdlToCode / includeFilter     := "*.wsdl",
+      wsdlToCode / excludeFilter     := HiddenFileFilter,
+      wsdlToCode / sourceDirectories := Seq(sourceDirectory.value / "wsdl"),
+      wsdlToCode / sources := Defaults
         .collectFiles(
-          sourceDirectories in wsdlToCode,
-          includeFilter in wsdlToCode,
-          excludeFilter in wsdlToCode
+          wsdlToCode / sourceDirectories,
+          wsdlToCode / includeFilter,
+          wsdlToCode / excludeFilter
         )
         .value,
-      watchSources in Defaults.ConfigGlobal ++= (sources in wsdlToCode).value,
-      target in wsdlToCode := target.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
-      wsdlTasks := wsdlTasksTask.value,
-      wsdlToCode := wsdlToCodeTask.value,
+      watchSources in Defaults.ConfigGlobal ++= (wsdlToCode / sources).value,
+      wsdlToCode / target := target.value / "wsdl" / Defaults.nameForSrc(configuration.value.name),
+      wsdlTasks           := wsdlTasksTask.value,
+      wsdlToCode          := wsdlToCodeTask.value,
       sourceGenerators += Def.task(wsdlToCode.value.sources).taskValue,
-      managedSourceDirectories += (target in wsdlToCode).value / "sources",
-      managedResourceDirectories += (target in wsdlToCode).value / "resources"
+      managedSourceDirectories += (wsdlToCode / target).value / "sources",
+      managedResourceDirectories += (wsdlToCode / target).value / "resources"
     )
 
   /**
@@ -154,11 +162,11 @@ object SbtWsdl extends AutoPlugin {
    */
   def defaultSettings: Seq[Setting[_]] =
     Seq(
-      futureApi := ScalaFutureApi,
-      packageName := None,
+      futureApi       := ScalaFutureApi,
+      packageName     := None,
       packageMappings := Nil,
-      serviceName := None,
-      wsdlToCodeArgs := Nil,
+      serviceName     := None,
+      wsdlToCodeArgs  := Nil,
       wsdlToJavaHelp := {
         withContextClassLoader {
           new WSDLToJava(Array("-help")).run(new ToolContext())
@@ -171,13 +179,13 @@ object SbtWsdl extends AutoPlugin {
    */
   def dependencySettings: Seq[Setting[_]] =
     Seq(
-      playSoapVersion := Version.clientVersion,
+      playSoapVersion                            := Version.clientVersion,
       libraryDependencies += "com.typesafe.play" %% "play-soap-client" % playSoapVersion.value
     )
 
   private def wsdlTasksTask =
     Def.task {
-      val allUrls = (sources in wsdlToCode).value.map(_.toURI.toURL) ++ wsdlUrls.value
+      val allUrls = (wsdlToCode / sources).value.map(_.toURI.toURL) ++ wsdlUrls.value
       allUrls.map { url =>
         WsdlTask(
           url,
@@ -194,7 +202,7 @@ object SbtWsdl extends AutoPlugin {
     Def.task {
       val cacheDir = streams.value.cacheDirectory
       val tasks    = wsdlTasks.value
-      val outdir   = (target in wsdlToCode).value
+      val outdir   = (wsdlToCode / target).value
       val sources  = outdir / "sources"
       val log      = streams.value.log
 
@@ -343,6 +351,6 @@ object SbtWsdlPlay extends AutoPlugin {
 
   override def projectSettings =
     Seq(
-      sourceDirectories in (Compile, wsdlToCode) := Seq((resourceDirectory in Compile).value / "wsdls")
+      Compile / wsdlToCode / sourceDirectories := Seq((Compile / resourceDirectory).value / "wsdls")
     )
 }

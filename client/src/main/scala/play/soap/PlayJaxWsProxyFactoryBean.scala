@@ -84,10 +84,10 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
   }
 
   /**
-   * Specifies a list of JAX-WS Handler implementations that are to be
-   * used by the proxy.
+   * Specifies a list of JAX-WS Handler implementations that are to be used by the proxy.
    *
-   * @param h a <code>List</code> of <code>Handler</code> objects
+   * @param h
+   *   a <code>List</code> of <code>Handler</code> objects
    */
   def setHandlers(h: JList[Handler[_ <: MessageContext]]) {
     handlers.clear()
@@ -97,7 +97,8 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
   /**
    * Returns the configured list of JAX-WS handlers for the proxy.
    *
-   * @return a <code>List</code> of <code>Handler</code> objects
+   * @return
+   *   a <code>List</code> of <code>Handler</code> objects
    */
   def getHandlers: JList[Handler[_ <: MessageContext]] = {
     handlers
@@ -126,8 +127,8 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
   /**
    * Creates a JAX-WS proxy that can be used to make remote invocations.
    *
-   * @return the proxy. You must cast the returned object to the approriate class
-   *         before making remote calls
+   * @return
+   *   the proxy. You must cast the returned object to the approriate class before making remote calls
    */
   override def create: AnyRef = {
     var orig: ClassLoaderUtils.ClassLoaderHolder = null

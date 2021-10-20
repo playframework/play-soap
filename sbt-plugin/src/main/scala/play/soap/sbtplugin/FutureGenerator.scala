@@ -27,12 +27,12 @@ class FutureGenerator(futureApi: FutureApi) {
   )
 
   /**
-   * Generate the correct future type that holds the given Java type. E.g. for a Java type of
-   * "void" this could be "scala.concurrent.Future<scala.Unit>" or "java.util.concurrent.CompletionStage<Void>".
-   * For a Java type of "int" it could be "scala.concurrent.Future<java.lang.Integer>" or
-   * "java.util.concurrent.CompletionStage<java.lang.Integer>"
+   * Generate the correct future type that holds the given Java type. E.g. for a Java type of "void" this could be
+   * "scala.concurrent.Future<scala.Unit>" or "java.util.concurrent.CompletionStage<Void>". For a Java type of "int" it
+   * could be "scala.concurrent.Future<java.lang.Integer>" or "java.util.concurrent.CompletionStage<java.lang.Integer>"
    *
-   * @param javaType The Java type to wrap.
+   * @param javaType
+   *   The Java type to wrap.
    */
   def futureType(javaType: String) = {
     val elementType = mapping.getOrElse(javaType, javaType)
