@@ -53,3 +53,6 @@ jobs:
 
       - name: Scripted tests
         run: sbt +publishLocal plugin/scripted
+
+      - name: Generate documentation
+        run: sbt docs/webStage
