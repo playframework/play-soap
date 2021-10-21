@@ -16,7 +16,7 @@ libraryDependencies ++= Seq(
   "org.apache.cxf" % "cxf-rt-transports-http-jetty" % sys.props("cxf.version") % "test"
 )
 
-scalaSource in Test := baseDirectory.value / "tests"
+Test / scalaSource := baseDirectory.value / "tests"
 
 TaskKey[Unit]("checkServiceClients") := {
   val path = target.value / "wsdl" / "main" / "sources" / "play" / "soap" / "testservice" / "client"

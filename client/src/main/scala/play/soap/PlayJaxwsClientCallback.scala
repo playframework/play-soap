@@ -12,8 +12,10 @@ import scala.concurrent.Promise
 /**
  * A client callback based on a promise
  *
- * @param promise The promise
- * @param noResponseValue If no response comes back, redeem the future with this value
+ * @param promise
+ *   The promise
+ * @param noResponseValue
+ *   If no response comes back, redeem the future with this value
  */
 private[soap] class PlayJaxwsClientCallback(promise: Promise[Any], noResponseValue: Any = null) extends ClientCallback {
   override def handleResponse(ctx: util.Map[String, AnyRef], response: Array[AnyRef]) = {
