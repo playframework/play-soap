@@ -7,7 +7,9 @@ addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.6.0")
 addSbtPlugin("org.scalameta"     % "sbt-scalafmt"       % "2.4.3")
 addSbtPlugin("com.lightbend.sbt" % "sbt-java-formatter" % "0.6.1")
 addSbtPlugin("com.dwijnand"      % "sbt-dynver"         % "4.1.1")
-addSbtPlugin("org.foundweekends" % "sbt-bintray"        % "0.6.1")
+
+// Releasing
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.10")
 
 // Used for generating docs
 addSbtPlugin("com.typesafe.sbt" %% "sbt-twirl"  % "1.5.1")
