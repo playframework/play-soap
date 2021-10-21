@@ -17,7 +17,6 @@ lazy val root = project
 
 lazy val client = project
   .in(file("client"))
-  .enablePlugins(PublishLibrary)
   .settings(
     name := "play-soap-client",
     description := "play-soap client",
@@ -28,7 +27,6 @@ lazy val client = project
 lazy val plugin = project
   .in(file("sbt-plugin"))
   .enablePlugins(SbtPlugin)
-  .enablePlugins(PublishSbtPlugin)
   .settings(
     name := "sbt-play-soap",
     organization := "com.typesafe.sbt",
