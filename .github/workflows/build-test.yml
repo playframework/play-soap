@@ -28,9 +28,9 @@ jobs:
         uses: coursier/cache-action@v6.2
 
       - name: Code validations
-        run: scripts/validate-code-style
+        run: sbt +headerCheckAll scalafmtCheckAll scalafmtSbtCheck javafmtCheckAll
 
-  pull-request-validation:
+  check-tests:
     name: Check / Tests
     runs-on: ubuntu-20.04
     steps:
@@ -53,6 +53,24 @@ jobs:
 
       - name: Scripted tests
         run: sbt +publishLocal plugin/scripted
+
+  check-docs:
+    name: Check / Docs
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          fetch-depth: 0
+
+      - name: Set up JDK 8
+        uses: olafurpg/setup-scala@v13
+        with:
+          java-version: adopt@1.8
+
+      - name: Cache Coursier cache
+        uses: coursier/cache-action@v6.2
 
       - name: Generate documentation
         run: sbt docs/webStage
