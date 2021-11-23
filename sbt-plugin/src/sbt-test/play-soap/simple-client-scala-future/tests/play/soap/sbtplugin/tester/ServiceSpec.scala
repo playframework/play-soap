@@ -12,7 +12,8 @@ import javax.xml.ws.handler.MessageContext
 import org.apache.cxf.jaxws.EndpointImpl
 import play.soap.testservice.client._
 import scala.collection.JavaConverters._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Await
+import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 
@@ -55,7 +56,7 @@ abstract class ServiceSpec extends PlaySpecification {
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
 
   def withClient[T](block: Service => T): T = withApp { app =>
-    val client = app.injector.instanceOf[ServiceClient]
+    val client  = app.injector.instanceOf[ServiceClient]
     val service = getServiceFromClient(client)
     block(service)
   }
@@ -69,10 +70,9 @@ abstract class ServiceSpec extends PlaySpecification {
     }
   }
 
-
   def withService[T](block: Int => T): T = {
-    val port = findAvailablePort()
-    val impl = createServiceImpl()
+    val port     = findAvailablePort()
+    val impl     = createServiceImpl()
     val endpoint = Endpoint.publish(s"http://localhost:$port/$servicePath", impl)
     try {
       block(port)

@@ -12,7 +12,8 @@ import javax.xml.ws.handler.MessageContext
 import org.apache.cxf.jaxws.EndpointImpl
 import play.soap.testservice.client._
 import scala.collection.JavaConverters._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Await
+import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 
@@ -41,8 +42,8 @@ class HelloWorldSpec extends ServiceSpec {
     }
 
     "say hello with an exception" in withClient { client =>
-      await(client.sayHelloException("world")) must throwA[HelloException_Exception].like {
-        case e => e.getMessage must_== "Hello world"
+      await(client.sayHelloException("world")) must throwA[HelloException_Exception].like { case e =>
+        e.getMessage must_== "Hello world"
       }
     }
 
@@ -53,15 +54,17 @@ class HelloWorldSpec extends ServiceSpec {
     "allow adding custom handlers" in {
       val invoked = new AtomicBoolean()
       withApp { app =>
-        val client = app.injector.instanceOf[HelloWorldService].helloWorld(new SOAPHandler[SOAPMessageContext] {
-          def getHeaders = null
-          def handleMessage(context: SOAPMessageContext) = {
-            invoked.set(true)
-            true
-          }
-          def close(context: MessageContext) = ()
-          def handleFault(context: SOAPMessageContext) = true
-        })
+        val client = app.injector
+          .instanceOf[HelloWorldService]
+          .helloWorld(new SOAPHandler[SOAPMessageContext] {
+            def getHeaders = null
+            def handleMessage(context: SOAPMessageContext) = {
+              invoked.set(true)
+              true
+            }
+            def close(context: MessageContext)           = ()
+            def handleFault(context: SOAPMessageContext) = true
+          })
 
         await(client.sayHello("world")) must_== "Hello world"
         invoked.get() must_== true
@@ -73,7 +76,7 @@ class HelloWorldSpec extends ServiceSpec {
 
   override type Service = HelloWorld
 
-  override implicit val serviceClientClass: ClassTag[HelloWorldService] = ClassTag(classOf[HelloWorldService])
+  implicit override val serviceClientClass: ClassTag[HelloWorldService] = ClassTag(classOf[HelloWorldService])
 
   override def getServiceFromClient(c: ServiceClient): Service = c.helloWorld
 
