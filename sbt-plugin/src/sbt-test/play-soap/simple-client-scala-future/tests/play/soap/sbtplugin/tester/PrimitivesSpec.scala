@@ -69,7 +69,11 @@ class PrimitivesSpec extends ServiceSpec {
     }
 
     "handle short sequences" in withClient { client =>
-      await(client.shortSequence(Arrays.asList(1.toShort, 1.toShort))).asScala must_== List(1.toShort, 1.toShort, 1.toShort)
+      await(client.shortSequence(Arrays.asList(1.toShort, 1.toShort))).asScala must_== List(
+        1.toShort,
+        1.toShort,
+        1.toShort
+      )
     }
   }
 
@@ -77,7 +81,7 @@ class PrimitivesSpec extends ServiceSpec {
 
   override type Service = Primitives
 
-  override implicit val serviceClientClass: ClassTag[PrimitivesService] = ClassTag(classOf[PrimitivesService])
+  implicit override val serviceClientClass: ClassTag[PrimitivesService] = ClassTag(classOf[PrimitivesService])
 
   override def getServiceFromClient(c: ServiceClient): Service = c.primitives
 
