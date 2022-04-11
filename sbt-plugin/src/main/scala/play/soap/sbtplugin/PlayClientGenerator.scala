@@ -39,7 +39,7 @@ class PlayClientGenerator extends ServiceGenerator with PlayGenerator {
     parseOutputName(packageName, filename, ".scala")
   }
 
-  private object PortMethodNameGenerator {
+  private[sbtplugin] object PortMethodNameGenerator {
     def transform(port: JavaPort): String = {
       port.getName.head.toLower + port.getName.tail
     }
