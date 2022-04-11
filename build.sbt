@@ -80,3 +80,5 @@ def generateVersionFile =
   }
 
 (ThisBuild / dynverVTagPrefix) := false
+
+addCommandAlias("validateCode", "headerCheckAll; scalafmtSbtCheck; scalafmtCheckAll; javafmtCheckAll")
