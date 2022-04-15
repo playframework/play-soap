@@ -37,3 +37,9 @@ jobs:
     uses: playframework/.github/.github/workflows/sbt.yml@v1
     with:
       cmd: sbt +publishLocal plugin/scripted
+
+  finish:
+    name: Finish
+    needs: # Should be last
+      - "scripted-tests"
+    uses: playframework/.github/.github/workflows/rtm.yml@v1
