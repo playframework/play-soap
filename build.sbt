@@ -29,7 +29,6 @@ lazy val plugin = project
   .enablePlugins(SbtPlugin)
   .settings(
     name         := "sbt-play-soap",
-    organization := "com.typesafe.sbt",
     description  := "play-soap sbt plugin",
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
