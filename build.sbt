@@ -89,4 +89,12 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   s
 }
 
-addCommandAlias("validateCode", "headerCheckAll; scalafmtSbtCheck; scalafmtCheckAll; javafmtCheckAll")
+addCommandAlias(
+  "validateCode",
+  List(
+    "headerCheckAll",
+    "scalafmtSbtCheck",
+    "scalafmtCheckAll",
+    "javafmtCheckAll",
+  ).mkString(";")
+)
