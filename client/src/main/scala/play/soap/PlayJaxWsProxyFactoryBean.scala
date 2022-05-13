@@ -68,11 +68,11 @@ import scala.concurrent.Future
 /**
  * Most of this code is copied from the Apache CXF JaxWsProxyFactoryBean
  */
-private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new JaxWsClientFactoryBean()) {
+private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new JaxWsClientFactoryBean) {
   private var handlers: JList[Handler[_ <: MessageContext]] = new util.ArrayList[Handler[_ <: MessageContext]]
   private var loadHandlers: Boolean                         = true
 
-  setServiceFactory(new PlayJaxWsServiceFactoryBean())
+  setServiceFactory(new PlayJaxWsServiceFactoryBean)
 
   protected override def getConfiguredName: String = {
     var name: QName = getEndpointName

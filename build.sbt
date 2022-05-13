@@ -33,7 +33,7 @@ lazy val plugin = project
     Dependencies.plugin,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
-    (Compile / resourceGenerators) += generateVersionFile.taskValue,
+    Compile / resourceGenerators += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
       s"-Dscala.version=${scalaVersion.value}",
       s"-Dscala.crossVersions=${(client / crossScalaVersions).value.mkString(",")}",
@@ -50,7 +50,7 @@ lazy val docs = (project in file("docs"))
   .settings(
     crossScalaVersions := Seq(scala212),
     headerMappings     := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
-    (Compile / headerSources) ++= (Compile / TwirlKeys.compileTemplates / sources).value,
+    Compile / headerSources ++= (Compile / TwirlKeys.compileTemplates / sources).value,
     WebKeys.pipeline ++= {
       val clientDocs = (client / Compile / packageDoc / mappings).value.map { case (file, _name) =>
         file -> ("api/client/" + _name)
@@ -79,7 +79,7 @@ def generateVersionFile =
   }
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
-(ThisBuild / dynverVTagPrefix) := false
+ThisBuild / dynverVTagPrefix := false
 
 // Sanity-check: assert that version comes from a tag (e.g. not a too-shallow clone)
 // https://github.com/dwijnand/sbt-dynver/#sanity-checking-the-version

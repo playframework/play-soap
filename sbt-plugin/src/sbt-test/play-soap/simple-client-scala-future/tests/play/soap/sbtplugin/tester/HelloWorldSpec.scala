@@ -52,7 +52,7 @@ class HelloWorldSpec extends ServiceSpec {
     }
 
     "allow adding custom handlers" in {
-      val invoked = new AtomicBoolean()
+      val invoked = new AtomicBoolean
       withApp { app =>
         val client = app.injector
           .instanceOf[HelloWorldService]

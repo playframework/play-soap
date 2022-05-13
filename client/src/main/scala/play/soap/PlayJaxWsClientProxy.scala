@@ -87,7 +87,7 @@ private[soap] object PlayJaxWsClientProxy {
             val soapFault =
               if (
                 !(soapFault1.getNamespaceURI() == sf.getFaultCode.getNamespaceURI) &&
-                (SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE == sf.getFaultCode.getNamespaceURI)
+                SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE == sf.getFaultCode.getNamespaceURI
               ) {
                 Try(SAAJFactoryResolver.createSOAPFactory(null).createFault).getOrElse(soapFault1)
               } else soapFault1
@@ -170,11 +170,11 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     // interface. If the method invoked was declared by one of those interfaces, then we handle it here.
     try {
       if (
-        (method.getDeclaringClass == classOf[BindingProvider]) || (method.getDeclaringClass == classOf[
+        method.getDeclaringClass == classOf[BindingProvider] || method.getDeclaringClass == classOf[
           AnyRef
-        ]) || (method.getDeclaringClass == classOf[
+        ] || method.getDeclaringClass == classOf[
           Closeable
-        ])
+        ]
       ) {
         return method.invoke(this, params: _*)
       } else if (method.getDeclaringClass.isInstance(client)) {
@@ -285,7 +285,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
   private def addressChanged(address: String): Boolean = {
     !(address == null ||
       getClient.getEndpoint.getEndpointInfo == null ||
-      (address == getClient.getEndpoint.getEndpointInfo.getAddress))
+      address == getClient.getEndpoint.getEndpointInfo.getAddress)
   }
 
   private def setupEndpointAddressContext(endpoint: Endpoint): Unit = {

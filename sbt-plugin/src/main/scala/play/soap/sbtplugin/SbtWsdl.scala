@@ -169,7 +169,7 @@ object SbtWsdl extends AutoPlugin {
       wsdlToCodeArgs  := Nil,
       wsdlToJavaHelp := {
         withContextClassLoader {
-          new WSDLToJava(Array("-help")).run(new ToolContext())
+          new WSDLToJava(Array("-help")).run(new ToolContext)
         }
       }
     )
@@ -225,7 +225,7 @@ object SbtWsdl extends AutoPlugin {
               sources.getAbsolutePath
             ) ++ packageArg ++ packageArgs ++ serviceNameArg ++ task.args :+ task.url.toString
 
-            val toolContext = new ToolContext()
+            val toolContext = new ToolContext
 
             toolContext.put(classOf[FutureApi], task.futureApi)
 
@@ -233,7 +233,7 @@ object SbtWsdl extends AutoPlugin {
             // Custom OutputStreamCreator is used to track every file generated
             toolContext.put(
               classOf[OutputStreamCreator],
-              new OutputStreamCreator() {
+              new OutputStreamCreator {
                 override def createOutputStream(file: File) = {
                   filesWritten += file
                   super.createOutputStream(file)

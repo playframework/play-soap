@@ -62,7 +62,7 @@ abstract class ServiceSpec extends PlaySpecification {
   }
 
   def withApp[T](block: Application => T): T = withService { port =>
-    implicit val app = new GuiceApplicationBuilder()
+    implicit val app = new GuiceApplicationBuilder
       .configure("play.soap.address" -> s"http://localhost:$port/$servicePath")
       .build
     Helpers.running(app) {
