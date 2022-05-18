@@ -2,9 +2,11 @@ name: Publish
 
 on:
   push:
-    branches:
+    branches: # Snapshots
       - main
-    tags: ["*"]
+    tags: ["**"] # Releases
+  release:
+    types: [published]
 
 jobs:
   publish-artifacts:
