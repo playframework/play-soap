@@ -21,9 +21,38 @@ jobs:
 
   check-docs:
     name: Docs
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
-    with:
-      cmd: sbt docs/webStage
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
+          fetch-depth: 0
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-antora@3.1.0-lunr-extension@1.0.0-alpha.8
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Antora and extensions
+        run: npm i -D -E --quiet --no-progress @antora/cli@3.1.0 @antora/site-generator@3.1.0 @antora/lunr-extension@1.0.0-alpha.8
+        working-directory: ./docs
+
+      - name: Build documentation
+        run: npx antora local-antora-playbook.yml
+        working-directory: ./docs
 
   tests:
     name: Tests
