@@ -8,7 +8,7 @@ import Dependencies.ScalaVersions._
 
 lazy val root = project
   .in(file("."))
-  .aggregate(client, plugin, docs)
+  .aggregate(client, plugin)
   .settings(
     name               := "play-soap",
     crossScalaVersions := Nil,
@@ -42,25 +42,6 @@ lazy val plugin = project
     ),
     scriptedBufferLog    := false,
     scriptedDependencies := (())
-  )
-
-lazy val docs = (project in file("docs"))
-  .enablePlugins(SbtTwirl)
-  .enablePlugins(SbtWeb)
-  .settings(
-    crossScalaVersions := Seq(scala212),
-    headerMappings     := headerMappings.value + (FileType("html") -> HeaderCommentStyle.twirlStyleBlockComment),
-    (Compile / headerSources) ++= (Compile / TwirlKeys.compileTemplates / sources).value,
-    WebKeys.pipeline ++= {
-      val clientDocs = (client / Compile / packageDoc / mappings).value.map { case (file, _name) =>
-        file -> ("api/client/" + _name)
-      }
-      val pluginDocs = (plugin / Compile / packageDoc / mappings).value.map { case (file, _name) =>
-        file -> ("api/sbtwsdl/" + _name)
-      }
-      clientDocs ++ pluginDocs
-    },
-    publish / skip := true
   )
 
 def generateVersionFile =

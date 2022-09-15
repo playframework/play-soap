@@ -1,0 +1,16 @@
+site:
+  title: Play SOAP
+  start_page: index.adoc
+content:
+  sources:
+    - url: ../
+      branches: HEAD
+      start_paths: docs
+ui:
+  bundle:
+    url: https://github.com/playframework/play-antora-ui/releases/latest/download/ui-bundle.zip
+    snapshot: true
+
+antora:
+  extensions:
+    - require: '@antora/lunr-extension'

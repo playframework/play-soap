@@ -1,0 +1,5 @@
+name: play-soap
+title: Play SOAP
+version: ~
+nav:
+  - modules/ROOT/nav.adoc

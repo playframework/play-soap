@@ -19,27 +19,41 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # we don't know what commit the last tag was it's safer to get entire repo so previousStableVersion resolves
           fetch-depth: 0
 
-      - name: Set up JDK 8
-        uses: olafurpg/setup-scala@v13
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
         with:
-          java-version: adopt@1.8
+          node-version: 16
 
-      - name: Cache Coursier cache
-        uses: coursier/cache-action@v6.2
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-antora@3.1.0-lunr-extension@1.0.0-alpha.8
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      - name: Generate documentation
-        run: sbt docs/webStage
+      - name: Install Antora and extensions
+        run: npm i -D -E --quiet --no-progress @antora/cli@3.1.0 @antora/site-generator@3.1.0 @antora/lunr-extension@1.0.0-alpha.8
+        working-directory: ./docs
+
+      - name: Build documentation
+        run: npx antora local-antora-playbook.yml
+        working-directory: ./docs
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/target/web/stage
+          publish_dir: ./docs/build/site
           force_orphan: true
           commit_message: "Deploy docs"
           user_name: 'github-actions[bot]'

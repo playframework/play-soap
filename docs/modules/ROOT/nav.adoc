@@ -1,0 +1,7 @@
+.Getting started
+* xref:sbt-wsdl.adoc[Installation and using SbtWsdl]
+* xref:play-soap-client.adoc[Using a Play SOAP client]
+
+.Advanced
+* xref:handlers.adoc[Using JAX WS Handlers]
+* xref:security.adoc[Security]
