@@ -15,7 +15,7 @@ concurrency:
 jobs:
   check-code-style:
     name: Code Style
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
+    uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
       cmd: sbt validateCode
 
@@ -59,7 +59,7 @@ jobs:
     needs:
       - "check-code-style"
       - "check-docs"
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
+    uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
       cmd: sbt +test
 
@@ -67,7 +67,7 @@ jobs:
     name: Scripted tests
     needs:
       - "tests"
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
+    uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
       cmd: sbt +publishLocal plugin/scripted
 
@@ -76,4 +76,4 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: # Should be last
       - "scripted-tests"
-    uses: playframework/.github/.github/workflows/rtm.yml@v2
+    uses: playframework/.github/.github/workflows/rtm.yml@v3

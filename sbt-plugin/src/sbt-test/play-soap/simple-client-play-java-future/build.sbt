@@ -6,7 +6,7 @@ crossScalaVersions := sys.props("scala.crossVersions").split(",").toSeq
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+javacOptions ++= Seq("--release", "11")
 
 WsdlKeys.futureApi := WsdlKeys.PlayJavaFutureApi
 
