@@ -13,10 +13,3 @@ jobs:
     name: Publish / Artifacts
     uses: playframework/.github/.github/workflows/publish.yml@v3
     secrets: inherit
-
-  publish-docs:
-    name: Publish / Docs
-    uses: playframework/.github/.github/workflows/antora.yml@v3
-    with:
-      path: "./docs"
-      publish: true
