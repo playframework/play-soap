@@ -1,5 +1,6 @@
 name: play-soap
 title: Play SOAP
-version: ~
+display_version: 1.x (EOL)
+version: 1.x
 nav:
   - modules/ROOT/nav.adoc
