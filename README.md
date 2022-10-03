@@ -36,7 +36,7 @@ To install sbt WSDL into your Play project, add the following lines to your `pro
 addSbtPlugin("com.typesafe.sbt" % "sbt-play-soap" % "1.2.0") // requires sbt 1.x, the last version with support for sbt 0.13.18 is 1.1.3
 ```
 
-For more information about how to use Play SOAP, see the [documentation](https://playframework.github.io/play-soap/Home.html).
+For more information about how to use Play SOAP, see the [documentation](https://playframework.github.io/play-soap/2.x/).
 
 -------------------
 
@@ -101,19 +101,12 @@ Not likely to ever be implemented.
 
 # Docs
 
-The documentation is deployed to the `gh-pages` branch and so is available at https://playframework.github.io/play-soap/Home.html.
+For testing documentation locally use a few next commands (for more details see [Antora workflow](https://github.com/playframework/.github/blob/main/.github/workflows/antora.yml)):
 
-To develop the documentation, start sbt, and run:
+```bash
+cd docs
+npm i -D -E @antora/cli @antora/site-generator @antora/lunr-extension
+npx antora local-antora-playbook.yml
+```
 
-    project docs
-    ~webStage
-
-Now modify the docs (either markdown, or the template, or the stylesheets), and open `docs/target/web/stage/Home.html` to view them.
-
-To deploy the docs, cd into the the `docs/target/web/stage` directory, create a git repository, and then force push to the `gh-pages` branch of the `play-soap` repo.
-
-## Support
-
-The Play Soap library is *[Community Driven][]*.
-
-[Community Driven]: https://developer.lightbend.com/docs/introduction/getting-help/support-terminology.html#community-driven
+Then open in browser generated documentation from `<repo_path>/docs/build/site`.
