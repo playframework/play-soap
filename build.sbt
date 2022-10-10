@@ -20,7 +20,7 @@ lazy val client = project
   .settings(
     name               := "play-soap-client",
     description        := "play-soap client",
-    crossScalaVersions := Seq(scala212, scala213),
+    crossScalaVersions := Seq(scala213),
     Dependencies.`play-client`,
   )
 
