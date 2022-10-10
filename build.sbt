@@ -35,7 +35,7 @@ lazy val plugin = project
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
     (Compile / resourceGenerators) += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
-      s"-Dscala.version=${scalaVersion.value}",
+      s"-Dscala.version=${(client / scalaVersion).value}",
       s"-Dscala.crossVersions=${(client / crossScalaVersions).value.mkString(",")}",
       s"-Dproject.version=${version.value}",
       s"-Dcxf.version=${Versions.CXF}",
