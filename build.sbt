@@ -31,6 +31,7 @@ lazy val plugin = project
     name        := "sbt-play-soap",
     description := "play-soap sbt plugin",
     Dependencies.plugin,
+    scalaVersion       := scala212,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
     (Compile / resourceGenerators) += generateVersionFile.taskValue,
