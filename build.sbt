@@ -20,7 +20,7 @@ lazy val client = project
   .settings(
     name               := "play-soap-client",
     description        := "play-soap client",
-    crossScalaVersions := Seq(scala212, scala213),
+    crossScalaVersions := Seq(scala213),
     Dependencies.`play-client`,
   )
 
@@ -31,11 +31,12 @@ lazy val plugin = project
     name        := "sbt-play-soap",
     description := "play-soap sbt plugin",
     Dependencies.plugin,
+    scalaVersion       := scala212,
     crossScalaVersions := Seq(scala212),
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Versions.Play),
     (Compile / resourceGenerators) += generateVersionFile.taskValue,
     scriptedLaunchOpts ++= Seq(
-      s"-Dscala.version=${scalaVersion.value}",
+      s"-Dscala.version=${(client / scalaVersion).value}",
       s"-Dscala.crossVersions=${(client / crossScalaVersions).value.mkString(",")}",
       s"-Dproject.version=${version.value}",
       s"-Dcxf.version=${Versions.CXF}",

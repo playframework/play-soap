@@ -5,13 +5,13 @@ import sbt._
 object Dependencies {
 
   object ScalaVersions {
-    val scala212 = "2.12.16"
-    val scala213 = "2.13.8"
+    val scala212 = "2.12.17"
+    val scala213 = "2.13.10"
   }
 
   object Versions {
     val CXF  = "3.5.3"
-    val Play = "2.8.16"
+    val Play = "2.9.0-M2"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
