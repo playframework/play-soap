@@ -110,3 +110,7 @@ npx antora local-antora-playbook.yml
 ```
 
 Then open in browser generated documentation from `<repo_path>/docs/build/site`.
+
+# Releasing a new version
+
+See https://github.com/playframework/.github/blob/main/RELEASING.md
