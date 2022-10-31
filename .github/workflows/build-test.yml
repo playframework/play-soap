@@ -34,17 +34,9 @@ jobs:
     with:
       cmd: sbt +test
 
-  scripted-tests:
-    name: Scripted tests
-    needs:
-      - "tests"
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
-    with:
-      cmd: sbt +publishLocal plugin/scripted
-
   finish:
     name: Finish
     if: github.event_name == 'pull_request'
     needs: # Should be last
-      - "scripted-tests"
+      - "tests"
     uses: playframework/.github/.github/workflows/rtm.yml@v3
