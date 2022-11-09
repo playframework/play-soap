@@ -41,13 +41,3 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   dynverAssertTagVersion.value
   s
 }
-
-addCommandAlias(
-  "validateCode",
-  List(
-    "headerCheckAll",
-    "scalafmtSbtCheck",
-    "scalafmtCheckAll",
-    "javafmtCheckAll",
-  ).mkString(";")
-)
