@@ -3,11 +3,10 @@
  */
 package play.soap.plugin;
 
+import java.io.Writer;
 import org.apache.cxf.tools.common.ToolException;
 import org.apache.cxf.tools.util.ClassCollector;
 import org.apache.cxf.tools.wsdlto.frontend.jaxws.generators.ServiceGenerator;
-
-import java.io.Writer;
 
 /** Generator for the Play plugin */
 public class PlayClientGenerator extends ServiceGenerator implements PlayGenerator {
