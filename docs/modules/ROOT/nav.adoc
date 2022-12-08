@@ -1,7 +1,13 @@
-.Getting started
-* xref:sbt-wsdl.adoc[Installation and using SbtWsdl]
-* xref:play-soap-client.adoc[Using a Play SOAP client]
+* xref:index.adoc[About]
 
-.Advanced
-* xref:handlers.adoc[Using JAX WS Handlers]
-* xref:security.adoc[Security]
+.Plugin
+* xref:plugin/how-to-use.adoc[How To Use]
+** xref:plugin/maven.adoc[Maven]
+** xref:plugin/gradle.adoc[Gradle]
+** xref:plugin/sbt.adoc[SBT]
+** xref:plugin/cli.adoc[CLI]
+
+.Client
+* xref:client/play-soap-client.adoc[Using a Play SOAP client]
+* xref:client/handlers.adoc[Using JAX WS Handlers]
+* xref:client/security.adoc[Security]

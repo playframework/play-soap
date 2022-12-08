@@ -1,0 +1,28 @@
+= SBT
+
+Example using `play-soap-plugin` with https://github.com/PaymentHighway/sbt-cxf[sbt-cxf plugin]
+
+Add dependency and plugin into your project in `project/plugins.sbt`:
+
+[,scala]
+----
+libraryDependencies ++= Seq("com.typesafe.play" % "play-soap-plugin" % "2.0.0")
+
+addSbtPlugin("io.paymenthighway.sbt" % "sbt-cxf" % "1.6")
+----
+
+Add the plugin configuration to the `build.sbt` file. Additional arguments needed to generate java classes for our web-service WSDLs should be added as parameters to the `cxfWSDLs` setting:
+
+[,scala]
+----
+enablePlugins(CxfPlugin)
+
+val CxfVersion = "3.3.3"
+
+version in CXF := CxfVersion
+
+cxfWSDLs := Seq(
+  Wsdl("HelloWorld",(Compile / resourceDirectory).value / "helloWorld.wsdl",
+  Seq("-fe", "play", "-xjc-Xplay:lang scala"))
+)
+----

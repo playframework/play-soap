@@ -1,0 +1,24 @@
+= Gradle
+
+Example using `play-soap-plugin` with https://plugins.gradle.org/plugin/no.nils.wsdl2java[wsdl2java] gradle plugin:
+
+Add the following dependencies and plugin configuration to your `build.gradle` file. Additional arguments needed to generate java classes for our web-service WSDLs should be added to the `wsdl2java` block.
+
+[,groovy]
+----
+plugins {
+  id "no.nils.wsdl2java" version "0.12"
+}
+
+dependencies {
+    wsdl2java(
+	   [group: 'com.typesafe.play', name: 'play-soap-plugin', version: '2.0.0']
+    )
+}
+
+wsdl2java {
+    wsdlsToGenerate = [
+            ['-fe', 'play', '-xjc-Xplay:lang java', "${projectDir}/src/main/resources/helloWorld.wsdl"]
+    ]
+}
+----

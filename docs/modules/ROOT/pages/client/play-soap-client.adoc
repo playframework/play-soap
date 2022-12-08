@@ -2,7 +2,7 @@
 
 == Accessing the client
 
-Once you have sbt WSDL generating a soap client for you, it is quite straightforward to use.  How you access it depends on the service and port names in the WSDL.  Consider the following service section from a WSDL:
+Once you have sbt WSDL generating a soap client for you, it is quite straightforward to use. How you access it depends on the service and port names in the WSDL. Consider the following service section from a WSDL:
 
 [,xml]
 ----
@@ -13,11 +13,11 @@ Once you have sbt WSDL generating a soap client for you, it is quite straightfor
 </wsdl:service>
 ----
 
-Assuming that the package name that the client was generated into is `com.example`, Play will generate a service class called `com.example.HelloWorldService`.  This class is actually a Play plugin that allows you to configure the client, including configuring the address for each port to use.
+Assuming that the package name that the client was generated into is `com.example`, Play will generate a service class called `com.example.HelloWorldService`. This class is actually a Play plugin that allows you to configure the client, including configuring the address for each port to use.
 
-Note that there are some situations where sbt WSDL won't use the service name from the WSDL, these are when the name of the service conflicts with another class that it generated, such as the name of the service endpoint interface.  In that case, sbt WSDL will append `_Service` to the end of the service name, for example `com.example.HelloWorldService_Service`.
+Note that there are some situations where sbt WSDL won't use the service name from the WSDL, these are when the name of the service conflicts with another class that it generated, such as the name of the service endpoint interface. In that case, sbt WSDL will append `_Service` to the end of the service name, for example `com.example.HelloWorldService_Service`.
 
-Having located the service class, you can now get a port.  In the above WSDL there is one port named `HelloWorld`, and, according to the `HelloWorldSoapBinding` (not shown above), this returns a service endpoint interface called `HelloWorld`.  To access the endpoint, simply have it injected into your components or controllers, like so in Scala:
+Having located the service class, you can now get a port. In the above WSDL there is one port named `HelloWorld`, and, according to the `HelloWorldSoapBinding` (not shown above), this returns a service endpoint interface called `HelloWorld`. To access the endpoint, simply have it injected into your components or controllers, like so in Scala:
 
 [,scala]
 ----
@@ -48,7 +48,7 @@ public class MyComponent {
 
 == Using the client
 
-Once you've got a reference to the `client`, you can invoke methods on it.  For example, let's assume our client has operation called `sayHello` that takes a String parameter and returns a String parameter.  To invoke this from a Play Scala action, you would do this:
+Once you've got a reference to the `client`, you can invoke methods on it. For example, let's assume our client has operation called `sayHello` that takes a String parameter and returns a String parameter. To invoke this from a Play Scala action, you would do this:
 
 [,scala]
 ----
@@ -78,7 +78,7 @@ public CompletionStage<Result> hello(String name) {
 
 ### A note on using Scala
 
-The generated data objects will all be Java beans, with getter/setter style properties, and using Java collections.  For convenience when working with the Java collections, you may import the Scala implicit conversions for Scala collections, like so:
+The generated data objects will all be Java beans, with getter/setter style properties, and using Java collections. For convenience when working with the Java collections, you may import the Scala implicit conversions for Scala collections, like so:
 
 [,scala]
 ----
@@ -93,7 +93,7 @@ A pure Scala client that uses case classes, Scala collections and `Option` is a 
 
 == Configuring the client
 
-Configuration for the client works hierarchically, each configuration item is first checked to see if it's defined for the port, if not then for the service, and finally globally.  The format for global configuration is `play.soap.*`.  The format for configuration applying to a particular service is `play.soap.services.<fqsn>`, where `<fqsn>` is the fully qualified service name, for example, `com.example.HelloWorldService`.  The format for configuration applying to a particular port is `play.soap.services.<fqsn>.ports.<portName>`, where `<portName>` is the name of the port, for example `HelloWorld`.
+Configuration for the client works hierarchically, each configuration item is first checked to see if it's defined for the port, if not then for the service, and finally globally. The format for global configuration is `play.soap.*`. The format for configuration applying to a particular service is `play.soap.services.<fqsn>`, where `<fqsn>` is the fully qualified service name, for example, `com.example.HelloWorldService`. The format for configuration applying to a particular port is `play.soap.services.<fqsn>.ports.<portName>`, where `<portName>` is the name of the port, for example `HelloWorld`.
 
 So for the client above, to set the debug log just for the port, you would set:
 
@@ -118,7 +118,7 @@ play.soap.debugLog = true
 
 === Changing the address
 
-The address of a port can be set using the `address` property.  For example, to set the address of every port for the `HelloWorldService`:
+The address of a port can be set using the `address` property. For example, to set the address of every port for the `HelloWorldService`:
 
 [,hocon]
 ----
@@ -127,7 +127,7 @@ play.soap.services.com.example.HelloWorldService.address = "http://example.com/h
 
 === Turning on the debug log
 
-The debug log will log the outbound and inbound messages, including HTTP headers, made by the client.  An example of this is as follows:
+The debug log will log the outbound and inbound messages, including HTTP headers, made by the client. An example of this is as follows:
 
 [,none]
 ----
@@ -159,4 +159,4 @@ The debug log can be turned on using the `debugLog` property, for example, to tu
 play.soap.debugLog = true
 ----
 
-In combination with the `debugLog` property, you may need to adjust the logging levels in your Play application.  To see the debug log, you need to ensure that `org.apache.cxf.services` is configured to log at least `INFO` messages.  This can be further refined by supplying the service name, port and service endpoint interface name, for example, `org.apache.cxf.services.HelloWorldService`.
+In combination with the `debugLog` property, you may need to adjust the logging levels in your Play application. To see the debug log, you need to ensure that `org.apache.cxf.services` is configured to log at least `INFO` messages. This can be further refined by supplying the service name, port and service endpoint interface name, for example, `org.apache.cxf.services.HelloWorldService`.

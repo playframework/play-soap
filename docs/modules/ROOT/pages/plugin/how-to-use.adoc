@@ -1,0 +1,25 @@
+= How To Use
+
+Play SOAP Plugin is a plugin module to JAXB that converts WSDLs into SOAP client interfaces for work with asynchronous requests.
+
+Start by adding the dependency `play-soap-plugin` to the project and set required WSDL options:
+
+
+[cols="4*^",options=header]
+|===
+|Option |Accepted values |Required |Interpretation
+
+|-fe |play |true |Specifies the frontend to enable `play-soap-plugin`
+
+|-xjc-Xplay:lang
+|scala, java |true |Generate the future type to wrap an original type.
+
+`scala` - `scala.concurrent.Future` for Scala projects.
+
+`java` - `java.util.concurrent.CompletionStage` for Java projects.
+|===
+
+Additional documentation on WSDL2JAVA options can be found
+https://cxf.apache.org/docs/wsdl-to-java.html[here].
+
+For better workflow integration, consider integrating the module into one of these supported build tools (https://maven.apache.org/[maven], https://gradle.org/[gradle] and https://www.scala-sbt.org/[sbt]). A direct command line interface is also available.
