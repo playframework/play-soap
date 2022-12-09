@@ -1,0 +1,8 @@
+= Сommand Line Interface
+
+Use https://cxf.apache.org/docs/wsdl-to-java.html[wsdl2java] with options:
+[,cmd]
+----
+CLASSPATH=../../play-soap-plugin.jar
+wsdl2java -fe play -xjc-Xplay:langjava helloWorld.wsdl
+----
