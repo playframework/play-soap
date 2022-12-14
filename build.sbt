@@ -3,6 +3,8 @@
  */
 
 import Dependencies.ScalaVersions._
+import java.util.Properties
+import java.io.StringWriter
 
 lazy val root = project
   .in(file("."))
@@ -10,7 +12,8 @@ lazy val root = project
   .settings(
     name               := "play-soap",
     crossScalaVersions := Nil,
-    publish / skip     := true
+    publish / skip     := true,
+    publishLocal       := publishLocal.dependsOn(saveCurrentVersion).value
   )
 
 lazy val client = project
@@ -40,4 +43,16 @@ lazy val plugin = project
 Global / onLoad := (Global / onLoad).value.andThen { s =>
   dynverAssertTagVersion.value
   s
+}
+
+lazy val saveCurrentVersion = taskKey[Unit]("save current version")
+ThisBuild / saveCurrentVersion := {
+  val props  = new Properties()
+  val writer = new StringWriter()
+  props.setProperty("version", version.value)
+  props.setProperty("cxfVersion", Dependencies.Versions.CXF)
+  props.setProperty("playVersion", Dependencies.Versions.Play)
+  props.setProperty("scala213Version", Dependencies.ScalaVersions.scala213)
+  props.store(writer, "")
+  IO.write(baseDirectory.value / "version.properties", writer.getBuffer.toString)
 }
