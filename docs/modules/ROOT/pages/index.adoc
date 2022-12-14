@@ -7,3 +7,19 @@ Play SOAP allows an application to make calls on a remote web service using SOAP
 Play SOAP builds on the JAX WS spec, but doesn't implement it exactly. JAX WS does have support for making asynchronous calls, but this support is somewhat clumsy. It requires all asynchronous methods to have an `Async` suffix, and requires the passing of an `AsyncHandler` argument to handle the response. This makes it awkward to integrate into an asynchronous framework, since `AsyncHandler` s do not compose well with other asynchronous constructs. This support could be described as a second class citizen, bolted on to the spec as an afterthought.
 
 In contrast, Play SOAP provides asynchronous invocation of SOAP services as a first class citizen. Play SOAP methods all return promises, making them easy to compose with promises from other libraries, and allowing application code to be focussed on business logic, not on wiring asynchronous callbacks together.
+
+== Client proxy
+
+=== Proxy interceptor
+
+To implement the proxy, we have to implement our own version of JaxWsClientProxy. This is the CXF JDK proxy interceptor that implements JAX WS interfaces. It's here that asynchronous requests are handled, and the logic here is hard coded - it implements the JAX WS requirements, if a method ends in Async and returns something that implements Future then dispatch an asynchronous call. Hence why we have to implement our own to make every method asynchronous regardless of name, and to allow scala Future and Java CompletionStage return types.
+
+This class has a lot of logic copied from JaxWsClientProxy, the actual part that has been customised is quite simple, it just creates a promise, and sends an asynchronous callback that redeems the promise.
+
+=== Return type binding
+
+When the SOAP bindings are generated, JAXB bindings are generated from the return type. Since this type is a future, we need to tell CXF to use the type it contains.
+
+JAX WS provides a Holder type, this is used to allow methods return multiple values, something that is not possible otherwise in Java. It does this by having the first value returned as the return value of the method, and passing additional Holder objects as arguments to the method, whose values are set when the method returns. Although this wasn't designed with returning futures in mind, the implementation of it in Apache CXF makes it quite simple to reuse this mechanism to extract the return type, hence this is what we're doing. This allows us to completely reuse all the reflection code from Apache CXF that generates the bindings from the interface.
+
+In future, we may decide to implement our own reflection code for generating bindings, but for now using the Holder mechanism is good enough. A small amount of hacking is necessary to use it, due to some odd behaviour by the CXF JAX WS support - when the bindings are created, the JAX WS support automatically inserts its own configuration, and implements it in such a way that any configuration that we've added for holders gets overridden. We work around this by overriding a method that eventually injects this configuration but is invoked before the binding is actually done, and after invoking the super for the method, we inject our own configuration to override the default behaviour.
