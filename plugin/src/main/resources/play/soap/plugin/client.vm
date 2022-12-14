@@ -4,7 +4,7 @@
 package $service.packageName
 
 import javax.xml.namespace.QName
-import javax.xml.ws.handler.{MessageContext, Handler}
+import jakarta.xml.ws.handler.{MessageContext, Handler}
 #if ($markGenerated == "true")
 import javax.annotation.Generated
 #end
