@@ -9,10 +9,13 @@ import play.soap.plugin.FutureApi.ScalaFuture;
 
 public class Configuration {
 
+  public static String XJC = "xjc";
   public static String OPTION_PREFIX = "Xplay";
 
   public enum Option {
-    LANG("lang");
+    LANG("lang"),
+    TARGET("target");
+
     final String name;
 
     Option(String name) {
@@ -36,6 +39,27 @@ public class Configuration {
     public static Lang findByName(String name) {
       return Arrays.stream(values())
           .filter(lang -> lang.name.equals(name))
+          .findFirst()
+          .orElse(null);
+    }
+
+    public static boolean exists(String name) {
+      return findByName(name) != null;
+    }
+  }
+
+  public enum Target {
+    PLAY("play");
+
+    final String name;
+
+    Target(String name) {
+      this.name = name;
+    }
+
+    public static Target findByName(String name) {
+      return Arrays.stream(values())
+          .filter(target -> target.name.equalsIgnoreCase(name))
           .findFirst()
           .orElse(null);
     }

@@ -17,6 +17,10 @@ Start by adding the dependency `play-soap-plugin` to the project and set require
 `scala` - `scala.concurrent.Future` for Scala projects.
 
 `java` - `java.util.concurrent.CompletionStage` for Java projects.
+|-xjc-Xplay:target
+|play |false |Generates SOAP client classes for the specified framework.
+
+`play` - Play Framework
 |===
 
 Additional documentation on WSDL2JAVA options can be found

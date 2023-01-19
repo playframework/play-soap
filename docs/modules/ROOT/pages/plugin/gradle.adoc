@@ -18,7 +18,7 @@ dependencies {
 
 wsdl2java {
     wsdlsToGenerate = [
-            ['-fe', 'play', '-xjc-Xplay:lang java', "${projectDir}/src/main/resources/helloWorld.wsdl"]
+            ['-fe', 'play', '-xjc-Xplay:lang java', '-xjc-Xplay:target play', "${projectDir}/src/main/resources/helloWorld.wsdl"]
     ]
 }
 ----

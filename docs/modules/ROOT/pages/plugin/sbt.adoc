@@ -23,6 +23,6 @@ version in CXF := CxfVersion
 
 cxfWSDLs := Seq(
   Wsdl("HelloWorld",(Compile / resourceDirectory).value / "helloWorld.wsdl",
-  Seq("-fe", "play", "-xjc-Xplay:lang scala"))
+  Seq("-fe", "play", "-xjc-Xplay:lang scala", "-xjc-Xplay:target play"))
 )
 ----
