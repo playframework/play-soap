@@ -5,6 +5,7 @@ package play.soap.plugin;
 
 import static play.soap.plugin.Configuration.Lang.SCALA;
 import static play.soap.plugin.Configuration.Option.LANG;
+import static play.soap.plugin.Configuration.XJC;
 
 import java.io.Writer;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ public class PlaySEIGenerator extends SEIGenerator implements PlayGenerator {
   }
 
   public Lang findLang() {
-    String[] xjcValues = (String[]) env.get("xjc");
+    String[] xjcValues = (String[]) env.get(XJC);
     Lang result = SCALA;
     if (xjcValues != null) {
       result =

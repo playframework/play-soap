@@ -33,6 +33,7 @@ Add the following dependencies and plugin configuration to your `pom.xml` file. 
                                 <wsdl>${basedir}/src/main/resources/helloWorld.wsdl</wsdl>
                                 <extraargs>
                                     <extraarg>-xjc-Xplay:lang java</extraarg>
+                                    <extraarg>-xjc-Xplay:target play</extraarg>
                                 </extraargs>
                             </wsdlOption>
                         </wsdlOptions>
