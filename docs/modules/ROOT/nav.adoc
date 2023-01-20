@@ -1,5 +1,7 @@
 * xref:index.adoc[About]
 
+* xref:highlights.adoc[What's new?]
+
 .Plugin
 * xref:plugin/how-to-use.adoc[How To Use]
 ** xref:plugin/maven.adoc[Maven]

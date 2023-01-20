@@ -3,10 +3,10 @@
  */
 package play.soap.mockservice;
 
-import javax.jws.WebService;
-import javax.xml.ws.Action;
-import javax.xml.ws.FaultAction;
-import javax.xml.ws.Holder;
+import jakarta.jws.WebService;
+import jakarta.xml.ws.Action;
+import jakarta.xml.ws.FaultAction;
+import jakarta.xml.ws.Holder;
 import scala.Unit;
 import scala.concurrent.Future;
 
