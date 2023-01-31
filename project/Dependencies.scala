@@ -1,5 +1,8 @@
+/*
+ * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
+ */
+import net.aichler.jupiter.sbt.Import.JupiterKeys.jupiterVersion
 import sbt.Keys.libraryDependencies
-
 import sbt._
 
 object Dependencies {
@@ -15,17 +18,37 @@ object Dependencies {
 
   val `play-client` = libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play"                         % Versions.Play % Provided,
-    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"        % Versions.CXF,
-    "org.apache.cxf"     % "cxf-rt-transports-http-hc"    % Versions.CXF,
+    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
+    "org.apache.cxf"     % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
     "org.apache.cxf"     % "cxf-rt-transports-http"       % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
     "com.typesafe.play" %% "play-specs2"                  % Versions.Play % Test
   )
 
   val plugin = libraryDependencies ++= Seq(
-    "commons-codec"  % "commons-codec"                     % "1.15",
-    "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws"   % Versions.CXF,
-    "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % Versions.CXF,
-    "org.specs2"    %% "specs2-core"                       % "4.19.0" % Test
+    "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws"   % Versions.CXF % Provided,
+    "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % Versions.CXF % Provided
+  )
+
+  val `mock-server` = libraryDependencies ++= Seq(
+    "org.apache.cxf" % "cxf-rt-frontend-jaxws"        % Versions.CXF,
+    "org.apache.cxf" % "cxf-rt-transports-http-jetty" % Versions.CXF,
+  )
+
+  val `test-java` = libraryDependencies ++= Seq(
+    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF         % Test,
+    "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
+    "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
+    "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
+    "org.testcontainers" % "junit-jupiter"              % "1.17.6"             % Test,
+    "org.assertj"        % "assertj-core"               % "3.24.2"             % Test
+  )
+
+  val `test-scala` = libraryDependencies ++= Seq(
+    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF  % Test,
+    "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
+    "com.typesafe.play" %% "play"                       % Versions.Play % Test, // TODO: remove
+    "com.dimafeng"      %% "testcontainers-scala"       % "0.40.12"     % Test,
+    "org.scalatest"     %% "scalatest"                  % "3.2.15"      % Test,
   )
 }

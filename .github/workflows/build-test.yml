@@ -34,17 +34,9 @@ jobs:
     with:
       cmd: sbt +test
 
-  module-tests:
-    name: Module tests
-    needs:
-      - "tests"
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
-    with:
-      cmd: sbt publishLocal;cd test;sbt +test
-
   finish:
     name: Finish
     if: github.event_name == 'pull_request'
     needs: # Should be last
-      - "module-tests"
+      - "tests"
     uses: playframework/.github/.github/workflows/rtm.yml@v3

@@ -4,4 +4,3 @@ target
 node_modules/
 /docs/build/
 /docs/package*.json
-version.properties
