@@ -3,22 +3,20 @@
  */
 package play.soap
 
-import java.net.ServerSocket
-import java.util.concurrent.CompletionStage
-import javax.xml.ws.Endpoint
-import javax.xml.ws.Holder
-
+import jakarta.xml.ws.Endpoint
+import jakarta.xml.ws.Holder
+import org.apache.cxf.binding.soap.SoapFault
 import org.apache.cxf.jaxws.EndpointImpl
 import org.specs2.mutable.Specification
 import play.soap.mockservice._
 
+import java.net.ServerSocket
+import java.util.concurrent.CompletionStage
+import scala.compat.java8.FutureConverters
 import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
-import org.apache.cxf.binding.soap.SoapFault
-
-import scala.compat.java8.FutureConverters
 
 class PlayJaxWsClientProxySpec extends Specification {
   sequential

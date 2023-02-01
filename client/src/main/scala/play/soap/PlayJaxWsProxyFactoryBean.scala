@@ -28,14 +28,12 @@
 package play.soap
 
 import java.io.Closeable
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 import java.lang.reflect.Proxy
 import java.util
 import javax.xml.namespace.QName
-import javax.xml.ws.BindingProvider
-import javax.xml.ws.handler.MessageContext
-import javax.xml.ws.handler.Handler
+import jakarta.xml.ws.BindingProvider
+import jakarta.xml.ws.handler.MessageContext
+import jakarta.xml.ws.handler.Handler
 
 import org.apache.cxf.common.classloader.ClassLoaderUtils
 import org.apache.cxf.common.injection.ResourceInjector
@@ -49,21 +47,16 @@ import org.apache.cxf.jaxws.interceptors.WrapperClassOutInterceptor
 import org.apache.cxf.jaxws.interceptors.HolderInInterceptor
 import org.apache.cxf.jaxws.interceptors.WrapperClassInInterceptor
 import org.apache.cxf.jaxws.JaxWsClientFactoryBean
-import org.apache.cxf.jaxws.support.JaxWsImplementorInfo
 import org.apache.cxf.jaxws.support.JaxWsEndpointImpl
 import org.apache.cxf.jaxws.support.JaxWsServiceFactoryBean
 import org.apache.cxf.resource.ResourceResolver
 import org.apache.cxf.resource.DefaultResourceManager
 import org.apache.cxf.resource.ResourceManager
 import org.apache.cxf.service.Service
-import org.apache.cxf.service.model.MessagePartInfo
 import org.apache.cxf.service.model.ServiceInfo
-import org.apache.cxf.wsdl.service.factory.AbstractServiceConfiguration
 import org.apache.cxf.wsdl.service.factory.ReflectionServiceFactoryBean
 
 import java.util.{ List => JList }
-
-import scala.concurrent.Future
 
 /**
  * Most of this code is copied from the Apache CXF JaxWsProxyFactoryBean

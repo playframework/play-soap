@@ -3,8 +3,8 @@
  */
 package play.soap.mockservice;
 
-import javax.jws.WebService;
-import javax.xml.ws.Holder;
+import jakarta.jws.WebService;
+import jakarta.xml.ws.Holder;
 
 @WebService
 public interface MockService {

@@ -3,11 +3,11 @@
  */
 package play.soap.mockservice;
 
+import jakarta.jws.WebService;
+import jakarta.xml.ws.Action;
+import jakarta.xml.ws.FaultAction;
+import jakarta.xml.ws.Holder;
 import java.util.concurrent.CompletionStage;
-import javax.jws.WebService;
-import javax.xml.ws.Action;
-import javax.xml.ws.FaultAction;
-import javax.xml.ws.Holder;
 
 @WebService(name = "MockService")
 public interface MockServiceJava {

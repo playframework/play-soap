@@ -27,6 +27,17 @@
  */
 package play.soap
 
+import jakarta.xml.soap.SOAPException
+import jakarta.xml.soap.SOAPConstants
+import jakarta.xml.soap.SOAPFault
+import jakarta.xml.ws.handler.MessageContext
+import jakarta.xml.ws.handler.MessageContext.Scope
+import jakarta.xml.ws.http.HTTPBinding
+import jakarta.xml.ws.http.HTTPException
+import jakarta.xml.ws.soap.SOAPBinding
+import jakarta.xml.ws.soap.SOAPFaultException
+import jakarta.xml.ws._
+
 import java.io.Closeable
 import java.io.IOException
 import java.lang.reflect.InvocationTargetException
@@ -34,17 +45,6 @@ import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
 import java.net.HttpURLConnection
 import java.util.concurrent.CompletionStage
-import javax.xml.soap.SOAPConstants
-import javax.xml.soap.SOAPException
-import javax.xml.soap.SOAPFault
-import javax.xml.ws.handler.MessageContext
-import javax.xml.ws.handler.MessageContext.Scope
-import javax.xml.ws.http.HTTPBinding
-import javax.xml.ws.http.HTTPException
-import javax.xml.ws.soap.SOAPBinding
-import javax.xml.ws.soap.SOAPFaultException
-import javax.xml.ws._
-
 import org.apache.cxf.binding.soap.SoapFault
 import org.apache.cxf.binding.soap.saaj.SAAJFactoryResolver
 import org.apache.cxf.binding.soap.saaj.SAAJUtils
@@ -52,7 +52,6 @@ import org.apache.cxf.common.i18n.Message
 import org.apache.cxf.common.logging.LogUtils
 import org.apache.cxf.common.util.StringUtils
 import org.apache.cxf.endpoint.Client
-import org.apache.cxf.endpoint.ClientCallback
 import org.apache.cxf.endpoint.Endpoint
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.helpers.CastUtils
@@ -66,7 +65,6 @@ import java.util.{ Map => JMap }
 
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
-import play.libs.F
 
 import scala.compat.java8.FutureConverters
 import scala.concurrent.Future

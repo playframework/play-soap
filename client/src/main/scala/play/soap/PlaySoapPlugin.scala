@@ -6,9 +6,9 @@ package play.soap
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.xml.namespace.QName
-import javax.xml.ws.handler.MessageContext
-import javax.xml.ws.handler.Handler
-import javax.xml.ws.soap.SOAPBinding
+import jakarta.xml.ws.handler.MessageContext
+import jakarta.xml.ws.handler.Handler
+import jakarta.xml.ws.soap.SOAPBinding
 
 import org.apache.cxf.BusFactory
 import org.apache.cxf.interceptor.LoggingOutInterceptor
