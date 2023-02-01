@@ -1,9 +1,7 @@
 = What's new in Play SOAP 2.x
 
-This page highlights the new features of Play SOAP 2.x.
-
 == CXF 4.0
 We have upgraded CXF to the next major version, `4.0`. Because CXF `4.0` is based on https://jakarta.ee/specifications/platform/9.1/[JakartaEE 9.1], all references to the `javax.\*` classpath needed to be migrated to `jakarta.*`. For more details, see the https://cxf.apache.org/docs/40-migration-guide.html[CXF 4.0 release notes]
 
 == Java 11
-In order to support CXF 4.0, Play SOAP 2.x now requires Java 11. https://cxf.apache.org/docs/35-migration-guide.html[CXF 3.5] is the last major release of CXF that supported Java 8.
+In order to support CXF `4.0`, Play SOAP 2.x now requires Java 11. https://cxf.apache.org/docs/35-migration-guide.html[CXF 3.5] is the last major release of CXF that supported Java 8.
