@@ -1,8 +1,11 @@
+/*
+ * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
+ */
 import sbt.Keys._
-
 import sbt._
 import sbt.plugins.JvmPlugin
 import Dependencies.ScalaVersions._
+import de.heikoseeberger.sbtheader.FileType
 import de.heikoseeberger.sbtheader.HeaderPlugin
 
 object Common extends AutoPlugin {
@@ -41,6 +44,10 @@ object Common extends AutoPlugin {
   override def projectSettings =
     Seq(
       headerEmptyLine := false,
-      headerLicense   := Some(HeaderLicense.Custom("Copyright (C) Lightbend Inc. <https://www.lightbend.com>"))
+      headerLicense   := Some(HeaderLicense.Custom("Copyright (C) Lightbend Inc. <https://www.lightbend.com>")),
+      headerMappings ++= Map(
+        // TODO: use `FileType.xml.firstLinePattern` instead after release https://github.com/sbt/sbt-header/issues/310
+        FileType("wsdl", Some("(<\\?xml.*\\?>(?:\\s+))([\\S\\s]*)".r)) -> HeaderCommentStyle.xmlStyleBlockComment
+      )
     )
 }
