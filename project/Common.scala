@@ -22,8 +22,8 @@ object Common extends AutoPlugin {
     Seq(
       // organization
       organization         := "com.typesafe.play",
-      organizationName     := "Lightbend Inc.",
-      organizationHomepage := Some(url("https://www.lightbend.com/")),
+      organizationName     := "The Play Framework Project",
+      organizationHomepage := Some(url("https://playframework.com/")),
       // scala settings
       scalaVersion := scala213,
       scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8"),
@@ -35,7 +35,7 @@ object Common extends AutoPlugin {
       homepage := Some(url(s"https://github.com/playframework/${repoName}")),
       developers += Developer(
         "playframework",
-        "Play Framework Team",
+        "The Play Framework Contributors",
         "contact@playframework.com",
         url("https://github.com/playframework")
       )
