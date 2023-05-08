@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>
  */
 import sbt.Keys._
 import sbt._
@@ -44,7 +44,11 @@ object Common extends AutoPlugin {
   override def projectSettings =
     Seq(
       headerEmptyLine := false,
-      headerLicense   := Some(HeaderLicense.Custom("Copyright (C) Lightbend Inc. <https://www.lightbend.com>")),
+      headerLicense := Some(
+        HeaderLicense.Custom(
+          "Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>"
+        )
+      ),
       headerMappings ++= Map(
         // TODO: use `FileType.xml.firstLinePattern` instead after release https://github.com/sbt/sbt-header/issues/310
         FileType("wsdl", Some("(<\\?xml.*\\?>(?:\\s+))([\\S\\s]*)".r)) -> HeaderCommentStyle.xmlStyleBlockComment
