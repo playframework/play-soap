@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright (C) Lightbend Inc. <https://www.lightbend.com>
+    Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>
 -->
 <plugin xmlns="http://cxf.apache.org/tools/plugin" name="play" version="" provider="play.typesafe.com">
     <frontend name="play" package="org.apache.cxf.tools.wsdlto.frontend.jaxws" profile="JAXWSProfile">
