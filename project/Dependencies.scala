@@ -8,12 +8,12 @@ import sbt._
 object Dependencies {
 
   object ScalaVersions {
-    val scala213 = "2.13.10"
+    val scala213 = "2.13.11"
   }
 
   object Versions {
     val CXF  = "4.0.1"
-    val Play = "2.9.0-M4"
+    val Play = "2.9.0-M6"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
