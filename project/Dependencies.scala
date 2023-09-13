@@ -49,6 +49,6 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play % Test, // TODO: remove
     "com.dimafeng"      %% "testcontainers-scala"       % "0.40.17"     % Test,
-    "org.scalatest"     %% "scalatest"                  % "3.2.16"      % Test,
+    "org.scalatest"     %% "scalatest"                  % "3.2.17"      % Test,
   )
 }
