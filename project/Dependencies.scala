@@ -40,7 +40,7 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
-    "org.testcontainers" % "junit-jupiter"              % "1.18.3"             % Test,
+    "org.testcontainers" % "junit-jupiter"              % "1.19.0"             % Test,
     "org.assertj"        % "assertj-core"               % "3.24.2"             % Test
   )
 
@@ -48,7 +48,7 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play % Test, // TODO: remove
-    "com.dimafeng"      %% "testcontainers-scala"       % "0.40.17"     % Test,
+    "com.dimafeng"      %% "testcontainers-scala"       % "0.41.0"      % Test,
     "org.scalatest"     %% "scalatest"                  % "3.2.17"      % Test,
   )
 }
