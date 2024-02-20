@@ -13,16 +13,16 @@ object Dependencies {
 
   object Versions {
     val CXF  = "4.0.3"
-    val Play = "2.9.1"
+    val Play = "3.0.1"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
-    "com.typesafe.play" %% "play"                         % Versions.Play % Provided,
+    "org.playframework" %% "play"                         % Versions.Play % Provided,
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
     "org.apache.cxf"     % "cxf-rt-transports-http"       % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
-    "com.typesafe.play" %% "play-specs2"                  % Versions.Play % Test
+    "org.playframework" %% "play-specs2"                  % Versions.Play % Test
   )
 
   val plugin = libraryDependencies ++= Seq(
@@ -38,7 +38,7 @@ object Dependencies {
   val `test-java` = libraryDependencies ++= Seq(
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF         % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
-    "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
+    "org.playframework" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
     "org.testcontainers" % "junit-jupiter"              % "1.19.3"             % Test,
     "org.assertj"        % "assertj-core"               % "3.25.1"             % Test
@@ -47,7 +47,7 @@ object Dependencies {
   val `test-scala` = libraryDependencies ++= Seq(
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
-    "com.typesafe.play" %% "play"                       % Versions.Play % Test, // TODO: remove
+    "org.playframework" %% "play"                       % Versions.Play % Test, // TODO: remove
     "com.dimafeng"      %% "testcontainers-scala"       % "0.41.0"      % Test,
     "org.scalatest"     %% "scalatest"                  % "3.2.17"      % Test,
   )
