@@ -8,12 +8,12 @@ import sbt._
 object Dependencies {
 
   object ScalaVersions {
-    val scala213 = "2.13.13"
+    val scala213 = "2.13.14"
   }
 
   object Versions {
     val CXF  = "4.0.4"
-    val Play = "2.9.2"
+    val Play = "2.9.3"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
@@ -40,7 +40,7 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
-    "org.testcontainers" % "junit-jupiter"              % "1.19.7"             % Test,
+    "org.testcontainers" % "junit-jupiter"              % "1.19.8"             % Test,
     "org.assertj"        % "assertj-core"               % "3.25.3"             % Test
   )
 
