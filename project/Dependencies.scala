@@ -41,7 +41,7 @@ object Dependencies {
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
     "org.testcontainers" % "junit-jupiter"              % "1.19.8"             % Test,
-    "org.assertj"        % "assertj-core"               % "3.25.3"             % Test
+    "org.assertj"        % "assertj-core"               % "3.26.0"             % Test
   )
 
   val `test-scala` = libraryDependencies ++= Seq(
