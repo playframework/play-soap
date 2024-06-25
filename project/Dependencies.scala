@@ -13,7 +13,7 @@ object Dependencies {
 
   object Versions {
     val CXF  = "4.0.4"
-    val Play = "2.9.3"
+    val Play = "2.9.4"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
@@ -49,6 +49,6 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play % Test, // TODO: remove
     "com.dimafeng"      %% "testcontainers-scala"       % "0.41.4"      % Test,
-    "org.scalatest"     %% "scalatest"                  % "3.2.18"      % Test,
+    "org.scalatest"     %% "scalatest"                  % "3.2.19"      % Test,
   )
 }
