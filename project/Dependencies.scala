@@ -12,8 +12,8 @@ object Dependencies {
   }
 
   object Versions {
-    val CXF  = "4.0.4"
-    val Play = "2.9.4"
+    val CXF  = "4.0.5"
+    val Play = "2.9.5"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
@@ -41,7 +41,7 @@ object Dependencies {
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
     "org.testcontainers" % "junit-jupiter"              % "1.19.8"             % Test,
-    "org.assertj"        % "assertj-core"               % "3.26.0"             % Test
+    "org.assertj"        % "assertj-core"               % "3.26.3"             % Test
   )
 
   val `test-scala` = libraryDependencies ++= Seq(
