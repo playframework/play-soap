@@ -13,7 +13,7 @@ object Dependencies {
 
   object Versions {
     val CXF  = "4.0.5"
-    val Play = "2.9.5"
+    val Play = "2.9.6"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
@@ -40,7 +40,7 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
-    "org.testcontainers" % "junit-jupiter"              % "1.20.3"             % Test,
+    "org.testcontainers" % "junit-jupiter"              % "1.20.4"             % Test,
     "org.assertj"        % "assertj-core"               % "3.26.3"             % Test
   )
 
