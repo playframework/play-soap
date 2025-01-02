@@ -4,4 +4,4 @@
 scalaVersion       := sys.props("scala.version")
 crossScalaVersions := sys.props("scala.crossVersions").split(",").toSeq
 
-libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current
+libraryDependencies += "org.playframework" %% "play" % play.core.PlayVersion.current
