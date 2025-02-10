@@ -8,7 +8,7 @@ import sbt._
 object Dependencies {
 
   object ScalaVersions {
-    val scala213 = "2.13.15"
+    val scala213 = "2.13.16"
   }
 
   object Versions {
@@ -41,7 +41,7 @@ object Dependencies {
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
     "org.testcontainers" % "junit-jupiter"              % "1.20.4"             % Test,
-    "org.assertj"        % "assertj-core"               % "3.27.1"             % Test
+    "org.assertj"        % "assertj-core"               % "3.27.3"             % Test
   )
 
   val `test-scala` = libraryDependencies ++= Seq(
