@@ -40,7 +40,7 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
     "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
-    "org.testcontainers" % "junit-jupiter"              % "1.20.6"             % Test,
+    "org.testcontainers" % "junit-jupiter"              % "1.21.0"             % Test,
     "org.assertj"        % "assertj-core"               % "3.27.3"             % Test
   )
 
