@@ -15,14 +15,17 @@ Add the plugin configuration to the `build.sbt` file. Additional arguments neede
 
 [,scala]
 ----
+scalaVersion := "3.3.5" // Match your app's Scala version
+val CxfVersion = "4.0.7"
+
+libraryDependencies += "org.apache.cxf" % "cxf-tools-wsdlto-frontend-jaxws"   % CxfVersion
+libraryDependencies += "org.apache.cxf" % "cxf-tools-wsdlto-databinding-jaxb" % CxfVersion
+
 enablePlugins(CxfPlugin)
-
-val CxfVersion = "3.3.3"
-
-version in CXF := CxfVersion
+CXF / version := CxfVersion
 
 cxfWSDLs := Seq(
-  Wsdl("HelloWorld",(Compile / resourceDirectory).value / "helloWorld.wsdl",
-  Seq("-fe", "play", "-xjc-Xplay:lang scala", "-xjc-Xplay:target play"))
+  Wsdl("HelloWorld", (Compile / resourceDirectory).value / "helloWorld.wsdl",
+    Seq("-fe", "play", "-xjc-Xplay:lang scala", "-xjc-Xplay:target play"))
 )
 ----
