@@ -6,7 +6,7 @@ Add dependency and plugin into your project in `project/plugins.sbt`:
 
 [,scala]
 ----
-libraryDependencies ++= Seq("com.typesafe.play" % "play-soap-plugin" % "2.0.0")
+libraryDependencies ++= Seq("org.playframework" % "play-soap-plugin" % "2.0.0")
 
 addSbtPlugin("io.paymenthighway.sbt" % "sbt-cxf" % "1.6")
 ----
