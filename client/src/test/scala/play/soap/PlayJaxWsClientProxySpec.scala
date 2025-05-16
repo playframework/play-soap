@@ -12,10 +12,10 @@ import play.soap.mockservice._
 
 import java.net.ServerSocket
 import java.util.concurrent.CompletionStage
-import scala.compat.java8.FutureConverters
 import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration._
+import scala.jdk.FutureConverters
 import scala.reflect.ClassTag
 
 class PlayJaxWsClientProxySpec extends Specification {
@@ -97,7 +97,7 @@ class PlayJaxWsClientProxySpec extends Specification {
 
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
 
-  def await[T](completionStage: CompletionStage[T]): T = await(FutureConverters.toScala(completionStage))
+  def await[T](completionStage: CompletionStage[T]): T = await(FutureConverters.CompletionStageOps(completionStage).asScala)
 
   def withScalaClient[T](block: MockServiceScala => T): T = withClient(block)
 
@@ -125,7 +125,7 @@ class PlayJaxWsClientProxySpec extends Specification {
     }
   }
 
-  def findAvailablePort() = {
+  def findAvailablePort(): Int = {
     val socket = new ServerSocket(0)
     try {
       socket.getLocalPort
