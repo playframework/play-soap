@@ -1,5 +1,5 @@
 /*
- * Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) from 2025 The Play Framework Contributors <https://github.com/playframework>, 2011-2025 Lightbend Inc. <https://www.lightbend.com>
  */
 package play.soap
 
@@ -97,7 +97,9 @@ class PlayJaxWsClientProxySpec extends Specification {
 
   def await[T](future: Future[T]): T = Await.result(future, 10.seconds)
 
-  def await[T](completionStage: CompletionStage[T]): T = await(FutureConverters.CompletionStageOps(completionStage).asScala)
+  def await[T](completionStage: CompletionStage[T]): T = await(
+    FutureConverters.CompletionStageOps(completionStage).asScala
+  )
 
   def withScalaClient[T](block: MockServiceScala => T): T = withClient(block)
 

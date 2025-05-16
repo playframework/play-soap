@@ -9,7 +9,7 @@ object Dependencies {
 
   object ScalaVersions {
     val scala213 = "2.13.16"
-    val scala3 = "3.3.5"
+    val scala3   = "3.3.5"
   }
 
   object Versions {
@@ -19,12 +19,12 @@ object Dependencies {
   val playOrg = "org.playframework" // "com.typesafe.play" for 2.x.y
 
   val `play-client` = libraryDependencies ++= Seq(
-    playOrg              %% "play"                        % Versions.Play % Provided,
-    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
-    "org.apache.cxf"     % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
-    "org.apache.cxf"     % "cxf-rt-transports-http"       % Versions.CXF  % Test,
-    "org.apache.cxf"     % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
-    playOrg              %% "play-specs2"                 % Versions.Play % Test
+    playOrg         %% "play"                         % Versions.Play % Provided,
+    "org.apache.cxf" % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
+    "org.apache.cxf" % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
+    "org.apache.cxf" % "cxf-rt-transports-http"       % Versions.CXF  % Test,
+    "org.apache.cxf" % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
+    playOrg         %% "play-specs2"                  % Versions.Play % Test
   )
 
   val plugin = libraryDependencies ++= Seq(
@@ -46,9 +46,9 @@ object Dependencies {
   )
 
   val `test-scala` = libraryDependencies ++= Seq(
-    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF  % Test,
-    "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
-    "com.dimafeng"      %% "testcontainers-scala"       % "0.43.0"      % Test,
-    "org.scalatest"     %% "scalatest"                  % "3.2.19"      % Test,
+    "org.apache.cxf" % "cxf-rt-frontend-jaxws"      % Versions.CXF % Test,
+    "org.apache.cxf" % "cxf-rt-transports-http-hc5" % Versions.CXF % Test,
+    "com.dimafeng"  %% "testcontainers-scala"       % "0.43.0"     % Test,
+    "org.scalatest" %% "scalatest"                  % "3.2.19"     % Test,
   )
 }

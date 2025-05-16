@@ -157,8 +157,9 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
       return false
     }
     import scala.jdk.CollectionConverters._
-    serviceInfo.getInterface.getOperations.asScala.exists((opInfo) =>
-      opInfo.isUnwrappedCapable && opInfo.getProperty(ReflectionServiceFactoryBean.WRAPPERGEN_NEEDED) != null)
+    serviceInfo.getInterface.getOperations.asScala.exists(opInfo =>
+      opInfo.isUnwrappedCapable && opInfo.getProperty(ReflectionServiceFactoryBean.WRAPPERGEN_NEEDED) != null
+    )
   }
 
   private def buildHandlerChain(cp: PlayJaxWsClientProxy): Unit = {
