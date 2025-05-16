@@ -20,7 +20,7 @@ import org.apache.cxf.transport.http.asyncclient.AsyncHttpTransportFactory
 import play.api._
 import play.api.inject.ApplicationLifecycle
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.concurrent.Future
 import scala.reflect.ClassTag
 
@@ -59,7 +59,7 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
       defaultAddress: String,
       handlers: Handler[_ <: MessageContext]*
   )(implicit ct: ClassTag[T]): T = {
-    val factory = createFactory
+    val factory: PlayJaxWsProxyFactoryBean = createFactory
 
     if (readConfig(portName, _.getOptional[Boolean]("debugLog"), false)) {
       factory.getInInterceptors.add(new LoggingInInterceptor)
@@ -79,7 +79,7 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
     port.asInstanceOf[T]
   }
 
-  private def createFactory = {
+  private def createFactory: PlayJaxWsProxyFactoryBean = {
     val factory = new PlayJaxWsProxyFactoryBean
     factory.setBus(apacheCxfBus.bus)
     factory

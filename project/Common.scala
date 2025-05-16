@@ -50,8 +50,7 @@ object Common extends AutoPlugin {
         )
       ),
       headerMappings ++= Map(
-        // TODO: use `FileType.xml.firstLinePattern` instead after release https://github.com/sbt/sbt-header/issues/310
-        FileType("wsdl", Some("(<\\?xml.*\\?>(?:\\s+))([\\S\\s]*)".r)) -> HeaderCommentStyle.xmlStyleBlockComment
+        FileType("wsdl", FileType.xml.firstLinePattern) -> HeaderCommentStyle.xmlStyleBlockComment
       )
     )
 }
