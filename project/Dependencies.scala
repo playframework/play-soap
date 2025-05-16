@@ -16,15 +16,14 @@ object Dependencies {
     val CXF  = "4.0.7"
     val Play = "3.0.7"
   }
-  val playOrg = "org.playframework" // "com.typesafe.play" for 2.x.y
 
   val `play-client` = libraryDependencies ++= Seq(
-    playOrg         %% "play"                         % Versions.Play % Provided,
-    "org.apache.cxf" % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
-    "org.apache.cxf" % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
-    "org.apache.cxf" % "cxf-rt-transports-http"       % Versions.CXF  % Test,
-    "org.apache.cxf" % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
-    playOrg         %% "play-specs2"                  % Versions.Play % Test
+    "org.playframework" %% "play"                         % Versions.Play % Provided,
+    "org.apache.cxf"     % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
+    "org.apache.cxf"     % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
+    "org.apache.cxf"     % "cxf-rt-transports-http"       % Versions.CXF  % Test,
+    "org.apache.cxf"     % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
+    "org.playframework" %% "play-specs2"                  % Versions.Play % Test
   )
 
   val plugin = libraryDependencies ++= Seq(
