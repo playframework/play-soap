@@ -82,7 +82,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
    * @param h
    *   a <code>List</code> of <code>Handler</code> objects
    */
-  def setHandlers(h: JList[Handler[_ <: MessageContext]]) {
+  def setHandlers(h: JList[Handler[_ <: MessageContext]]): Unit = {
     handlers.clear()
     handlers.addAll(h)
   }
@@ -97,7 +97,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
     handlers
   }
 
-  def setLoadHandlers(b: Boolean) {
+  def setLoadHandlers(b: Boolean): Unit = {
     loadHandlers = b
   }
 
@@ -123,7 +123,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
    * @return
    *   the proxy. You must cast the returned object to the approriate class before making remote calls
    */
-  override def create: AnyRef = {
+  override def create(): AnyRef = {
     var orig: ClassLoaderUtils.ClassLoaderHolder = null
     try {
       if (getBus != null) {
@@ -132,7 +132,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
           orig = ClassLoaderUtils.setThreadContextClassloader(loader)
         }
       }
-      val obj: AnyRef = super.create
+      val obj: AnyRef = super.create()
 
       val service: Service = getServiceFactory.getService
       if (needWrapperClassInterceptor(service.getServiceInfos.get(0))) {
@@ -156,13 +156,10 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
     if (serviceInfo == null) {
       return false
     }
-    import scala.collection.JavaConverters._
-    for (opInfo <- serviceInfo.getInterface.getOperations.asScala) {
-      if (opInfo.isUnwrappedCapable && opInfo.getProperty(ReflectionServiceFactoryBean.WRAPPERGEN_NEEDED) != null) {
-        return true
-      }
-    }
-    return false
+    import scala.jdk.CollectionConverters._
+    serviceInfo.getInterface.getOperations.asScala.exists(opInfo =>
+      opInfo.isUnwrappedCapable && opInfo.getProperty(ReflectionServiceFactoryBean.WRAPPERGEN_NEEDED) != null
+    )
   }
 
   private def buildHandlerChain(cp: PlayJaxWsClientProxy): Unit = {
@@ -185,7 +182,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
       resourceManager = new DefaultResourceManager(resolvers)
       resourceManager.addResourceResolver(new WebServiceContextResourceResolver)
       val injector: ResourceInjector = new ResourceInjector(resourceManager)
-      import scala.collection.JavaConverters._
+      import scala.jdk.CollectionConverters._
       for (h <- chain.asScala) {
         if (Proxy.isProxyClass(h.getClass) && getServiceClass != null) {
           injector.inject(h, getServiceClass)

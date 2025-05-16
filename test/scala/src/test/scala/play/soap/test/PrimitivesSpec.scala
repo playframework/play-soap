@@ -38,7 +38,7 @@ class PrimitivesSpec extends AsyncWordSpec with BeforeAndAfterAll with AsyncTime
     factory.setServiceClass(classOf[Primitives])
     // noinspection HttpUrlsUsage
     factory.setAddress(s"http://${container.containerIpAddress}:${container.mappedPort(8080)}/primitives")
-    client = factory.create.asInstanceOf[Primitives]
+    client = factory.create().asInstanceOf[Primitives]
   }
 
   "SOAP service that uses primitives" should {

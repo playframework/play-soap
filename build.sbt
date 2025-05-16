@@ -31,7 +31,7 @@ lazy val client = project
   .settings(
     name               := "play-soap-client",
     description        := "Play SOAP client",
-    crossScalaVersions := Seq(scala213),
+    crossScalaVersions := Seq(scala213, scala3),
     Dependencies.`play-client`,
   )
 
@@ -87,7 +87,7 @@ lazy val testJava = project
   .settings(
     name                    := "play-soap-test-java",
     description             := "Play SOAP integration tests for Java",
-    crossScalaVersions      := Seq(scala213),
+    crossScalaVersions      := Seq(scala213, scala3),
     scalaVersion            := scala213,
     publish / skip          := true,
     Compile / doc / sources := Seq.empty,
@@ -121,7 +121,7 @@ lazy val testScala = project
   .settings(
     name                    := "play-soap-test-scala",
     description             := "Play SOAP integration tests for Scala",
-    crossScalaVersions      := Seq(scala213),
+    crossScalaVersions      := Seq(scala213, scala3),
     scalaVersion            := scala213,
     publish / skip          := true,
     Compile / doc / sources := Seq.empty,
