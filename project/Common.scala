@@ -21,7 +21,7 @@ object Common extends AutoPlugin {
   override def globalSettings =
     Seq(
       // organization
-      organization         := "com.typesafe.play",
+      organization         := "org.playframework",
       organizationName     := "The Play Framework Project",
       organizationHomepage := Some(url("https://playframework.com/")),
       // scala settings
@@ -46,7 +46,7 @@ object Common extends AutoPlugin {
       headerEmptyLine := false,
       headerLicense := Some(
         HeaderLicense.Custom(
-          "Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>"
+          "Copyright (C) from 2025 The Play Framework Contributors <https://github.com/playframework>, 2011-2025 Lightbend Inc. <https://www.lightbend.com>"
         )
       ),
       headerMappings ++= Map(

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) from 2025 The Play Framework Contributors <https://github.com/playframework>, 2011-2025 Lightbend Inc. <https://www.lightbend.com>
  */
 import net.aichler.jupiter.sbt.Import.JupiterKeys.jupiterVersion
 import sbt.Keys.libraryDependencies
@@ -13,16 +13,17 @@ object Dependencies {
 
   object Versions {
     val CXF  = "4.0.7"
-    val Play = "2.9.7"
+    val Play = "3.0.7"
   }
+  val playOrg = "org.playframework" // "com.typesafe.play" for 2.x.y
 
   val `play-client` = libraryDependencies ++= Seq(
-    "com.typesafe.play" %% "play"                         % Versions.Play % Provided,
+    playOrg              %% "play"                        % Versions.Play % Provided,
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"        % Versions.CXF  % Provided,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc"    % Versions.CXF  % Provided,
     "org.apache.cxf"     % "cxf-rt-transports-http"       % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-jetty" % Versions.CXF  % Test,
-    "com.typesafe.play" %% "play-specs2"                  % Versions.Play % Test
+    playOrg              %% "play-specs2"                 % Versions.Play % Test
   )
 
   val plugin = libraryDependencies ++= Seq(
@@ -38,7 +39,7 @@ object Dependencies {
   val `test-java` = libraryDependencies ++= Seq(
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF         % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
-    "com.typesafe.play" %% "play"                       % Versions.Play        % Test, // TODO: remove
+    playOrg  %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
     "org.testcontainers" % "junit-jupiter"              % "1.21.0"             % Test,
     "org.assertj"        % "assertj-core"               % "3.27.3"             % Test
@@ -47,7 +48,7 @@ object Dependencies {
   val `test-scala` = libraryDependencies ++= Seq(
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
-    "com.typesafe.play" %% "play"                       % Versions.Play % Test, // TODO: remove
+    playOrg              %% "play"                      % Versions.Play % Test, // TODO: remove
     "com.dimafeng"      %% "testcontainers-scala"       % "0.43.0"      % Test,
     "org.scalatest"     %% "scalatest"                  % "3.2.19"      % Test,
   )
