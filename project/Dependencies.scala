@@ -40,7 +40,6 @@ object Dependencies {
   val `test-java` = libraryDependencies ++= Seq(
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF         % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
-    playOrg  %% "play"                       % Versions.Play        % Test, // TODO: remove
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
     "org.testcontainers" % "junit-jupiter"              % "1.21.0"             % Test,
     "org.assertj"        % "assertj-core"               % "3.27.3"             % Test
@@ -49,7 +48,6 @@ object Dependencies {
   val `test-scala` = libraryDependencies ++= Seq(
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF  % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF  % Test,
-    playOrg              %% "play"                      % Versions.Play % Test, // TODO: remove
     "com.dimafeng"      %% "testcontainers-scala"       % "0.43.0"      % Test,
     "org.scalatest"     %% "scalatest"                  % "3.2.19"      % Test,
   )
