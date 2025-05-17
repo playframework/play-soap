@@ -21,7 +21,7 @@ object Common extends AutoPlugin {
   override def globalSettings =
     Seq(
       // organization
-      organization         := "com.typesafe.play",
+      organization         := "org.playframework",
       organizationName     := "The Play Framework Project",
       organizationHomepage := Some(url("https://playframework.com/")),
       // scala settings
@@ -50,8 +50,7 @@ object Common extends AutoPlugin {
         )
       ),
       headerMappings ++= Map(
-        // TODO: use `FileType.xml.firstLinePattern` instead after release https://github.com/sbt/sbt-header/issues/310
-        FileType("wsdl", Some("(<\\?xml.*\\?>(?:\\s+))([\\S\\s]*)".r)) -> HeaderCommentStyle.xmlStyleBlockComment
+        FileType("wsdl", FileType.xml.firstLinePattern) -> HeaderCommentStyle.xmlStyleBlockComment
       )
     )
 }

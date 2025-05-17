@@ -12,7 +12,7 @@ plugins {
 
 dependencies {
     wsdl2java(
-	   [group: 'com.typesafe.play', name: 'play-soap-plugin', version: '2.0.0']
+	   [group: 'org.playframework', name: 'play-soap-plugin', version: '2.0.0']
     )
 }
 

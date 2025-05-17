@@ -60,15 +60,16 @@ import org.apache.cxf.jaxws.EndpointReferenceBuilder
 import org.apache.cxf.jaxws.context.WrappedMessageContext
 import org.apache.cxf.jaxws.support.JaxWsEndpointImpl
 import org.apache.cxf.service.invoker.MethodDispatcher
+
 import java.util.Locale
 import java.util.{ Map => JMap }
 
 import org.apache.cxf.service.model.BindingOperationInfo
 import org.w3c.dom.Node
 
-import scala.compat.java8.FutureConverters
 import scala.concurrent.Future
 import scala.concurrent.Promise
+import scala.jdk.FutureConverters
 import scala.util.Try
 
 private[soap] object PlayJaxWsClientProxy {
@@ -106,7 +107,7 @@ private[soap] object PlayJaxWsClientProxy {
             }
 
             if (sf.getSubCodes != null && !isSoap11) {
-              import scala.collection.JavaConverters._
+              import scala.jdk.CollectionConverters._
               for (fsc <- sf.getSubCodes.asScala) {
                 soapFault.appendFaultSubcode(fsc)
               }
@@ -240,7 +241,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
     val respContext = client.getResponseContext
     val scopes      = CastUtils.cast(respContext.get(WrappedMessageContext.SCOPES).asInstanceOf[JMap[_, _]])
     if (scopes != null) {
-      import scala.collection.JavaConverters._
+      import scala.jdk.CollectionConverters._
       for (scope <- scopes.entrySet.asScala) {
         if (Scope.HANDLER.equals(scope.getValue)) {
           respContext.remove(scope.getKey)
@@ -274,7 +275,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
       params: Array[AnyRef]
   ): CompletionStage[Any] = {
     val future: Future[Any]                   = invokeScalaFuture(method, oi, params)
-    val playJavaPromise: CompletionStage[Any] = FutureConverters.toJava(future)
+    val playJavaPromise: CompletionStage[Any] = FutureConverters.FutureOps(future).asJava
     playJavaPromise
   }
 
