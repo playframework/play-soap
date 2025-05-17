@@ -110,7 +110,7 @@ class PlayJaxWsClientProxySpec extends Specification {
       val factory = new PlayJaxWsProxyFactoryBean
       factory.setServiceClass(serviceClass.runtimeClass)
       factory.setAddress(s"http://localhost:$port/mockService")
-      val client = factory.create.asInstanceOf[S]
+      val client = factory.create().asInstanceOf[S]
       block(client)
     }
 

@@ -123,7 +123,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
    * @return
    *   the proxy. You must cast the returned object to the approriate class before making remote calls
    */
-  override def create: AnyRef = {
+  override def create(): AnyRef = {
     var orig: ClassLoaderUtils.ClassLoaderHolder = null
     try {
       if (getBus != null) {
@@ -132,7 +132,7 @@ private[soap] class PlayJaxWsProxyFactoryBean extends ClientProxyFactoryBean(new
           orig = ClassLoaderUtils.setThreadContextClassloader(loader)
         }
       }
-      val obj: AnyRef = super.create
+      val obj: AnyRef = super.create()
 
       val service: Service = getServiceFactory.getService
       if (needWrapperClassInterceptor(service.getServiceInfos.get(0))) {

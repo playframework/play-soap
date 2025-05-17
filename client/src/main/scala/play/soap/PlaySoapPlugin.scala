@@ -74,7 +74,7 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
 
     factory.setHandlers(handlers.asJava)
 
-    val port = factory.create
+    val port = factory.create()
 
     port.asInstanceOf[T]
   }
