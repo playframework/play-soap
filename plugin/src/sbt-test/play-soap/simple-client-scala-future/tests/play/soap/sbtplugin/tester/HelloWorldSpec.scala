@@ -57,7 +57,7 @@ class HelloWorldSpec extends ServiceSpec {
         val client = app.injector
           .instanceOf[HelloWorldService]
           .helloWorld(new SOAPHandler[SOAPMessageContext] {
-            def getHeaders = null
+            def getHeaders                                 = null
             def handleMessage(context: SOAPMessageContext) = {
               invoked.set(true)
               true

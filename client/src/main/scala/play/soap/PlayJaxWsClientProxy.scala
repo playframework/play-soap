@@ -202,7 +202,7 @@ private[soap] class PlayJaxWsClientProxy(c: Client, binding: Binding) extends Cl
         }
       } catch {
         case wex: WebServiceException => throw wex
-        case ex: Exception =>
+        case ex: Exception            =>
           for (excls <- method.getExceptionTypes) {
             if (excls.isInstance(ex)) {
               throw ex

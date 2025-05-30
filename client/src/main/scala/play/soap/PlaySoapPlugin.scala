@@ -92,7 +92,7 @@ abstract class PlaySoapClient @Inject() (apacheCxfBus: ApacheCxfBus, configurati
 @Singleton
 class ApacheCxfBus @Inject() (lifecycle: ApplicationLifecycle) extends Logging {
   private lazy val asyncTransport = new AsyncHttpTransportFactory
-  private[soap] lazy val bus = {
+  private[soap] lazy val bus      = {
     val bus = BusFactory.newInstance.createBus
 
     // Although Apache CXF will automatically select the async http transport conduit, we want to ensure that it will
