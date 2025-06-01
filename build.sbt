@@ -66,7 +66,7 @@ lazy val mockServer = project
   )
   .settings(
     CXF / version := Versions.CXF,
-    cxfWSDLs := Seq(
+    cxfWSDLs      := Seq(
       Wsdl(
         "primitives",
         (Compile / resourceDirectory).value / "wsdl" / "primitives.wsdl",
@@ -98,7 +98,7 @@ lazy val testJava = project
     testOptions += Tests.Argument(jupiterTestFramework, "-q", "-v")
   )
   .settings(
-    CXF / version := Versions.CXF,
+    CXF / version          := Versions.CXF,
     CXF / managedClasspath := {
       (CXF / managedClasspath).value ++: (plugin / Compile / exportedProductJars).value
     },
@@ -128,7 +128,7 @@ lazy val testScala = project
     Dependencies.`test-scala`
   )
   .settings(
-    CXF / version := Versions.CXF,
+    CXF / version          := Versions.CXF,
     CXF / managedClasspath := {
       (CXF / managedClasspath).value ++: (plugin / Compile / exportedProductJars).value
     },
