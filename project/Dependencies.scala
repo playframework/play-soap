@@ -40,7 +40,7 @@ object Dependencies {
     "org.apache.cxf"     % "cxf-rt-frontend-jaxws"      % Versions.CXF         % Test,
     "org.apache.cxf"     % "cxf-rt-transports-http-hc5" % Versions.CXF         % Test,
     "net.aichler"        % "jupiter-interface"          % jupiterVersion.value % Test,
-    "org.testcontainers" % "junit-jupiter"              % "1.21.2"             % Test,
+    "org.testcontainers" % "junit-jupiter"              % "1.21.3"             % Test,
     "org.assertj"        % "assertj-core"               % "3.27.3"             % Test
   )
 
