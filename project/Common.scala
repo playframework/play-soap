@@ -5,8 +5,8 @@ import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
 import Dependencies.ScalaVersions._
-import de.heikoseeberger.sbtheader.FileType
-import de.heikoseeberger.sbtheader.HeaderPlugin
+import sbtheader.FileType
+import sbtheader.HeaderPlugin
 
 object Common extends AutoPlugin {
 
