@@ -47,7 +47,7 @@ object Dependencies {
   val `test-scala` = libraryDependencies ++= Seq(
     "org.apache.cxf" % "cxf-rt-frontend-jaxws"      % Versions.CXF % Test,
     "org.apache.cxf" % "cxf-rt-transports-http-hc5" % Versions.CXF % Test,
-    "com.dimafeng"  %% "testcontainers-scala"       % "0.43.0"     % Test,
+    "com.dimafeng"  %% "testcontainers-scala"       % "0.43.6"     % Test,
     "org.scalatest" %% "scalatest"                  % "3.2.19"     % Test,
   )
 }
