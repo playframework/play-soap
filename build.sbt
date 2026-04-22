@@ -15,6 +15,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   s
 }
 
+ThisBuild / javafmtFormatterCompatibleJavaVersion := 11
+
 lazy val root = project
   .in(file("."))
   .aggregate(client, plugin, mockServer, testJava, testScala)
