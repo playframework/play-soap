@@ -13,7 +13,7 @@ object Dependencies {
   }
 
   object Versions {
-    val CXF  = "4.0.11"
+    val CXF  = "4.2.1"
     val Play = "3.0.11"
   }
 
