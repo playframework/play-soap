@@ -15,13 +15,13 @@ concurrency:
 jobs:
   check-code-style:
     name: Code Style
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
+    uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
       cmd: sbt validateCode
 
   check-docs:
     name: Docs
-    uses: playframework/.github/.github/workflows/antora.yml@v3
+    uses: playframework/.github/.github/workflows/antora.yml@v4
     with:
       path: "./docs"
 
@@ -30,7 +30,7 @@ jobs:
     needs:
       - "check-code-style"
       - "check-docs"
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
+    uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
       cmd: sbt +test
 
@@ -39,4 +39,4 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: # Should be last
       - "tests"
-    uses: playframework/.github/.github/workflows/rtm.yml@v3
+    uses: playframework/.github/.github/workflows/rtm.yml@v4
