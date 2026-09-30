@@ -14,7 +14,7 @@ object Dependencies {
 
   object Versions {
     val CXF  = "4.0.11"
-    val Play = "3.0.11"
+    val Play = "3.0.12"
   }
 
   val `play-client` = libraryDependencies ++= Seq(
